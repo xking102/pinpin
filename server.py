@@ -8,6 +8,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from contextlib import closing
 import json
 
+from control import pinpin
 
 
 # configuation
@@ -26,11 +27,7 @@ def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
 
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource("./tmp/table.sql", mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
+
 
 
 @app.before_request
@@ -47,6 +44,7 @@ def teardown_request(exception):
 
 
 @app.route('/')
+@app.route('/index')
 def show_entries():
     cur = g.db.execute('select title,text from entries order by id desc')
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
@@ -62,25 +60,36 @@ def add_entry():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
-
+##user logon
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    email = request.form['email']
+    password = pinpin.getmd5(request.form['password'])
     if request.method == 'POST':
-        d.db.execute('select count(*) as num from t_user where email = ? and password = ?',
-                    [request.form['email'], request.form['password']])
-        for row in cur.fetchone:
-            if row == 0:
-                 error = 'Invalid Email/Password'
+        cur = d.db.execute('select password  from t_user where email = ? ',
+                    [request.form['email'])
+        entries = [dict(password=row[0]) for row in cur.fetchall()]
+            if len(entries) > 0:
+                if password == entries[0]['password']:
+                    session['logged_in'] = True
+                    flash('You were logged in')
+                    return redirect(url_for('show_entries'))
+                else:
+                   error = 'Invalid Password' 
             else:
-                session['logged_in'] = True
-                flash('You were logged in')
-                return redirect(url_for('show_entries'))
+                error = 'Invalid Email'       
     return render_template('login.html', error=error)
 
 
 
-@app.route('/register')
+@app.route('/register', methods=['POST'])
+def register():
+    g.db.execute('insert into t_user(name,email,password) values(?, ?, ?)',
+                 [request.form['name'], request.form['email'], pinpin.getmd5(request.form['password'])])
+    g.db.commit()
+    flash('New user was successfully registered')
+    return redirect(url_for('show_entries'))
 
 
 @app.route('/logout')
@@ -144,6 +153,21 @@ def list_order(id):
     # entries = [dict(a=row[0], b=row[1], c=row[2], d=row[3], e=row[4]) for row in cur.fetchall()]
     # return render_template('show_orders.html', entries=entries)
     return '<h1>id = {}</h1>'.format(id)
+
+
+
+
+# from threading import Thread
+
+# def async(f):
+#     def wrapper(*args, **kwargs):
+#         thr = Thread(target=f, args=args, kwargs=kwargs)
+#         thr.start()
+#     return wrapper
+
+# @async
+# def dosomething(call_args):
+#     print call_args
 
 
 

@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import server
+import sqlite3
 
-# flaskr.init_db()
-server.init_db()
+DATABASE = './tmp/server.db'
+
+with (sqlite3.connect(DATABASE)) as db:
+    with open("./tmp/table.sql", mode='r') as f:
+        db.cursor().executescript(f.read())
+    db.commit()
