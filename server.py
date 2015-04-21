@@ -15,8 +15,9 @@ from control import pinpin
 DATABASE = './tmp/server.db'
 DEBUG = True
 SECRET_KEY = 'development key'
-USERNAME = 'admin'
-PASSWORD = 'admin'
+
+
+
 
 # create  application
 app = Flask(__name__)
@@ -44,8 +45,8 @@ def teardown_request(exception):
 @app.route('/')
 @app.route('/index')
 def show_orders():
-    cur = g.db.execute('select id,title,status,create_user,category,type,item,limit_price,limit_weight,kickoff_dt from t_order where status >  order by id desc')
-    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    cur = g.db.execute('select id,title,status,create_user,category,type,item,limit_price,limit_weight,kickoff_dt from t_order where status = 10  order by id desc')
+    entries = [dict(id=row[0], title=row[1], status=row[2], create_user=row[3], category=row[4], type=row[5], item=row[6], limit_price=row[7], limit_weight=row[8], kickoff_dt=row[9]) for row in cur.fetchall()]
     return render_template('show_orders.html', entries=entries)
 
 
