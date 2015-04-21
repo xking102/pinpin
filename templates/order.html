@@ -17,7 +17,10 @@
         {% if session.logged_id|int == entry.user|int %}
         <div><a href="/order/{{ entry.id }}/edit">Edit</a></div>
         {% endif %}
-        <li><h2>{{ entry.id }}</h2>{{ entry.title }}</li>
+        <li>
+            <dt>Title:</dt>
+            <dd><input type="text" name="name" value={{ entry.title}}></dd>
+        </li>
         {% else %}
         <li><em>the order is not  exist</em></li>
         {% endfor %}

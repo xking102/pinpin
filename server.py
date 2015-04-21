@@ -64,23 +64,23 @@ def publish_order():
     return redirect(url_for('show_orders'))
 
 #update a order //todo
-@app.route('/order/<string:id>/edit', methods=['GET','POST'])
+@app.route('/order/<id>/edit', methods=['GET','POST'])
 def edit_order(id):
     error = None
+    cur = g.db.execute('select id,title,status,create_user,category,type,item,limit_price,limit_weight,kickoff_dt from t_order where id =?',[id])
+    entries = [dict(id=row[0], title=row[1],user=row[3]) for row in cur.fetchall()]
     if request.method == 'POST':
-        if not session.get('logged_in'):
-            abort(401)
-        d.db.execute('select create_user from t_order where id = ?',[id])
-        entries = [dict(user=row[0]) for row in cur.fetchall()]
-        if session.get('logged_id') == entries[0]['user']:
+        if session.get('logged_id') == entries1[0]['user']:
             g.db.execute('update t_order set title = ?, status = ?, category = ?, type = ?, item = ?, limit_price = ?, limit_weight = ?, kickoff_dt = ?, update_dt = ? where id = ?',
                          [request.form['title'], request.form['status'], request.form['category'], request.form['type'], request.form['item'],
                          request.form['limit_price'], request.form['limit_weight'], request.form['kickoff_dt'],pinpin.getsysdate()])
             g.db.commit()
             flash('the entry was successfully updated')
+            cur = g.db.execute('select id,title,status,create_user,category,type,item,limit_price,limit_weight,kickoff_dt from t_order where id =?',[id])
+            entries = [dict(id=row[0], title=row[1],user=row[3]) for row in cur.fetchall()]
             return redirect(url_for('show_orders'))
         else:
-            return redirect(url_for('order/'+id))
+            return render_template('order.html', entries=entries)
     return render_template('order.html', entries=entries, mode='edit')
 
 
