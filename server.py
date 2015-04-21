@@ -30,7 +30,7 @@ def connect_db():
 #when request conn db
 @app.before_request
 def before_request():
-    g.db = db.connect_db()
+    g.db = connect_db()
 
 #when close or other exception close db conn
 @app.teardown_request
@@ -41,7 +41,7 @@ def teardown_request(exception):
     g.db.close()
 
 
-#home page that show the orders
+#home page of show the orders status is 10 
 @app.route('/')
 @app.route('/index')
 def show_orders():
@@ -50,52 +50,100 @@ def show_orders():
     return render_template('show_orders.html', entries=entries)
 
 
-
-@app.route('/add', methods=['POST'])
-def add_entry():
+#publish a new order
+@app.route('/publish_order', methods=['POST'])
+def publish_order():
     if not session.get('logged_in'):
         abort(401)
-    g.db.execute('insert into entries(title,text) values(?, ?)',
-                 [request.form['title'], request.form['text']])
+    print 'add'
+    g.db.execute('insert into t_order(title ,status ,create_user,create_dt,category,type,item,limit_price,limit_weight,kickoff_dt,update_dt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                 [request.form['title'], request.form['status'],session.get('logged_id'), pinpin.getsysdate(), request.form['category'], request.form['type'], request.form['item'],
+                 request.form['limit_price'], request.form['limit_weight'], request.form['kickoff_dt'],pinpin.getsysdate()])
     g.db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_orders'))
+
+#update a order //todo
+@app.route('/order/<string:id>/edit', methods=['GET','POST'])
+def edit_order(id):
+    error = None
+    if request.method == 'POST':
+        if not session.get('logged_in'):
+            abort(401)
+        d.db.execute('select create_user from t_order where id = ?',[id])
+        entries = [dict(user=row[0]) for row in cur.fetchall()]
+        if session.get('logged_id') == entries[0]['user']:
+            g.db.execute('update t_order set title = ?, status = ?, category = ?, type = ?, item = ?, limit_price = ?, limit_weight = ?, kickoff_dt = ?, update_dt = ? where id = ?',
+                         [request.form['title'], request.form['status'], request.form['category'], request.form['type'], request.form['item'],
+                         request.form['limit_price'], request.form['limit_weight'], request.form['kickoff_dt'],pinpin.getsysdate()])
+            g.db.commit()
+            flash('the entry was successfully updated')
+            return redirect(url_for('show_orders'))
+        else:
+            return redirect(url_for('order/'+id))
+    return render_template('order.html', entries=entries, mode='edit')
+
+
+@app.route('/order/<int:id>')
+def list_order(id):
+    cur = g.db.execute('select id,title,status,create_user,category,type,item,limit_price,limit_weight,kickoff_dt from t_order where id =?',[id])
+    entries = [dict(id=row[0], title=row[1],user=row[3]) for row in cur.fetchall()]
+    return render_template('order.html', entries=entries, mode='view')
+
+
+
 
 ##user logon
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    email = request.form['email']
-    password = pinpin.getmd5(request.form['password'])
     if request.method == 'POST':
-        cur = d.db.execute('select password  from t_user where email = ? ',
-                    [request.form['email'])
-        entries = [dict(password=row[0]) for row in cur.fetchall()]
-            if len(entries) > 0:
-                if password == entries[0]['password']:
-                    session['logged_in'] = True
-                    flash('You were logged in')
-                    return redirect(url_for('show_orders'))
-                else:
-                   error = 'Invalid Password' 
+        cur = g.db.execute('select name,password,id  from t_user where email = ? ',
+                    [request.form['email']])
+        entries = [dict(name=row[0], password=row[1],id=row[2]) for row in cur.fetchall()]
+        if len(entries) > 0:
+            if pinpin.getmd5(request.form['password']) == entries[0]['password']:
+                session['logged_in'] = True
+                session['logged_name'] = entries[0]['name']
+                session['logged_id'] = entries[0]['id']
+                flash('You were logged in')
+                print 'log ok'
+                return redirect(url_for('show_orders'))
             else:
-                error = 'Invalid Email'       
+                error = 'Invalid Password' 
+        else:
+            error = 'Invalid Email'       
     return render_template('login.html', error=error)
 
 
 #user register
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    g.db.execute('insert into t_user(name,email,password) values(?, ?, ?)',
-                 [request.form['name'], request.form['email'], pinpin.getmd5(request.form['password'])])
-    g.db.commit()
-    flash('New user was successfully registered')
-    return redirect(url_for('show_orders'))
+    error = None
+    if request.method == 'POST':
+        cur = g.db.execute('select count(*) as num from t_user where email = ? ',
+                    [request.form['email']])
+        entries = [dict(num=row[0]) for row in cur.fetchall()]
+        if entries[0]['num'] > 0:
+            error = 'this email has been registered'
+        else:
+            g.db.execute('insert into t_user(name,email,password,regdt) values(?, ?, ?, ?)',
+                         [request.form['name'], request.form['email'], pinpin.getmd5(request.form['password']), pinpin.getsysdate()])
+            g.db.commit()
+            cur = g.db.execute('select id from t_user where email = ?',[request.form['email']])
+            entries = [dict(id=row[0]) for row in cur.fetchall()]
+            flash('New user was successfully registered')
+            session['logged_in'] = True
+            session['logged_name'] = request.form['name']
+            session['logged_id'] = entries[0]['id']
+            return redirect(url_for('show_orders'))
+    return render_template('register.html', error=error)
 
 #user logout
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('logged_name', None)
     flash('You were logged out')
     return redirect(url_for('show_orders'))
 
@@ -149,12 +197,6 @@ def test():
 
 
 
-@app.route('/order/<int:id>')
-def list_order(id):
-    # cur = g.db.execute('select xxxx from xxx where order_id = ?',[])
-    # entries = [dict(a=row[0], b=row[1], c=row[2], d=row[3], e=row[4]) for row in cur.fetchall()]
-    # return render_template('show_orders.html', entries=entries)
-    return '<h1>id = {}</h1>'.format(id)
 
 
 

@@ -1,13 +1,14 @@
 <!doctype html>
-<title>Flaskr</title>
+<title>PinPin</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-    <h1>Flaskr</h1>
+    <h1>PinPin</h1>
     <div class=metanav>
         {% if not session.logged_in %}
             <a href="{{ url_for('login') }}">log in</a>
+            <a href="{{ url_for('register') }}">Register</a>
         {% else %}
-             <a href="{{ url_for('openmap')}}" target="_blank">My RoadMap</a>
+             <a href="{{ url_for('openmap')}}" target="_blank">Welcome back, {{ session.logged_name }}</a>
              <a href="{{ url_for('logout') }}">log out</a>
         {% endif %}
     </div>

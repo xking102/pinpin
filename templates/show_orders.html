@@ -1,21 +1,35 @@
 {% extends "layout.html" %}
 {% block body %}
-    {% if session.logged_in %}
-        <form action="{{ url_for('add_entry')}}" method=post class=add-entry>
+  {% if session.logged_in %}
+        <form action="{{ url_for('publish_order')}}" method=post class=add-entry>
         <dl>
             <dt>Title:</dt>
             <dd><input type="text" size="30" name="title"></dd>
-            <dt>Text:</dt>
-            <dd><textarea name="text" rows="5" cols="40"></textarea></dd>
-            <dd><input type="submit" value="Share"></dd>
+            <dt>Status:</dt>
+            <dd><input type="number" size="30" name="status"></dd>
+            <dt>Category:</dt>
+            <dd><input type="text" size="30" name="category"></dd>
+            <dt>Type:</dt>
+            <dd><input type="text" size="30" name="type"></dd>
+            <dt>Item:</dt>
+            <dd><input type="text" size="30" name="item"></dd>
+            <dt>Limit Price:</dt>
+            <dd><input type="number" size="30" name="limit_price"></dd>
+            <dt>Limit Weight:</dt>
+            <dd><input type="number" size="30" name="limit_weight"></dd>
+            <dt>Kick-off Date</dt>
+            <dd><input type="date" size="30" name="kickoff_dt"></dd>
+            <dd><input type="submit" value="Publish"></dd>
         </dl>
         </form>
     {% endif %}
     <ul class="entries">
         {% for entry in entries %}
-        <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}</li>
+        <li><a href="order/{{ entry.id }}">{{ entry.title }}</a></li>
+        <li><h2>{{ entry.title }}</h2>{{ entry.category }},{{ entry.type }},{{ entry.item }},{{ entry.limit_price }},{{ entry.limit_weight }},{{ entry.kickoff_dt }}</li>
+        <li>{{ entry.id }}</li>
         {% else %}
-        <li><em>Unbelieveable. No entries her so far</em></li>
+        <li><em>No any orders now!</em></li>
         {% endfor %}
     </ul>
 {% endblock %}
