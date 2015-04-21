@@ -1,0 +1,7 @@
+0	draft	团长草稿
+4	cancel	取消
+10	pengding	组人
+20	processing	开打
+25	sent	国内快递发货中
+30	confirmed	拼单结算完毕，团长递交信息后付款
+40	close	完成

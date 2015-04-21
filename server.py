@@ -22,18 +22,16 @@ PASSWORD = 'admin'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-
+#conn db fun
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
 
-
-
-
-
+#when request conn db
 @app.before_request
 def before_request():
     g.db = db.connect_db()
 
+#when close or other exception close db conn
 @app.teardown_request
 def teardown_request(exception):
     db = getattr(g, 'db', None)
@@ -42,13 +40,15 @@ def teardown_request(exception):
     g.db.close()
 
 
-
+#home page that show the orders
 @app.route('/')
 @app.route('/index')
-def show_entries():
-    cur = g.db.execute('select title,text from entries order by id desc')
+def show_orders():
+    cur = g.db.execute('select id,title,status,create_user,category,type,item,limit_price,limit_weight,kickoff_dt from t_order where status >  order by id desc')
     entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries)
+    return render_template('show_orders.html', entries=entries)
+
+
 
 @app.route('/add', methods=['POST'])
 def add_entry():
@@ -58,7 +58,7 @@ def add_entry():
                  [request.form['title'], request.form['text']])
     g.db.commit()
     flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('show_orders'))
 
 ##user logon
 @app.route('/login', methods=['GET', 'POST'])
@@ -74,7 +74,7 @@ def login():
                 if password == entries[0]['password']:
                     session['logged_in'] = True
                     flash('You were logged in')
-                    return redirect(url_for('show_entries'))
+                    return redirect(url_for('show_orders'))
                 else:
                    error = 'Invalid Password' 
             else:
@@ -82,29 +82,29 @@ def login():
     return render_template('login.html', error=error)
 
 
-
+#user register
 @app.route('/register', methods=['POST'])
 def register():
     g.db.execute('insert into t_user(name,email,password) values(?, ?, ?)',
                  [request.form['name'], request.form['email'], pinpin.getmd5(request.form['password'])])
     g.db.commit()
     flash('New user was successfully registered')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('show_orders'))
 
-
+#user logout
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('show_orders'))
 
-
+#do nothing
 @app.route('/map')
 def openmap():
     # flash('open map')
     return render_template('index.html')
 
-
+#do nothing
 @app.route('/gpsdata')
 def gpsdata():
     cur = g.db.execute('select igm_x,img_y,img_name from imgrepo')
@@ -118,7 +118,7 @@ def gpsdata():
     #     gps.append(point)
     return json.dumps(basic, ensure_ascii=True)
 
-
+#do nothing
 @app.route('/init_imgrepo')
 def init_imgrepo():
     init_imgdb()
@@ -130,6 +130,7 @@ def init_imgrepo():
     g.db.commit()
     return '<h1>OK</h1>'
 
+#do nothing
 @app.route('/test')
 def test():
     a = ['a','b','c','d','e','f','g','h','i','j','k']
