@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
     abort, render_template, flash, g
-from db import connect_db
-from control import pinpin
 
+from control import pinpin
 order = Blueprint('order',__name__) 
 
 

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
     abort, render_template, flash, g
-from db import connect_db
 from control import pinpin
 
 #user = Blueprint('user',__name__, template_folder='templates') 
