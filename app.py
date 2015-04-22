@@ -15,10 +15,6 @@ SECRET_KEY = 'development key'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-
-from pinpin.user.view import user
-app.register_blueprint(user)
-
 #when request conn db
 @app.before_request
 def before_request():
@@ -34,7 +30,10 @@ def teardown_request(exception):
 
 
 
-
+from pinpin.user.view import user
+from pinpin.order.view import order
+app.register_blueprint(user)
+app.register_blueprint(order)
 
 if __name__ == "__main__":
 	app.run()

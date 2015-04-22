@@ -29,16 +29,16 @@ db = sqlite3.connect(DATABASE)
 # db.commit()
 
 
-# cur = db.execute('select * from t_user')
-# entries = [dict(id=row[0], name=row[1], email=row[2], password=row[3], regdt=row[4]) for row in cur.fetchall()]
-# for entry in  entries:
-# 	print entry
-
-
-cur = db.execute('select * from t_order')
+cur = db.execute('select * from t_user')
 entries = [dict(id=row[0], name=row[1], email=row[2], password=row[3], regdt=row[4]) for row in cur.fetchall()]
 for entry in  entries:
 	print entry
+
+
+# cur = db.execute('select * from t_order')
+# entries = [dict(id=row[0], name=row[1], email=row[2], password=row[3], regdt=row[4]) for row in cur.fetchall()]
+# for entry in  entries:
+# 	print entry
 
 
 # print  time.strftime('%Y-%m-%d %H%M%S',time.localtime(time.time()))
