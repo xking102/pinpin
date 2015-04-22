@@ -29,11 +29,13 @@ def teardown_request(exception):
     g.db.close()
 
 
-
+#register blueprint
 from pinpin.user.view import user
 from pinpin.order.view import order
+from pinpin.admin.view import admin
 app.register_blueprint(user)
 app.register_blueprint(order)
+app.register_blueprint(admin, url_prefix='/admin')
 
 if __name__ == "__main__":
 	app.run()
