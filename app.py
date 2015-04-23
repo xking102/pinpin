@@ -13,7 +13,6 @@ DEBUG = True
 SECRET_KEY = 'development key'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
 
-
 app = Flask(__name__)
 app.config.from_object(__name__)
 db = SQLAlchemy(app)

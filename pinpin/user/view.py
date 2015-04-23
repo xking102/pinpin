@@ -5,6 +5,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
 from control import pinpin
 from app import db
 from pinpin.user.module import User
+from pinpin.user.form import LoginForm
 
 #user = Blueprint('user',__name__, template_folder='templates') 
 user = Blueprint('user',__name__) 
@@ -13,11 +14,12 @@ user = Blueprint('user',__name__)
 ##user logon
 @user.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
     error = None
-    if request.method == 'POST':
-        email = request.form['email']
-        password = pinpin.getmd5(request.form['password'])
-        user = User.query.filter_by(email=email).one()
+    if request.method == 'POST' and form.validate_on_submit():
+        email = form.email.data
+        password = pinpin.getmd5(form.password.data)
+        user = User.query.filter_by(email=email).first()
         if user:
             if user.password == password:
                 session['logged_in'] = True
@@ -29,8 +31,8 @@ def login():
             else:
                 error = 'Invalid Password' 
         else:
-            error = 'Invalid Email'       
-    return render_template('login.html', error=error)
+            error = 'Invalid Email'   
+    return render_template('login.html', error=error, form=form)
 
 
 #user register
