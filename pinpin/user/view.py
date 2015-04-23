@@ -17,21 +17,12 @@ def login():
     form = LoginForm()
     error = None
     if request.method == 'POST' and form.validate_on_submit():
-        email = form.email.data
-        password = pinpin.getmd5(form.password.data)
-        user = User.query.filter_by(email=email).first()
-        if user:
-            if user.password == password:
-                session['logged_in'] = True
-                session['logged_name'] = user.nickname
-                session['logged_id'] = user.id
-                flash('You were logged in')
-                print 'log ok'
-                return redirect(url_for('order.show_orders'))
-            else:
-                error = 'Invalid Password' 
-        else:
-            error = 'Invalid Email'   
+        session['logged_in'] = True
+        session['logged_name'] = form.user.nickname
+        session['logged_id'] = form.user.id
+        flash('You were logged in')
+        print 'log ok'
+        return redirect(url_for('order.show_orders')) 
     return render_template('login.html', error=error, form=form)
 
 
