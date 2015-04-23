@@ -5,6 +5,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
 
 from control import pinpin
 from pinpin.order.module import Order
+from app import db
 order = Blueprint('order',__name__) 
 
 
