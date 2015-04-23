@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash, g
+    abort, render_template, flash#, g
 from control import pinpin
+from app import db
+from pinpin.user.module import User
 
 #user = Blueprint('user',__name__, template_folder='templates') 
 user = Blueprint('user',__name__) 
@@ -13,14 +15,14 @@ user = Blueprint('user',__name__)
 def login():
     error = None
     if request.method == 'POST':
-        cur = g.db.execute('select name,password,id  from t_user where email = ? ',
-                    [request.form['email']])
-        entries = [dict(name=row[0], password=row[1],id=row[2]) for row in cur.fetchall()]
-        if len(entries) > 0:
-            if pinpin.getmd5(request.form['password']) == entries[0]['password']:
+        email = request.form['email']
+        password = pinpin.getmd5(request.form['password'])
+        user = User.query.filter_by(email=email).one()
+        if user:
+            if user.password == password:
                 session['logged_in'] = True
-                session['logged_name'] = entries[0]['name']
-                session['logged_id'] = entries[0]['id']
+                session['logged_name'] = user.nickname
+                session['logged_id'] = user.id
                 flash('You were logged in')
                 print 'log ok'
                 return redirect(url_for('order.show_orders'))
@@ -36,22 +38,24 @@ def login():
 def register():
     error = None
     if request.method == 'POST':
-        cur = g.db.execute('select count(*) as num from t_user where email = ? ',
-                    [request.form['email']])
-        entries = [dict(num=row[0]) for row in cur.fetchall()]
-        if entries[0]['num'] > 0:
-            error = 'this email has been registered'
-        else:
-            g.db.execute('insert into t_user(name,email,password,regdt) values(?, ?, ?, ?)',
-                         [request.form['name'], request.form['email'], pinpin.getmd5(request.form['password']), pinpin.getsysdate()])
-            g.db.commit()
-            cur = g.db.execute('select id from t_user where email = ?',[request.form['email']])
-            entries = [dict(id=row[0]) for row in cur.fetchall()]
+        nickname = request.form['nickname']
+        email = request.form['email']
+        password = pinpin.getmd5(request.form['password'])
+        reg_dt = pinpin.getsysdate()
+        user = User.query.filter_by(email=email).one()
+        if user:
+            new_user = User(nickname, email, password, reg_dt)
+            db.session.add(new_user)
+            db.session.commit()
+            new_user = User.query.filter_by(email=email).one()
+            u_id = new_user.id
             flash('New user was successfully registered')
             session['logged_in'] = True
-            session['logged_name'] = request.form['name']
-            session['logged_id'] = entries[0]['id']
+            session['logged_name'] = nickname
+            session['logged_id'] = u_id
             return redirect(url_for('order.show_orders'))
+        else:
+            error = 'this email has been registered'
     return render_template('register.html', error=error)
 
 #user logout
@@ -68,3 +72,11 @@ def logout():
 def openmap():
     # flash('open map')
     return render_template('index.html')
+
+
+
+#do nothing
+@user.route('/test')
+def test():
+    # flash('open map')
+    return "test"
