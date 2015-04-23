@@ -30,3 +30,18 @@ class Order(db.Model):
 
     def __repr__(self):
         return '<Order %r>' % self.id
+
+
+class Line(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    o_id = db.Column(db.Integer,unique=False)
+    id_url = db.Column(db.String(200),unique=False)
+
+
+
+    def __init_(self):
+        pass
+
+
+    def __repr__(self):
+        pass

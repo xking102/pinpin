@@ -54,3 +54,8 @@ def list_order(id):
     order = Order.query.filter_by(id=id).all()
     entries = [dict(id=row.id, title=row.title,user=row.create_user) for row in order]
     return render_template('order.html', entries=entries, mode='view')
+
+
+@order.route('/order/<id>/delete', methods=['GET', 'POST'])
+def delete_order(id):
+   return "pass"
