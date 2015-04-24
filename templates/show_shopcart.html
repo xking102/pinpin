@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <ul class="entries">
+        {% for entry in entries %}
+        <li>{{ entry.title }}</li>
+        <li><h2>{{ entry.title }}</h2>{{ entry.website }},{{ entry.shop }},{{ entry.price }},{{ entry.qty }},{{ entry.weight }},{{ entry.create_dt }}</li>
+        <li>{{ entry.id }}</li>
+        {% else %}
+        <li><em>No any products now!</em></li>
+        {% endfor %}
+    </ul>
+	{% endif %}
+{% endblock %}

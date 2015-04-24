@@ -13,9 +13,23 @@
 from control import pinpin
 from app import db
 from pinpin.user.module import User
-from pinpin.order.module import Order
+from pinpin.order.module import Order, Group
+from pinpin.shopcart.module import Shopcart
 
-#db.create_all()
+# db.drop_all()
+# db.create_all()
+
+
+#cart = Shopcart.query.all()
+
+
+o = User.query.all()
+for o1 in o:
+	db.session.delete(o1)
+	db.session.commit()
+
+
+
 
 # u  = User('king', 'king@pinpin.com','king')
 # db.session.add(u)
@@ -55,17 +69,17 @@ from pinpin.order.module import Order
 
 # users = User.query.all()
 # for u in users:
-# 	print u.id, u.username, u.email
+# 	print u.id, u.nickname, u.email
 
-email = 'kevin1@pinpin.com'
-admin = User.query.filter_by(email=email).first()
-# entries = [dict(id=row.id, nickname=row.nickname) for row in admin]
-# print entries
-print admin
-if admin:
-	print 1
-else:
-	print 2
+# email = 'kevin1@pinpin.com'
+# admin = User.query.filter_by(email=email).first()
+# # entries = [dict(id=row.id, nickname=row.nickname) for row in admin]
+# # print entries
+# print admin
+# if admin:
+# 	print 1
+# else:
+# 	print 2
 
 # db.session.delete(admin)
 # # db.session.commit()

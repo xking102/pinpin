@@ -10,6 +10,7 @@ import app
 
 
 DEBUG = True
+
 SECRET_KEY = 'development key'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
 
@@ -35,10 +36,12 @@ db = SQLAlchemy(app)
 #register blueprint
 from pinpin.user.view import user
 from pinpin.order.view import order
+from pinpin.shopcart.view import shopcart
 from pinpin.admin.view import admin
 app.register_blueprint(user)
 app.register_blueprint(order)
+app.register_blueprint(shopcart)
 app.register_blueprint(admin, url_prefix='/admin')
 
 if __name__ == "__main__":
-	app.run()
+	app.run(port = 80)

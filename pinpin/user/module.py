@@ -11,7 +11,7 @@ class User(db.Model):
     def __init__(self, nickname, email, password):
         self.nickname = nickname
         self.email = email
-        self.password = pinpin.getmd5(password)
+        self.password = password
         self.reg_dt = pinpin.getsysdate()
 
     def __repr__(self):
