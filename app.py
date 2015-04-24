@@ -43,5 +43,16 @@ app.register_blueprint(order)
 app.register_blueprint(shopcart)
 app.register_blueprint(admin, url_prefix='/admin')
 
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'page_not_found', 404
+
+
+@app.errorhandler(401)
+def no_permission(error):
+    return 'Is not authorized', 401
+
+
 if __name__ == "__main__":
 	app.run(port = 80)
