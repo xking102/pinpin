@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
     abort, render_template, flash#, g
-
+from sqlalchemy import or_
 from control import pinpin
 from pinpin.order.module import Group, Order, Line
 from app import db
@@ -14,6 +14,12 @@ group_cancel = 5
 group_begin = 10
 group_working = 20
 group_close = 30
+
+order_draft = 1
+order_cancel = 5
+order_apply = 10
+order_apporved = 20
+order_reject = 40
 
 
 
@@ -140,22 +146,33 @@ def del_group(id):
     return redirect(url_for('.show_user_groups', uid=session.get('logged_id')))
 
 
-#update a order //todo
-@order.route('/order/<id>/edit', methods=['GET','POST'])
-def edit_order(id):
-    error = None
-    order = Order.query.filter_by(id=id).all()
-    entries = [dict(id=row.id, title=row.title,user=row.create_user) for row in order]
+#join a group //todo
+@order.route('/group/<int:id>/join', methods=['GET','POST'])
+def join_group(id):
+    if not session.get('logged_in'):
+        abort(401)
+    group = Group.query.filter_by(id=id,status=group_begin).first()
+    if not group:
+        abort(404)
+    order = Order.query.filter(or_(Order.status==order_apply,Order.status==order_apporved),Order.gid==id).first()
+    if order:
+        abort(404) #You are in this group now ,dont cheat me~ 
     if request.method == 'POST':
-        if session.get('logged_id') == entries[0]['user']:
-            pass#update fun
-            flash('the entry was successfully updated')
-            #order = Order.query.filter_by(id=id).all()
-            #entries = [dict(id=row.id, title=row.title,user=row.create_user) for row in order]
-            return redirect(url_for('.show_orders'))
-        else:
-            return render_template('order.html', entries=entries)
-    return render_template('order.html', entries=entries, mode='edit')
+        pass
+        #add order to group
+        #add line to order
+        flash('You  hava join this group')
+        return redirect(url_for('.show_group',id=id))
+    return redirect(url_for('.show_group',id=id))
+
+
+#new a order //todo
+@order.route('/order/new', methods=['GET','POST'])
+def new_order():
+    pass
+
+
+
 
 
 @order.route('/order/<int:id>')

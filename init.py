@@ -15,6 +15,7 @@ from app import db
 from pinpin.user.module import User
 from pinpin.order.module import Order, Group
 from pinpin.shopcart.module import Shopcart
+from sqlalchemy import or_
 
 # db.drop_all()
 # db.create_all()
@@ -23,12 +24,9 @@ from pinpin.shopcart.module import Shopcart
 #cart = Shopcart.query.all()
 
 
-o = User.query.all()
-for o1 in o:
-	db.session.delete(o1)
-	db.session.commit()
+u =  User.query.filter(or_(User.id==1,User.id==2),or_(User.id==3,User.id==4))
 
-
+print u
 
 
 # u  = User('king', 'king@pinpin.com','king')
