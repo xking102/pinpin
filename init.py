@@ -24,9 +24,20 @@ from sqlalchemy import or_
 #cart = Shopcart.query.all()
 
 
-u =  User.query.filter(or_(User.id==1,User.id==2),or_(User.id==3,User.id==4))
+def aaa(aaa):
+	print len(aaa)
+	for a in aaa:
+		print a.email
 
-print u
+a = []
+# u =  User.query.filter(or_(User.id==1,User.id==2),or_(User.id==3,User.id==4))
+u =  User.query.first()
+a.append(u)
+aaa(a)
+
+
+
+
 
 
 # u  = User('king', 'king@pinpin.com','king')

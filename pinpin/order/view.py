@@ -172,16 +172,28 @@ def new_order():
     pass
 
 
+#add a product into line relation order //todo
+@order.route('/order/<int:id>/add_line/', methods=['POST'])
+def add_product_to_line(id):
+    if not session.get('logged_in'):
+        abort(401)
+    order = Order.query.filter_by(id=id).first()
+    if not order:
+        abort(404)
+    if not order.create_user == session.get('logged_id'):
+        abort(404)
+    if request.method == 'POST':
+        pass
+    pass
 
 
-
-@order.route('/order/<int:id>')
+@order.route('/order/<int:id>', methods=['GET','POST'])
 def list_order(id):
     order = Order.query.filter_by(id=id).all()
     entries = [dict(id=row.id, title=row.title,user=row.create_user) for row in order]
     return render_template('order.html', entries=entries, mode='view')
 
 
-@order.route('/order/<id>/delete', methods=['GET', 'POST'])
+@order.route('/order/<id>/delete', methods=['POST'])
 def delete_order(id):
    return "pass"
