@@ -20,11 +20,25 @@ class Group(db.Model):
     ems_ticket = db.Column(db.String(50), unique=False)
 
 
-    def __init__(self):
-        pass
+    def __init__(self, title, desc,  status, create_user,create_dt, category, type, item, limit_price, limit_weight, kickoff_dt, update_dt,ems_ticket):
+        self.title = title
+        self.desc = desc
+        self.status = status
+        self.create_user = create_user
+        self.create_dt = create_dt
+        self.category = category
+        self.category = category
+        self.type = type
+        self.item = item
+        self.limit_price = limit_price
+        self.limit_weight = limit_weight
+        self.kickoff_dt = kickoff_dt
+        self.update_dt = update_dt
+        self.ems_ticket = ems_ticket
+
 
     def __repr__(self):
-        pass
+        return '<Group %r>' % self.id
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)

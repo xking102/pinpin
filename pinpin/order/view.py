@@ -5,6 +5,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
 from sqlalchemy import or_
 from control import pinpin
 from pinpin.order.module import Group, Order, Line
+from pinpin.order.form import NewGroupForm
 from app import db
 order = Blueprint('order',__name__) 
 
@@ -76,15 +77,15 @@ def show_group(id):
 #new a group //todo
 @order.route('/group/new', methods=['GET','POST'])
 def publish_group():
+    form = NewGroupForm()
     if not session.get('logged_in'):
         abort(401)
     uid = session.get('logged_id')
-    if request.method == 'POST':
-        pass
+    if request.method == 'POST' and form.validate_on_submit():
         flash('New group was successfully posted')
-        group = Group.query.filter_by(create_user=uid).first()
-        return redirect(url_for('.show_group', id=group.id))
-    return render_template('new_group.html', flag='new')
+        #return redirect(url_for('.show_group', id=group.id))
+        return redirect(url_for('.show_groups'))
+    return render_template('new_group.html', form=form)
 
 #draft a group //todo
 @order.route('/group/draft', methods=['GET','POST'])

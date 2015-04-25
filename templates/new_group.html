@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% from "form.html" import vertical_field %}
+{% block body %}
+        <h2>New Group</h2>
+        <form action="{{ url_for('order.publish_group') }}" method="post">
+            {{form.hidden_tag()}}       
+            {{ vertical_field(form.title) }}
+            {{ vertical_field(form.desc) }}
+            {{ vertical_field(form.category) }}
+            {{ vertical_field(form.type) }}
+            {{ vertical_field(form.item) }}
+            {{ vertical_field(form.limit_price) }}
+            {{ vertical_field(form.limit_weight) }}
+            {{ vertical_field(form.kickoff_dt) }}
+            {{ form.submit }}
+        </form>
+{% endblock %}

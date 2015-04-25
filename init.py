@@ -24,19 +24,10 @@ from sqlalchemy import or_
 #cart = Shopcart.query.all()
 
 
-def aaa(aaa):
-	print len(aaa)
-	for a in aaa:
-		print a.email
 
-a = []
-# u =  User.query.filter(or_(User.id==1,User.id==2),or_(User.id==3,User.id==4))
-u =  User.query.first()
-a.append(u)
-aaa(a)
-
-
-
+g = Group.query.all()
+for g1 in g:
+	print g1.title
 
 
 

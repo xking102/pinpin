@@ -21,7 +21,7 @@ def login():
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
         flash('You were logged in')
-        return redirect(url_for('order.show_orders')) 
+        return redirect(url_for('order.show_groups')) 
     return render_template('login.html', error=error, form=form)
 
 
@@ -35,7 +35,7 @@ def register():
         session['logged_in'] = True
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
-        return redirect(url_for('order.show_orders'))
+        return redirect(url_for('order.show_groups'))
     return render_template('register.html', error=error, form=form)
 
 #user logout
@@ -44,7 +44,7 @@ def logout():
     session.pop('logged_in', None)
     session.pop('logged_name', None)
     flash('You were logged out')
-    return redirect(url_for('order.show_orders'))
+    return redirect(url_for('order.show_groups'))
 
 
 

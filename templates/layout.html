@@ -8,8 +8,9 @@
             <a href="{{ url_for('user.login') }}">log in</a>
             <a href="{{ url_for('user.register') }}">Register</a>
         {% else %}
-             <a href="{{ url_for('shopcart.view_shopcart')}}" target="_blank">Welcome back, {{ session.logged_name }}</a>
-             <a href="{{ url_for('user.logout') }}">log out</a>
+             <a href="{{ url_for('shopcart.view_shopcart')}}">『{{ session.logged_name }}』</a>
+             <a href="{{ url_for('order.publish_group') }}">『add a group』</a>
+             <a href="{{ url_for('user.logout') }}">『log out』</a>
         {% endif %}
     </div>
     {% for message in get_flashed_messages() %}
