@@ -5,6 +5,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
 from sqlalchemy import or_
 from control import pinpin
 from pinpin.order.module import Group, Order, Line
+from pinpin.shopcart.module import Shopcart
 from pinpin.order.form import NewGroupForm
 from app import db
 order = Blueprint('order',__name__) 
@@ -66,24 +67,25 @@ def show_user_groups_bypage(uid, pageid):
 #show a group
 @order.route('/group/<int:id>')
 def show_group(id):
+    uid = session.get('logged_id')
     group = Group.query.filter_by(id=id).all()
     entries = [dict(id=row.id, title=row.title, desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    print "123231231231231"
-    print entries
-    print entries[0]['create_user']
-    if session.get('logged_id') is None:
+    if uid is None:
         admin_flag = False
     elif not group:
         admin_flag = False
-    elif session.get('logged_id') == entries[0]['create_user']:
+    elif uid == entries[0]['create_user']:
         admin_flag = True
     else:
         admin_flag = False
     order = Order.query.filter_by(gid=id).all()
     entries2 = [dict(id=row.id, title=row.title, desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, price=row.price, weight=row.weight) for row in order]
-    return render_template('show_group.html', entries=entries, entries2=entries2, admin_flag=admin_flag)
+    shopcart = Shopcart.query.filter_by(user_id=uid).all()
+    entries3 = [dict(id=row.id, sku=row.sku, website=row.website, shop=row.shop, title=row.title, 
+                price=row.price, qty=row.qty, weight=row.weight, user_id=row.user_id, create_dt=row.create_dt) for row in shopcart]
+    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag,gid=id)
 
 
 
