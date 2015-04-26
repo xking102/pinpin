@@ -1,20 +1,40 @@
-<!doctype html>
-<title>PinPin</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-    <h1>PinPin</h1>
-    <div class=metanav>
-        {% if not session.logged_in %}
-            <a href="{{ url_for('user.login') }}">log in</a>
-            <a href="{{ url_for('user.register') }}">Register</a>
-        {% else %}
-             <a href="{{ url_for('shopcart.view_shopcart')}}">『{{ session.logged_name }}』</a>
-             <a href="{{ url_for('order.publish_group') }}">『add a group』</a>
-             <a href="{{ url_for('user.logout') }}">『log out』</a>
-        {% endif %}
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as util %}
+
+{% block title %}PinPin{% endblock %}
+
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">PinPin</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% if not session.logged_in %}
+                    <li><a href="{{ url_for('user.login') }}">Log in</a></li>
+                    <li><a href="{{ url_for('user.register') }}">Register</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('shopcart.view_shopcart')}}">{{ session.logged_name }}</a></li>
+                    <li><a href="{{ url_for('order.show_user_groups')}}">Group</a></li>
+                    <li><a href="{{ url_for('shopcart.view_shopcart')}}">ShopCart</a></li>
+                    <li><a href="{{ url_for('order.publish_group') }}">Add a group</a></li>
+                    <li><a href="{{ url_for('user.logout') }}">Log out</a></li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-    {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-    {% endfor %}
-    {% block body %}{% endblock%}
 </div>
+{% endblock %}
+
+
+
+{% block content %}
+{% endblock %}

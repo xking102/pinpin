@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+ <div class="container">
+ 	
+    <div class="row">
+    	{% for entry in entries %}
+    	  <div class="col-md-12">
+    	  		<h2>title</h2>
+                <p>{{ entry.title }}</p>
+                <h2>desc</h2>
+                <p>{{ entry.desc }}</p>
+                <h2>category</h2>
+                <p>{{ entry.category }}</p>
+                <h2>type</h2>
+                <p>{{ entry.type }}</p>
+                <h2>item</h2>
+                <p>{{ entry.item }}</p>
+    	  </div>
+    	{% else %}
+    		<p>No any Group now!</p>
+    	{% endfor %}
+
+	</div>
+</div>
+{% endblock %}

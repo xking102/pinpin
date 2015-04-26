@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
-{% from "form.html" import vertical_field %}
-{% block body %}
-        <h2>Register</h2>
-<!--         {% if error %}<p class="error"><strong>Error:</strong>{{ error }}</p>{% endif %} -->
-        <form action="{{ url_for('user.register') }}" method="post">
-            {{form.hidden_tag()}}       
-            {{ vertical_field(form.email) }}
-            {{ vertical_field(form.nickname) }}
-            {{ vertical_field(form.password) }}
-            {{ form.submit }}
-        </form>
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+<div class="container">
+  <h1>Register</h1>
+
+
+  {{ wtf.quick_form(form, button_map={'submit_button': 'primary'}) }}
+
+
+</div>
 {% endblock %}

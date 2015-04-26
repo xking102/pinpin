@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+{{util.flashed_messages()}}
+ <div class="container">
+
+  {% if entries %} 
+     <table class="table table-striped">
+         
+            <tr>
+                <th style="display:none;">id</td>
+                <th>title</td>
+                <th>desc</td>
+                <th>category</td>
+                <th>type</td>
+                <th>item</td>
+                <th>limit_price</td>
+                <th>limit_weight</td>
+                <th>kickoff_dt</th>
+                <!-- <th>Delete</th> -->
+            </tr>
+        {% for entry in entries %}
+            <tr>
+                <td style="display:none;">{{ entry.id }}</td>
+                <td><a href="/group/{{ entry.id }}">{{ entry.title }}</a></td>
+                <td>{{ entry.desc }}</td>
+                <td>{{ entry.category }}</td>
+                <td>{{ entry.type }}</td>
+                <td>{{ entry.item }}</td>
+                <td>{{ entry.limit_price }}</td>
+                <td>{{ entry.limit_weight }}</td>
+                <td>{{ entry.kickoff_dt }}</td>
+                <!-- <td><a href="/shopcart/{{ entry.id }}/del">delete</a></td> -->
+            </tr>
+        {% endfor %}
+    </table>
+  {% else %}
+   <p>You have not Group!</p>
+  {% endif %}
+
+
+</div>
+{% endblock %}

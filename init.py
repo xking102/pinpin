@@ -21,13 +21,25 @@ from sqlalchemy import or_
 # db.create_all()
 
 
-#cart = Shopcart.query.all()
+cart = Shopcart.query.all()
+for c in cart:
+	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt
 
 
 
-g = Group.query.all()
-for g1 in g:
-	print g1.title
+
+# g = User.query.all()
+# for g1 in g:
+# # 	print g1.id,g1.nickname
+
+# #s2 = Shopcart( 'sku1234', 'amazon', 'amazonshop', 'ps4', '100', '20', '1', 1, pinpin.getsysdate())
+s1= Shopcart( 'skui55523', 'amazon', 'nike', 'watch', '100', '20', '1', 1, pinpin.getsysdate())
+s2 = Shopcart( 'skui203910283', 'amazon', 'apple', 'xbox', '100', '20', '1', 1, pinpin.getsysdate())
+db.session.add(s1)
+db.session.add(s2)
+# #db.session.add(s3)
+db.session.commit()
+
 
 
 

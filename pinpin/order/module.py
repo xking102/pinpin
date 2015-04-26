@@ -56,24 +56,23 @@ class Order(db.Model):
     receiver = db.Column(db.String(100), unique=False)
     receiver_tel = db.Column(db.String(100), unique=False)
     receiver_address = db.Column(db.String(500), unique=False)
-    is_pay = db.Column(db.Integer, unique=True)
+    is_pay = db.Column(db.Integer, unique=False)
     expect_dt = db.Column(db.String(20), unique=False)
     update_dt = db.Column(db.String(20), unique=False)
 
-    def __init__(self, gid, title, status, desc, create_user, category, type, item, limit_price, limit_weight, kickoff_dt):
+    def __init__(self, gid, title, status, desc, create_user, create_dt, category, type, item, price, weight):
         self.gid = gid
         self.title = title
         self.status = status
         self.desc = desc
         self.create_user = create_user
-        self.create_dt = pinpin.getsysdate()
+        self.create_dt = create_dt
         self.category = category
         self.type = type
         self.item = item
-        self.limit_price = limit_price
-        self.limit_weight = limit_weight
-        self.kickoff_dt = kickoff_dt
-        self.update_dt = pinpin.getsysdate()
+        self.price = price
+        self.price = price
+
 
     def __repr__(self):
         return '<Order %r>' % self.id
@@ -95,9 +94,20 @@ class Line(db.Model):
     update_dt = db.Column(db.String(20), unique=False)
 
 
-    def __init_(self):
-        pass
+    def __init_(self,oid, id_url, status, create_user, create_dt, category, type, item, price, weight, qty, update_dt):
+        self.oid = oid
+        self.id_url = id_url
+        self.status = status
+        self.create_user = create_user
+        self.create_dt = create_dt
+        self.category = category
+        self.type = type
+        self.item = item
+        self.price = price
+        self.weight = weight
+        self.qty = qty
+        self.update_dt = update_dt
 
 
     def __repr__(self):
-        pass
+        return '<Line %r>' % self.id

@@ -1,14 +1,43 @@
 {% extends "layout.html" %}
-{% block body %}
-  {% if session.logged_in %}
-    <ul class="entries">
+{% block content %}
+{{util.flashed_messages()}}
+ <div class="container">
+
+  {% if entries %} 
+     <table class="table table-striped">
+         
+            <tr>
+                <th style="display:none;">id</td>
+                <th style="display:none;">sku</td>
+                <th style="text-align:center">website</td>
+                <th style="text-align:center">shop</td>
+                <th style="text-align:center">title</td>
+                <th style="text-align:center">price</td>
+                <th style="text-align:center">weight</td>
+                <th style="text-align:center">qty</td>
+                <th style="text-align:center">Operator</th>
+            </tr>
         {% for entry in entries %}
-        <li>{{ entry.title }}</li>
-        <li><h2>{{ entry.title }}</h2>{{ entry.website }},{{ entry.shop }},{{ entry.price }},{{ entry.qty }},{{ entry.weight }},{{ entry.create_dt }}</li>
-        <li>{{ entry.id }}</li>
-        {% else %}
-        <li><em>No any products now!</em></li>
+            <tr>
+                <td style="display:none;">{{ entry.id }}</td>
+                <td style="display:none;">{{ entry.sku }}</td>
+                <td style="text-align:center">{{ entry.website }}</td>
+                <td style="text-align:center">{{ entry.shop }}</td>
+                <td style="text-align:center">{{ entry.title }}</td>
+                <td style="text-align:right">{{ entry.price }}</td>
+                <td style="text-align:right">{{ entry.weight }}</td>
+                <td style="text-align:right">{{ entry.qty }}</td>
+                <td style="text-align:center">
+                    <a class="btn btn-warning btn-xs" href="/shopcart/{{ entry.id }}/del" role="button"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                </td>
+
+            </tr>
         {% endfor %}
-    </ul>
-	{% endif %}
+    </table>
+  {% else %}
+   <p>No anything in shopcart!</p>
+  {% endif %}
+
+
+</div>
 {% endblock %}
