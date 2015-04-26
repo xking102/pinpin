@@ -4,7 +4,7 @@
 
 from flask import Flask#, g
 from flask.ext.sqlalchemy import SQLAlchemy
-#from db import connect_db
+from flask_bootstrap import Bootstrap
 
 import app
 
@@ -16,6 +16,7 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+Bootstrap(app)
 db = SQLAlchemy(app)
 
 
@@ -40,7 +41,7 @@ from pinpin.shopcart.view import shopcart
 from pinpin.admin.view import admin
 app.register_blueprint(user)
 app.register_blueprint(order)
-app.register_blueprint(shopcart)
+app.register_blueprint(shopcart, url_prefix='/shopcart')
 app.register_blueprint(admin, url_prefix='/admin')
 
 
