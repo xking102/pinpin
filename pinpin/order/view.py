@@ -69,7 +69,21 @@ def show_group(id):
     group = Group.query.filter_by(id=id).all()
     entries = [dict(id=row.id, title=row.title, desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    return render_template('show_group.html', entries=entries)
+    print "123231231231231"
+    print entries
+    print entries[0]['create_user']
+    if session.get('logged_id') is None:
+        admin_flag = False
+    elif not group:
+        admin_flag = False
+    elif session.get('logged_id') == entries[0]['create_user']:
+        admin_flag = True
+    else:
+        admin_flag = False
+    order = Order.query.filter_by(gid=id).all()
+    entries2 = [dict(id=row.id, title=row.title, desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
+                type=row.type, item=row.item, price=row.price, weight=row.weight) for row in order]
+    return render_template('show_group.html', entries=entries, entries2=entries2, admin_flag=admin_flag)
 
 
 

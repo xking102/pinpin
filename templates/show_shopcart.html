@@ -7,6 +7,18 @@
      <table class="table table-striped">
          
             <tr>
+                <th style="text-align:center">
+                    <input type="checkbox">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Delete <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Delete the Selected</a></li>
+                        <li><a href="#">Delete All</a></li>
+                      </ul>
+                    </div>                    
+                </td>
                 <th style="display:none;">id</td>
                 <th style="display:none;">sku</td>
                 <th style="text-align:center">website</td>
@@ -19,6 +31,9 @@
             </tr>
         {% for entry in entries %}
             <tr>
+                <td style="text-align:center">
+                    <input type="checkbox">
+                </td>
                 <td style="display:none;">{{ entry.id }}</td>
                 <td style="display:none;">{{ entry.sku }}</td>
                 <td style="text-align:center">{{ entry.website }}</td>
@@ -34,6 +49,7 @@
             </tr>
         {% endfor %}
     </table>
+    
   {% else %}
    <p>No anything in shopcart!</p>
   {% endif %}
