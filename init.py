@@ -13,7 +13,7 @@
 from control import pinpin
 from app import db
 from pinpin.user.module import User
-from pinpin.order.module import Order, Group
+from pinpin.order.module import Order, Group, Line
 from pinpin.shopcart.module import Shopcart
 from sqlalchemy import or_
 
@@ -21,27 +21,32 @@ from sqlalchemy import or_
 # db.create_all()
 
 
-cart = Shopcart.query.all()
-for c in cart:
-	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt
+# cart = Shopcart.query.all()
+# for c in cart:
+# 	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt
 
 
 
+# l = Line(100, 100, 100, 100)
+# db.session.add(l)
+# db.session.commit()
 
-# g = User.query.all()
-# for g1 in g:
-# # 	print g1.id,g1.nickname
+l = Line.query.filter_by(oid=1).count()
+print l
 
-# #s2 = Shopcart( 'sku1234', 'amazon', 'amazonshop', 'ps4', '100', '20', '1', 1, pinpin.getsysdate())
-s1= Shopcart( 'skui55523', 'amazon', 'nike', 'watch', '100', '20', '1', 1, pinpin.getsysdate())
-s2 = Shopcart( 'skui203910283', 'amazon', 'apple', 'xbox', '100', '20', '1', 1, pinpin.getsysdate())
-db.session.add(s1)
-db.session.add(s2)
-# #db.session.add(s3)
-db.session.commit()
+# # g = User.query.all()
+# # for g1 in g:
+# # # 	print g1.id,g1.nickname
 
-
-
+# # #s2 = Shopcart( 'sku1234', 'amazon', 'amazonshop', 'ps4', '100', '20', '1', 1, pinpin.getsysdate())
+# s1= Shopcart( 'skui55523', 'amazon', 'nike', 'watch', '100', '20', '1', 1, pinpin.getsysdate())
+# s2 = Shopcart( 'skui203910283', 'amazon', 'apple', 'xbox', '100', '20', '1', 1, pinpin.getsysdate())
+# db.session.add(s1)
+# db.session.add(s2)
+# # #db.session.add(s3)
+# db.session.commit()
+# id = 1
+# print db.session.execute('select * from "line"').fetchall()
 
 # u  = User('king', 'king@pinpin.com','king')
 # db.session.add(u)

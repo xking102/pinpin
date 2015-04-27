@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from flask import Flask#, g
+from flask import Flask, render_template#, g
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 
@@ -47,12 +47,12 @@ app.register_blueprint(admin, url_prefix='/admin')
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return 'page_not_found', 404
+    return render_template('error.html', error=error)
 
 
 @app.errorhandler(401)
 def no_permission(error):
-    return 'Is not authorized', 401
+    return render_template('error.html', error=error)
 
 
 if __name__ == "__main__":

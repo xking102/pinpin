@@ -10,18 +10,19 @@ from pinpin.order.form import NewGroupForm
 from app import db
 order = Blueprint('order',__name__) 
 
+GROUP_DRAFT = 1
+GROUP_CANCEL = 0
+GROUP_PUBLISH = 10
+GROUP_PROCESSING = 15
+GROUP_CONFIRM = 20
+GROUP_CLOSE = 30
 
-group_draft = 1
-group_cancel = 5
-group_begin = 10
-group_working = 20
-group_close = 30
-
-order_draft = 1
-order_cancel = 5
-order_apply = 10
-order_apporved = 20
-order_reject = 40
+ORDER_DRAFT = 1
+ORDER_CANCEL = 0
+ORDER_APPLY = 10
+ORDER_APPORVED = 20
+ORDER_REJECT = 15
+ORDER_CONFIRM = 30
 
 
 
@@ -30,7 +31,7 @@ order_reject = 40
 @order.route('/index')
 @order.route('/page/1')
 def show_groups():
-    group = Group.query.filter_by(status=group_begin).all()
+    group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     return render_template('show_groups.html', entries=entries, page=1)
@@ -38,7 +39,7 @@ def show_groups():
 #show groups by page
 @order.route('/page/<int:pageid>')
 def show_groups_bypage(pageid):
-    group = Group.query.filter_by(status=group_begin).all()
+    group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     return render_template('show_groups.html', entries=entries, page=pageid)
@@ -79,13 +80,33 @@ def show_group(id):
         admin_flag = True
     else:
         admin_flag = False
-    order = Order.query.filter_by(gid=id).all()
-    entries2 = [dict(id=row.id, title=row.title, desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
-                type=row.type, item=row.item, price=row.price, weight=row.weight) for row in order]
+    line = db.session.execute('select b.* from "order" a,line b where a.id = b.oid and a.gid = :gid', {'gid':id}).fetchall()
+    entries2 = [dict(id=row.id, price=row.price, weight=row.weight, qty=row.qty) for row in line]
     shopcart = Shopcart.query.filter_by(user_id=uid).all()
     entries3 = [dict(id=row.id, sku=row.sku, website=row.website, shop=row.shop, title=row.title, 
                 price=row.price, qty=row.qty, weight=row.weight, user_id=row.user_id, create_dt=row.create_dt) for row in shopcart]
-    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag,gid=id)
+    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag)
+
+#remove a line into user's shopcart
+@order.route('/line/<int:id>/remove')
+def remove_line(id):
+    uid = session.get('logged_id')
+    line = Line.query.filter_by(id=id).first()
+    if not line:
+        abort(404)
+    else:
+        gid = line.gid
+        oid = line.oid
+        shopcart = Shopcart('', line.category, line.type, '', line.price, line.weight, line.qty, uid, pinpin.getsysdate())
+        db.session.add(shopcart)
+        db.session.delete(line)
+        db.session.commit()
+        line = Line.query.filter_by(oid=oid).count()
+        if line == 0:
+            o = Order.query.filter_by(id=oid).first()
+            db.session.delete(o)
+            db.session.commit()
+        return redirect(url_for('.show_group', id=gid))
 
 
 

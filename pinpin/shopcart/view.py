@@ -7,7 +7,9 @@ from sqlalchemy import or_
 from app import db
 from pinpin.shopcart.module import Shopcart
 from pinpin.order.module import Group, Order, Line
-
+from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
+	GROUP_PROCESSING,GROUP_CONFIRM,GROUP_CLOSE,ORDER_DRAFT,ORDER_CANCEL, \
+	ORDER_APPLY,ORDER_APPORVED,ORDER_REJECT,ORDER_CONFIRM
 
 shopcart = Blueprint('shopcart',__name__) 
 
@@ -38,28 +40,37 @@ def delete(id):
 #join a group --create an order relation this group//todo
 @shopcart.route('/<int:sid>/join/<int:gid>')
 def join_group(sid,gid):
-    if not session.get('logged_in'):
-        abort(401)
-    group = Group.query.filter_by(id=id,status=group_begin).first()
-    if not group:
-        abort(404)
-    order = Order.query.filter(or_(Order.status==order_apply,Order.status==order_apporved),Order.gid==id).first()
-    if order:
-        abort(404) #You are in this group now ,dont cheat me~ 
-    
-    shopcart = Shopcart.query.filter_by(id=sid).first()
-    oid = None
-    if not shopcart:
-    	abort(404)
-	order = Order.query.filter(Order.status==order_draft,Order.gid==id).first()
+	if not session.get('logged_in'):
+		abort(401)
+	group = Group.query.filter_by(id=gid).first()
+	if not group:
+		abort(404)
+	order = Order.query.filter(or_(Order.status==ORDER_APPLY,Order.status==ORDER_APPORVED,Order.status==ORDER_CONFIRM),Order.gid==gid).first()
+	if order:
+		abort(404) #You are in this group now ,dont cheat me~ 
+	shopcart = Shopcart.query.filter_by(id=sid).first()
+	if shopcart.user_id != session.get('logged_id'):
+		abort(401)
+	oid = None
+	if not shopcart:
+		abort(404)
+	order = Order.query.filter(Order.status==order_draft,Order.gid==gid).first()
 	if not order:
-		o = Order(id, group.title, order_draft, None, session.get('logged_in'), pinpin.getsysdate(), group.category, group.type, group.item, 0, 0)
+		o = Order(gid, group.title, order_draft, None, session.get('logged_id'), pinpin.getsysdate(), group.category, group.type, group.item, 0, 0, group.create_user)
 		db.session.add(o)
 		db.session.commit()
-		new_o = Order.query.filter_by(create_user=session.get('logged_in')).first()
+		new_o = Order.query.filter_by(create_user=session.get('logged_id')).first()
 		oid = new_o.id
+		l = Line(oid, shopcart.website, 1, session.get('logged_id'), pinpin.getsysdate(), shopcart.website, shopcart.shop, '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate(), group.create_user, gid)
+		db.session.add(l)
+		db.session.delete(shopcart)
+		db.session.commit()
+		flash('You  hava add this good into group')
 	else:
 		oid = order.id
-	l = Line(oid, shopcart.website, 1, session.get('logged_in'), pinpin.getsysdate(), '', '', '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate())
-	flash('You  hava add this good into group')
+		l = Line(oid, shopcart.website, 1, session.get('logged_id'), pinpin.getsysdate(), shopcart.website, shopcart.shop, '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate(), group.create_user, gid)
+		db.session.add(l)
+		db.session.delete(shopcart)
+		db.session.commit()
+		flash('You  hava add this good into group')
 	return redirect(url_for('order.show_group',id=gid))

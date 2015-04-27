@@ -16,15 +16,11 @@
                 <h2>item</h2>
                 <p>{{ entry.item }}</p>
     	  </div>
-    	{% else %}
-    		<p>No any Group now!</p>
-    	{% endfor %}
 
-	</div>
 
-<div>
+          <div>
 
-    <h2>Your order in this shop</h2>
+    <h2>Your line in this group</h2>
      <table class="table table-striped">
          
             <tr>
@@ -41,30 +37,22 @@
                     </div>                    
                 </td>
                 <th style="display:none;">id</td>
-                <th style="display:none;">sku</td>
-                <th style="text-align:center">website</td>
-                <th style="text-align:center">shop</td>
-                <th style="text-align:center">title</td>
                 <th style="text-align:center">price</td>
                 <th style="text-align:center">weight</td>
                 <th style="text-align:center">qty</td>
                 <th style="text-align:center">Operator</th>
             </tr>
-           {% for entry3  in entries3 %}
+           {% for entry2  in entries2 %}
            <tr>
                 <td style="text-align:center">
                     <input type="checkbox">
                 </td>
-                <td style="display:none;">{{ entry3.id }}</td>
-                <td style="display:none;">{{ entry3.sku }}</td>
-                <td style="text-align:center">{{ entry3.website }}</td>
-                <td style="text-align:center">{{ entry3.shop }}</td>
-                <td style="text-align:center">{{ entry3.title }}</td>
-                <td style="text-align:right">{{ entry3.price }}</td>
-                <td style="text-align:right">{{ entry3.weight }}</td>
-                <td style="text-align:right">{{ entry3.qty }}</td>
+                <td style="display:none;">{{ entry2.id }}</td>
+                <td style="text-align:right">{{ entry2.price }}</td>
+                <td style="text-align:right">{{ entry2.weight }}</td>
+                <td style="text-align:right">{{ entry2.qty }}</td>
                 <td style="text-align:center">
-                    <a class="btn btn-primary btn-xs" href="/shopcart/{{ entry3.id }}/join/{{ gid }}" role="button"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                    <a class="btn btn-primary btn-xs" href="/line/{{ entry2.id }}/remove" role="button"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
                 </td>
 
             </tr>
@@ -117,7 +105,7 @@
                 <td style="text-align:right">{{ entry3.weight }}</td>
                 <td style="text-align:right">{{ entry3.qty }}</td>
                 <td style="text-align:center">
-                    <a class="btn btn-primary btn-xs" href="/shopcart/{{ entry3.id }}/join/{{ gid }}" role="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                    <a class="btn btn-primary btn-xs" href="/shopcart/{{ entry3.id }}/join/{{ entry.id }}" role="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                 </td>
 
             </tr>
@@ -129,5 +117,12 @@
 
 </div>
   {% endif %}
-</div>
+    	{% else %}
+    		<p>No any Group now!</p>
+    	{% endfor %}
+
+	</div>
+
+
+
 {% endblock %}

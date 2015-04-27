@@ -59,8 +59,9 @@ class Order(db.Model):
     is_pay = db.Column(db.Integer, unique=False)
     expect_dt = db.Column(db.String(20), unique=False)
     update_dt = db.Column(db.String(20), unique=False)
+    g_user = db.Column(db.String(120), unique=False)
 
-    def __init__(self, gid, title, status, desc, create_user, create_dt, category, type, item, price, weight):
+    def __init__(self, gid, title, status, desc, create_user, create_dt, category, type, item, price, weight, g_user):
         self.gid = gid
         self.title = title
         self.status = status
@@ -72,6 +73,7 @@ class Order(db.Model):
         self.item = item
         self.price = price
         self.price = price
+        self.g_user = g_user
 
 
     def __repr__(self):
@@ -92,9 +94,11 @@ class Line(db.Model):
     weight = db.Column(db.Float, unique=False)
     qty = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.String(20), unique=False)
+    g_user = db.Column(db.String(120), unique=False)
+    gid = db.Column(db.Integer, unique=True)
 
 
-    def __init_(self,oid, id_url, status, create_user, create_dt, category, type, item, price, weight, qty, update_dt):
+    def __init__(self,oid, id_url, status, create_user, create_dt, category, type, item, price, weight, qty, update_dt, g_user, gid):
         self.oid = oid
         self.id_url = id_url
         self.status = status
@@ -107,6 +111,8 @@ class Line(db.Model):
         self.weight = weight
         self.qty = qty
         self.update_dt = update_dt
+        self.g_user = g_user
+        self.gid = gid
 
 
     def __repr__(self):
