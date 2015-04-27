@@ -6,6 +6,10 @@ from control import pinpin
 from app import db
 from pinpin.user.module import User
 from pinpin.user.form import LoginForm, RegisterForm
+from pinpin.order.module import Group, Order, Line
+from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
+    GROUP_PROCESSING,GROUP_CONFIRM,GROUP_CLOSE,ORDER_DRAFT,ORDER_CANCEL, \
+    ORDER_APPLY,ORDER_APPORVED,ORDER_REJECT,ORDER_CONFIRM
 
 #user = Blueprint('user',__name__, template_folder='templates') 
 user = Blueprint('user',__name__) 
@@ -48,11 +52,10 @@ def logout():
 
 
 
-
-
-
-#do nothing
-@user.route('/test')
-def test():
-    # flash('open map')
-    return "test"
+#user notification
+@user.route('/notification')
+def notification():
+    uid = session.get('logged_id')
+    order = Order.query.filter_by(g_user=uid, status=ORDER_APPLY).all()
+    entries = [dict(id=row.id, title=row.title,desc=row.desc) for row in order]
+    return render_template('notification.html', entries=entries)

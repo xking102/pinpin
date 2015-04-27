@@ -54,21 +54,21 @@ def join_group(sid,gid):
 	oid = None
 	if not shopcart:
 		abort(404)
-	order = Order.query.filter(Order.status==order_draft,Order.gid==gid).first()
+	order = Order.query.filter(Order.status==ORDER_DRAFT,Order.gid==gid).first()
 	if not order:
-		o = Order(gid, group.title, order_draft, None, session.get('logged_id'), pinpin.getsysdate(), group.category, group.type, group.item, 0, 0, group.create_user)
+		o = Order(gid, group.title, ORDER_DRAFT, None, session.get('logged_id'), pinpin.getsysdate(), group.category, group.type, group.item, 0, 0, group.create_user)
 		db.session.add(o)
 		db.session.commit()
 		new_o = Order.query.filter_by(create_user=session.get('logged_id')).first()
 		oid = new_o.id
-		l = Line(oid, shopcart.website, 1, session.get('logged_id'), pinpin.getsysdate(), shopcart.website, shopcart.shop, '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate(), group.create_user, gid)
+		l = Line(oid, shopcart.website, ORDER_DRAFT, session.get('logged_id'), pinpin.getsysdate(), shopcart.website, shopcart.shop, '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate(), group.create_user, gid)
 		db.session.add(l)
 		db.session.delete(shopcart)
 		db.session.commit()
 		flash('You  hava add this good into group')
 	else:
 		oid = order.id
-		l = Line(oid, shopcart.website, 1, session.get('logged_id'), pinpin.getsysdate(), shopcart.website, shopcart.shop, '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate(), group.create_user, gid)
+		l = Line(oid, shopcart.website, ORDER_DRAFT, session.get('logged_id'), pinpin.getsysdate(), shopcart.website, shopcart.shop, '', shopcart.price, shopcart.weight, shopcart.qty, pinpin.getsysdate(), group.create_user, gid)
 		db.session.add(l)
 		db.session.delete(shopcart)
 		db.session.commit()

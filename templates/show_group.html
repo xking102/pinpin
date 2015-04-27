@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+{{util.flashed_messages()}}
  <div class="container">
  	
     <div class="row">
@@ -33,6 +34,8 @@
                       <ul class="dropdown-menu" role="menu">
                         <li><a href="#">Remove the Selected</a></li>
                         <li><a href="#">Remove All</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/group/order/{{ entry.id }}/apply">Apply this order</a></li>
                       </ul>
                     </div>                    
                 </td>

@@ -69,7 +69,7 @@ def show_user_groups_bypage(uid, pageid):
 @order.route('/group/<int:id>')
 def show_group(id):
     uid = session.get('logged_id')
-    group = Group.query.filter_by(id=id).all()
+    group = Group.query.filter_by(id=id,status=GROUP_PUBLISH).all()
     entries = [dict(id=row.id, title=row.title, desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     if uid is None:
@@ -80,12 +80,34 @@ def show_group(id):
         admin_flag = True
     else:
         admin_flag = False
-    line = db.session.execute('select b.* from "order" a,line b where a.id = b.oid and a.gid = :gid', {'gid':id}).fetchall()
+    line = db.session.execute('select b.* from "order" a,line b where a.id = b.oid and b.status = :status and a.gid = :gid', {'status':ORDER_DRAFT,'gid':id}).fetchall()
     entries2 = [dict(id=row.id, price=row.price, weight=row.weight, qty=row.qty) for row in line]
     shopcart = Shopcart.query.filter_by(user_id=uid).all()
     entries3 = [dict(id=row.id, sku=row.sku, website=row.website, shop=row.shop, title=row.title, 
                 price=row.price, qty=row.qty, weight=row.weight, user_id=row.user_id, create_dt=row.create_dt) for row in shopcart]
     return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag)
+
+
+#apply the order
+@order.route('/group/order/<int:gid>/apply')
+def apply_order(gid):
+    uid = session.get('logged_id')
+    if not uid:
+        flash('You need log in')
+        return redirect(url_for('order.show_group',id=gid))
+    if not Group.query.filter_by(id=gid).all():
+        abort(404)
+    order = Order.query.filter_by(gid=gid).first()    
+    if not order:
+        flash('You hava not an order in this group')
+        return redirect(url_for('order.show_group',id=gid))
+    order.status = ORDER_APPLY
+    lines = Line.query.filter_by(gid=gid).all()
+    for line in lines:
+        line.status = ORDER_APPLY
+    db.session.commit()
+    return redirect(url_for('.show_group',id=gid))
+
 
 #remove a line into user's shopcart
 @order.route('/line/<int:id>/remove')
@@ -107,6 +129,38 @@ def remove_line(id):
             db.session.delete(o)
             db.session.commit()
         return redirect(url_for('.show_group', id=gid))
+
+
+
+@order.route('/order/<int:id>/approve')
+def order_approve(id):
+    uid = session.get('logged_id')
+    if not uid:
+        abort(401)
+    order = Order.query.filter_by(id=id,status=ORDER_APPLY).first()
+    if not order:
+        abort(404)
+    lines = Line.query.filter_by(oid=id,status=ORDER_APPLY).all()
+    order.status = ORDER_APPORVED
+    for line in lines:
+        line.status = ORDER_APPORVED
+    db.session.commit()
+    return redirect(url_for('user.notification'))
+
+@order.route('/order/<int:id>/reject')
+def order_reject(id):
+    uid = session.get('logged_id')
+    if not uid:
+        abort(401)
+    order = Order.query.filter_by(id=id,status=ORDER_APPLY).first()
+    if not order:
+        abort(404)
+    lines = Line.query.filter_by(oid=id,status=ORDER_APPLY).all()
+    order.status = ORDER_REJECT
+    for line in lines:
+        line.status = ORDER_REJECT
+    db.session.commit()
+    return redirect(url_for('user.notification'))
 
 
 
