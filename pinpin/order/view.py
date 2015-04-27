@@ -34,7 +34,7 @@ def show_groups():
     group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    return render_template('show_groups.html', entries=entries, page=1)
+    return render_template('show_groups.html', entries=entries, page=1, flag="active")
 
 #show groups by page
 @order.route('/page/<int:pageid>')
