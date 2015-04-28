@@ -18,12 +18,12 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                    <li class={{ flag }}><a class="btn btn-deault btn-lg" href="/" role="button"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+                    <li class={{ navbar['home'] }}><a class="btn btn-deault btn-lg" href="/" role="button"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                 {% if not session.logged_in %}
-                    <li><a  href="{{ url_for('user.login') }}">Log in</a></li>
-                    <li><a href="{{ url_for('user.register') }}">Register</a></li>                    
+                    <li class={{ navbar['login'] }}><a href="{{ url_for('user.login') }}">Log in</a></li>
+                    <li class={{ navbar['register'] }}><a href="{{ url_for('user.register') }}">Register</a></li>                    
                 {% else %}
-                    <li class="dropdown">
+                    <li class="dropdown {{ navbar['user'] }}">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ session.logged_name }}<span class="caret"></span></a>
                       <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ url_for('order.show_user_groups')}}">Group</a></li>
@@ -35,7 +35,7 @@
                       </ul>
                     </li>
 
-                    <li class="dropdown">
+                    <li class="dropdown {{ navbar['add'] }}">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Add<span class="caret"></span></a>
                       <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ url_for('order.publish_group') }}">Group</a></li>
@@ -43,7 +43,7 @@
                       </ul>
                     </li>
 
-                    <li><a href="{{ url_for('user.notification') }}">Notification <span class="badge">{{ page }}</span></a></li>
+                    <li class={{ navbar['notification'] }}><a href="{{ url_for('user.notification') }}">Notification <span class="badge">{{ page }}</span></a></li>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search">

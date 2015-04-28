@@ -21,7 +21,8 @@ def view_shopcart():
 	shopcart = Shopcart.query.filter_by(user_id=uid).all()
 	entries = [dict(id=row.id, sku=row.sku, website=row.website, shop=row.shop, title=row.title, 
 				price=row.price, qty=row.qty, weight=row.weight, user_id=row.user_id, create_dt=row.create_dt) for row in shopcart]
-	return render_template('show_shopcart.html', entries=entries)
+	navbar = pinpin.CurrentActive(user='active')
+	return render_template('show_shopcart.html', entries=entries, navbar=navbar)
 
 @shopcart.route('/<int:id>/del')
 def delete(id):

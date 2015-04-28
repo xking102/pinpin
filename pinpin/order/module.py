@@ -2,6 +2,18 @@ from app import db
 from control import pinpin
 
 
+class Tags(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    gid = db.Column(db.Integer, unique=False)
+    tag = db.Column(db.String(20), unique=False)
+
+    def __init_(self, gid, tag):
+        self.gid = gid
+        self.tag = tag
+
+    def __repr__(self):
+        return '<Tags %r>' % self.tag
+
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)

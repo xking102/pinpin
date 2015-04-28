@@ -12,3 +12,15 @@ def getmd5(str):
 
 def getsysdate():
 	return time.strftime('%Y-%m-%d %H%M%S',time.localtime(time.time()))
+
+
+def CurrentActive(**current):
+	navbar = {}
+	navbar['home'] = ''
+	navbar['user'] = ''
+	navbar['add'] = ''
+	navbar['notification'] = ''
+	navbar['login'] = ''
+	navbar['register'] = ''
+	navbar[current.keys()[0]] = current.values()[0]
+	return navbar

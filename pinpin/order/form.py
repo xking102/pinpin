@@ -4,9 +4,9 @@
 from flask import session
 from flask_wtf import Form
 from flask_wtf.html5 import EmailField
-from wtforms import StringField, PasswordField, SubmitField, FloatField, DateField, validators
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, FloatField, DateField, validators, FormField
 from wtforms.validators import DataRequired, Email
-from pinpin.order.module import Group, Order, Line
+from pinpin.order.module import Group, Order, Line, Tags
 from control import pinpin
 from app import db
 
@@ -25,6 +25,17 @@ ORDER_APPORVED = 20
 ORDER_REJECT = 15
 ORDER_CONFIRM = 30
 
+
+class TagsForm(Form):
+	tag1 = BooleanField('tag1', description='tag1')
+	tag2 = BooleanField('tag2', description='tag2')
+	tag3 = BooleanField('tag3', description='tag3')
+	tag4 = BooleanField('tag4', description='tag4')
+	tag5 = BooleanField('tag5', description='tag5')
+	tag6 = BooleanField('tag6', description='tag6')
+	tag7 = BooleanField('tag7', description='tag7')
+	tag8 = BooleanField('tag8', description='tag8')
+
 class NewGroupForm(Form):
 	title = StringField('title', validators=[DataRequired()])
 	desc = StringField('desc', validators=[DataRequired()])
@@ -34,6 +45,7 @@ class NewGroupForm(Form):
 	limit_price = FloatField('limit_price', validators=[DataRequired()])
 	limit_weight = FloatField('limit_weight', validators=[DataRequired()])
 	kickoff_dt = DateField('kickoff_dt', validators=[DataRequired()])
+	tags = FormField(TagsForm)
 	submit = SubmitField('submit')
 
 	def validate_title(self,filed):
@@ -52,4 +64,6 @@ class NewGroupForm(Form):
 		self.group = group
 		return group
 		return ValueError('Something wrong')
+
+
 

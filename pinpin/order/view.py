@@ -4,7 +4,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
     abort, render_template, flash#, g
 from sqlalchemy import or_
 from control import pinpin
-from pinpin.order.module import Group, Order, Line
+from pinpin.order.module import Group, Order, Line, Tags
 from pinpin.shopcart.module import Shopcart
 from pinpin.order.form import NewGroupForm
 from app import db
@@ -34,7 +34,8 @@ def show_groups():
     group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    return render_template('show_groups.html', entries=entries, page=1, flag="active")
+    navbar = pinpin.CurrentActive(home='active')
+    return render_template('show_groups.html', entries=entries, page=1, navbar=navbar)
 
 #show groups by page
 @order.route('/page/<int:pageid>')
@@ -42,7 +43,8 @@ def show_groups_bypage(pageid):
     group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    return render_template('show_groups.html', entries=entries, page=pageid)
+    navbar = pinpin.CurrentActive(home='active')
+    return render_template('show_groups.html', entries=entries, page=pageid, navbar=navbar)
 
 #show  user's groups
 @order.route('/group')
@@ -52,7 +54,8 @@ def show_user_groups():
     group = Group.query.filter_by(create_user=uid).all()
     entries = [dict(id=row.id, title=row.title,desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
                     type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    return render_template('show_user_groups.html', entries=entries)
+    navbar = pinpin.CurrentActive(user='active')
+    return render_template('show_user_groups.html', entries=entries, navbar=navbar)
 
 #show  user's groups by page
 @order.route('/user/<int:uid>/group/page/<int:pageid>')
@@ -62,7 +65,8 @@ def show_user_groups_bypage(uid, pageid):
     group = Group.query.filter_by(create_user=uid).all()
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
-    return render_template('show_user_groups.html', entries=entries, page=pageid)
+    navbar = pinpin.CurrentActive(user='active')
+    return render_template('show_user_groups.html', entries=entries, page=pageid, navbar=navbar)
 
 
 #show a group
@@ -85,7 +89,8 @@ def show_group(id):
     shopcart = Shopcart.query.filter_by(user_id=uid).all()
     entries3 = [dict(id=row.id, sku=row.sku, website=row.website, shop=row.shop, title=row.title, 
                 price=row.price, qty=row.qty, weight=row.weight, user_id=row.user_id, create_dt=row.create_dt) for row in shopcart]
-    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag)
+    navbar = pinpin.CurrentActive(home='active')
+    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag, navbar=navbar)
 
 
 #apply the order
@@ -175,7 +180,8 @@ def publish_group():
         flash('New group was successfully posted')
         #return redirect(url_for('.show_group', id=group.id))
         return redirect(url_for('.show_groups'))
-    return render_template('new_group.html', form=form)
+    navbar = pinpin.CurrentActive(add='active')
+    return render_template('new_group.html', form=form, navbar=navbar)
 
 #draft a group //todo
 @order.route('/group/draft', methods=['GET','POST'])
@@ -188,7 +194,8 @@ def draft_group():
         flash('New group was successfully drafted')
         group = Group.query.filter_by(create_user=uid).first()
         return redirect(url_for('.show_group', id=group.id))
-    return render_template('new_group.html', flag='draft')
+    navbar = pinpin.CurrentActive(add='active')
+    return render_template('new_group.html', flag='draft', navbar=navbar)
 
 #edit a group //todo
 @order.route('/group/<int:id>/edit', methods=['GET','POST'])
@@ -206,7 +213,8 @@ def edit_group(id):
         pass
         flash('this group was successfully edited')
         return redirect(url_for('.show_group', id=id))
-    return render_template('edit_group.html', entries=entries)
+    navbar = pinpin.CurrentActive(add='active')
+    return render_template('edit_group.html', entries=entries, navbar=navbar)
 
 #cancel a group //todo
 @order.route('/group/<int:id>/cancel', methods=['POST'])

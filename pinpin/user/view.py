@@ -26,7 +26,8 @@ def login():
         session['logged_id'] = form.user.id
         flash('You were logged in')
         return redirect(url_for('order.show_groups')) 
-    return render_template('login.html', error=error, form=form)
+    navbar = pinpin.CurrentActive(login='active')
+    return render_template('login.html', error=error, form=form, navbar=navbar)
 
 
 #user register
@@ -40,7 +41,8 @@ def register():
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
         return redirect(url_for('order.show_groups'))
-    return render_template('register.html', error=error, form=form)
+    navbar = pinpin.CurrentActive(register='active')
+    return render_template('register.html', error=error, form=form, navbar=navbar)
 
 #user logout
 @user.route('/logout')
@@ -58,4 +60,5 @@ def notification():
     uid = session.get('logged_id')
     order = Order.query.filter_by(g_user=uid, status=ORDER_APPLY).all()
     entries = [dict(id=row.id, title=row.title,desc=row.desc) for row in order]
-    return render_template('notification.html', entries=entries)
+    navbar = pinpin.CurrentActive(notification='active')
+    return render_template('notification.html', entries=entries, navbar=navbar)
