@@ -39,11 +39,13 @@ from pinpin.user.view import user
 from pinpin.order.view import order
 from pinpin.shopcart.view import shopcart
 from pinpin.admin.view import admin
+from pinpin.search.view import search
+
 app.register_blueprint(user)
 app.register_blueprint(order)
 app.register_blueprint(shopcart, url_prefix='/shopcart')
 app.register_blueprint(admin, url_prefix='/admin')
-
+app.register_blueprint(search, url_prefix='/search')
 
 @app.errorhandler(404)
 def page_not_found(error):

@@ -7,7 +7,7 @@ from sqlalchemy import or_
 from app import db
 from pinpin.shopcart.module import Shopcart
 from pinpin.order.module import Group, Order, Line
-from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
+from pinpin.order.view import Order, GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
 	GROUP_PROCESSING,GROUP_CONFIRM,GROUP_CLOSE,ORDER_DRAFT,ORDER_CANCEL, \
 	ORDER_APPLY,ORDER_APPORVED,ORDER_REJECT,ORDER_CONFIRM
 

@@ -35,7 +35,7 @@ def show_groups():
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     navbar = pinpin.CurrentActive(home='active')
-    return render_template('show_groups.html', entries=entries, page=1, navbar=navbar)
+    return render_template('show_groups.html', entries=entries, page=1)
 
 #show groups by page
 @order.route('/page/<int:pageid>')
@@ -44,7 +44,7 @@ def show_groups_bypage(pageid):
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     navbar = pinpin.CurrentActive(home='active')
-    return render_template('show_groups.html', entries=entries, page=pageid, navbar=navbar)
+    return render_template('show_groups.html', entries=entries, page=pageid)
 
 #show  user's groups
 @order.route('/group')
@@ -55,7 +55,7 @@ def show_user_groups():
     entries = [dict(id=row.id, title=row.title,desc=row.desc, status=row.status, create_user=row.create_user, category=row.category, 
                     type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     navbar = pinpin.CurrentActive(user='active')
-    return render_template('show_user_groups.html', entries=entries, navbar=navbar)
+    return render_template('show_user_groups.html', entries=entries)
 
 #show  user's groups by page
 @order.route('/user/<int:uid>/group/page/<int:pageid>')
@@ -66,7 +66,7 @@ def show_user_groups_bypage(uid, pageid):
     entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     navbar = pinpin.CurrentActive(user='active')
-    return render_template('show_user_groups.html', entries=entries, page=pageid, navbar=navbar)
+    return render_template('show_user_groups.html', entries=entries, page=pageid)
 
 
 #show a group
@@ -90,7 +90,7 @@ def show_group(id):
     entries3 = [dict(id=row.id, sku=row.sku, website=row.website, shop=row.shop, title=row.title, 
                 price=row.price, qty=row.qty, weight=row.weight, user_id=row.user_id, create_dt=row.create_dt) for row in shopcart]
     navbar = pinpin.CurrentActive(home='active')
-    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag, navbar=navbar)
+    return render_template('show_group.html', entries=entries, entries2=entries2, entries3=entries3, admin_flag=admin_flag)
 
 
 #apply the order
@@ -181,7 +181,7 @@ def publish_group():
         #return redirect(url_for('.show_group', id=group.id))
         return redirect(url_for('.show_groups'))
     navbar = pinpin.CurrentActive(add='active')
-    return render_template('new_group.html', form=form, navbar=navbar)
+    return render_template('new_group.html', form=form)
 
 #draft a group //todo
 @order.route('/group/draft', methods=['GET','POST'])
@@ -195,7 +195,7 @@ def draft_group():
         group = Group.query.filter_by(create_user=uid).first()
         return redirect(url_for('.show_group', id=group.id))
     navbar = pinpin.CurrentActive(add='active')
-    return render_template('new_group.html', flag='draft', navbar=navbar)
+    return render_template('new_group.html', flag='draft')
 
 #edit a group //todo
 @order.route('/group/<int:id>/edit', methods=['GET','POST'])
@@ -214,7 +214,7 @@ def edit_group(id):
         flash('this group was successfully edited')
         return redirect(url_for('.show_group', id=id))
     navbar = pinpin.CurrentActive(add='active')
-    return render_template('edit_group.html', entries=entries, navbar=navbar)
+    return render_template('edit_group.html', entries=entries)
 
 #cancel a group //todo
 @order.route('/group/<int:id>/cancel', methods=['POST'])
