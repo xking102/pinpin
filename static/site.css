@@ -26,3 +26,102 @@ content:"|";padding:0 10px
 .form-control{
 border-radius:0
 }
+.round {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  font-size: 6px;
+  vertical-align: top;
+  border-radius: 3px;
+  background-color: #ff1f77;
+  text-decoration: none;
+}
+.entity.thumbnail {
+  border: 0;
+  padding: 0;
+  margin-bottom: 300px;
+}
+.entity.thumbnail .title {
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  line-height: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  height: 60px;
+}
+.entity.thumbnail .user {
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  line-height: 20px;
+  font-size: 10px;
+}
+.entity.thumbnail .number {
+  padding: 0;
+  margin-top: -15px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.entity.thumbnail .note {
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  line-height: 20px;
+  font-size: 10px;
+  height: 130px;
+}
+.entity.thumbnail .size {
+  padding: 0;
+  margin-top: 5px;
+  font-size: 10px;
+  text-align: left;
+}
+.entity.thumbnail .progress-bar {
+  padding: 0;
+  margin-top: -10px;
+}
+.img-box {
+  text-align: center;
+}
+.col-md-12>a >img {
+  margin-left: initial;
+}
+.pull-left {
+  padding: 0;
+  padding-left: 3px;
+  line-height: 14px;
+  font-size: 14px;
+  height: 14px;
+  color: #9d9e9f;
+  margin-top:10px;
+  margin-bottom:20px;
+}
+.pull-right {
+  padding: 0;
+  padding-left: 3px;
+  line-height: 14px;
+  font-size: 14px;
+  height: 14px;
+  color: #9d9e9f;
+  margin-top:10px;
+  margin-bottom:20px;
+}
+.panel {
+  border-radius: 0;
+  -webkit-box-shadow: inherit;
+  box-shadow: inherit;
+  border: 1px solid #fff;
+}
+.like-user-list>div {
+  padding: 0;
+  margin: 0;
+  width: 35px;
+  height: 35px;
+}
+.like-user-list>div>.thumbnail >a> img {
+  border-radius: 12px;
+  width: 25px;
+  height: 25px;
+}

@@ -8,7 +8,9 @@
 #     with open("./tmp/table.sql", mode='r') as f:
 #         db.cursor().executescript(f.read())
 #     db.commit()
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 from control import pinpin
 from app import db
@@ -31,8 +33,23 @@ from sqlalchemy import or_
 # db.session.add(l)
 # db.session.commit()
 
-l = Line.query.filter_by(oid=1).count()
-print l
+# s = db.session.execute('select case when length(title) > 40 then substr(title,1,40)||"..." else title end as subtitle,a.*, '\
+#                                 ' case when length(desc) > 150 then substr(desc,1,150)||"..." else desc end as subdesc from "group" a where id=1').first()
+# s1 = s.subtitle
+# s2 = s.subdesc
+# print s
+# print s1.decode('utf8')
+# print s2.decode('utf8')
+
+# g = Group.query..first()
+# print g.title
+
+groups = Group.query.all()
+for g in groups:
+	g.desc = u'Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。'
+	db.session.commit()
+# g = Group('title', 'desc',  1, 1,'create_dt', 'category', 'type', 'item', 1, 2, 'kickoff_dt', 'update_dt','ems_ticket')
+# print g.id
 
 # # g = User.query.all()
 # # for g1 in g:

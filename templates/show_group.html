@@ -2,197 +2,150 @@
 {% block content %}
 {{util.flashed_messages()}}
 
-
-
-
  <div class="container">
     <div class="row">
-    	{% for entry in entries %}
-    	  <div class="col-md-12 text-center">
-                <h2>{{ entry.title }}</h2>
-                
-		</div>
-		<div class="col-md-4">
-		<img  src="/static/imgs/2.png" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-4">
-                <h2>{{ entry.desc }}</h2>
-                <h2>{{ entry.category }}</h2>
-                <h2>{{ entry.type }}</h2>
-                <h2>{{ entry.item }}</h2>
-    	  </div>
-		  
-		<div class="col-md-4">
-				<h2>$123</h2>
-                <p>limited:200</p>
-                <h2>121g</h2>
-                <p>limited:200</p>
-                <h2>3</h2>
-				<p>backers</p>
-		</div>
-		<div class="col-md-4 col-md-offset-8"><button type="button" class="btn btn-success btn-lg" data-loading-text="加入中..." autocomplete="off" onclick="join()" id="btn_join">加入</button></div>
-		</div>
-		
-		
-		
-<script>		
-    function join() {
-      var btn = $("#btn_join");
-      btn.button('loading');
-      setTimeout(function () { btn.button('reset'); },2000);
-    }
-</script>
-		<div class="row">
-			<div class="row">
-				<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-				  看看还有谁
-				</a>
-			</div>
-			<div class="row">&nbsp;</div>
-			<div class="row">
-			<div class="collapse col-md-8" id="collapseExample">
-			  <div class="well">
-				<div class="row">
-					<div class="col-xs-3">
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-						<div class="col-xs-1">
-							<img  src="/static/imgs/4.jpg" class="img-circle" width="25" height="25">
-						</div>
-					</div
-				</div>
-			  </div>
-			</div>		
-		
-		</div>
-		</div>
-		
-		
-		
-		
-		 <div class="row">
-        <div class="col-md-1">
-		<a href="#myModal" data-toggle="modal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image"></a>
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		<div class="col-md-1">
-		<img  src="/static/imgs/3.jpg" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		 </div>
-		
+      {% for entry in entries %}
+        <div class="col-md-12">
+                <h2>{{ entry.title }}</h2>      
+        <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                    <span class="sr-only">60% Complete</span>
+                  </div>
+        </div>                
+      </div>
+    <div class="col-md-8">
+    <img  src="/static/imgs/2.png" class="img-responsive img-rounded" alt="Responsive image">
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-defualt">
+          <div class="panel-body">
+            <button type="button" class="btn btn-success btn-lg" data-loading-text="加入中..." autocomplete="off" onclick="join()" id="btn_join">马上加入</button>
+            <script>    
+                function join() {
+                  var btn = $("#btn_join");
+                  btn.button('loading');
+                  setTimeout(function () { btn.button('reset'); },2000);
+                }
+            </script>
+          </div>
+          <div class="panel-body" style="padding-bottom: 0;border-top: 1px solid #f1f1f1;">
+            <div class="col-md-12">
+              <h3>￥123</h3>
+              <p class="note">限价:￥{{ entry.limit_price }}</p>
+            </div>
+            <div class="col-md-12">
+              <h3>121</h3>
+              <p>限重:{{ entry.limit_weight}}</p>
+            </div>
+          </div>
+          <div class="panel-body" style="padding-bottom: 0;border-top: 1px solid #f1f1f1;">
+            拼团结束一定要谢谢团长哦<a href="#" target="_blank"><img  src="/static/imgs/3.jpg" class="img-responsive img-circle" width="25" height="25"></a>
+          </div>
+          <div class="panel-body" style="padding-bottom: 0;border-top: 1px solid #f1f1f1;">
+            有&nbsp;15&nbsp;人在团里
+          </div>
+          <div class="panel-body like-user-list">
+            <div class="col-md-3">
+                <a href="#" target="_blank"><img  src="/static/imgs/3.jpg" class="img-responsive img-circle" width="25" height="25"></a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+    
+<div class="row">
+  <div class="col-md-12">
+    {{ entry.desc }}
+  </div>
+</div>  
+
+
+
 
 <div class="row">
-    <h2>Your line in this group</h2>
+<div class="col-md-12">
+<h2>本团推荐商品：</h2>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+  <div class="col-md-1">
+    <a href="#" data-toggle="modal" data-target="#myModal"><img  src="/static/imgs/3.jpg" class="img-responsive img-rounded"></a>
+  </div>
+</div>
+</div>
+
+
+
+    
+  <div class="row">
+     <div class="col-md-6">
+    <h2>我的拼团商品：</h2>
      <table class="table table-striped">
          
             <tr>
-                <th style="text-align:center">
+                <!-- <th style="text-align:center">
                     <input type="checkbox">
                     <div class="btn-group">
                       <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        Remove <span class="caret"></span>
+                        批量操作 <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Remove the Selected</a></li>
-                        <li><a href="#">Remove All</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/group/order/{{ entry.id }}/apply">Apply this order</a></li>
+                        <li><a href="#">移除选中的</a></li>
+                        <li><a href="#">移除全部</a></li>
                       </ul>
                     </div>                    
-                </td>
-                <th style="display:none;">id</td>
-                <th style="text-align:center">price</td>
-                <th style="text-align:center">weight</td>
-                <th style="text-align:center">qty</td>
-                <th style="text-align:center">Operator</th>
+                </th> -->
+                <th style="display:none;">id</th>
+                <th style="text-align:right">单价</th>
+                <th style="text-align:right">重量</th>
+                <th style="text-align:center">数量</th>
+                <th style="text-align:right">商品总价</th>
+                <th style="text-align:center">操作</th>
             </tr>
            {% for entry2  in entries2 %}
            <tr>
-                <td style="text-align:center">
+                <!-- <td style="text-align:center">
                     <input type="checkbox">
-                </td>
+                </td> -->
                 <td style="display:none;">{{ entry2.id }}</td>
                 <td style="text-align:right">{{ entry2.price }}</td>
                 <td style="text-align:right">{{ entry2.weight }}</td>
-                <td style="text-align:right">{{ entry2.qty }}</td>
+                <td style="text-align:center">
+                  <a class="btn btn-primary btn-xs" href="/line/{{ entry2.id }}/remove" role="button"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                  {{ entry2.qty }}
+                  <a class="btn btn-primary btn-xs" href="/line/{{ entry2.id }}/remove" role="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                </td>
+                <td style="text-align:right">{{ entry2.price*entry2.qty }}</td>
                 <td style="text-align:center">
                     <a class="btn btn-primary btn-xs" href="/line/{{ entry2.id }}/remove" role="button"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
                 </td>
@@ -201,43 +154,45 @@
         {% endfor %}
         </table>
 
-</div>
+  </div>
+
+    
 
 
-<div class="col-md-12">
-{% if entries3 %} 
-<h2>Your Shopping Cart</h2>
-    <div class="col-md-12">
-         <table class="table table-striped">
-         
+
+
+
+    <div class="col-md-6">
+
+      <h2>我的购物车：</h2>
+            <table class="table table-striped">
             <tr>
-                <th style="text-align:center">
+                <!-- <th style="text-align:center">
                     <input type="checkbox">
                     <div class="btn-group">
                       <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        Add <span class="caret"></span>
+                        批量操作 <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Add the Selected</a></li>
-                        <li><a href="#">Add All</a></li>
+                        <li><a href="#">加入选中的</a></li>
+                        <li><a href="#">全部加入</a></li>
                       </ul>
                     </div>                    
-                </td>
-                <th style="display:none;">id</td>
-                <th style="display:none;">sku</td>
-                <th style="text-align:center">website</td>
-                <th style="text-align:center">shop</td>
-                <th style="text-align:center">title</td>
-                <th style="text-align:center">price</td>
-                <th style="text-align:center">weight</td>
-                <th style="text-align:center">qty</td>
-                <th style="text-align:center">Operator</th>
+                </th> -->
+                <th style="display:none;">id</th>
+                <th style="display:none;">sku</th>
+                <th style="text-align:center">购买网站</th>
+                <th style="text-align:center">所属店铺</th>
+                <th style="text-align:center">商品名称</th>
+                <th style="text-align:right">单价</th>
+                <th style="text-align:right">重量</th>
+                <th style="text-align:center">操作</th>
             </tr>
         {% for entry3  in entries3 %}
            <tr>
-                <td style="text-align:center">
+                <!-- <td style="text-align:center">
                     <input type="checkbox">
-                </td>
+                </td> -->
                 <td style="display:none;">{{ entry3.id }}</td>
                 <td style="display:none;">{{ entry3.sku }}</td>
                 <td style="text-align:center">{{ entry3.website }}</td>
@@ -245,23 +200,23 @@
                 <td style="text-align:center">{{ entry3.title }}</td>
                 <td style="text-align:right">{{ entry3.price }}</td>
                 <td style="text-align:right">{{ entry3.weight }}</td>
-                <td style="text-align:right">{{ entry3.qty }}</td>
                 <td style="text-align:center">
                     <a class="btn btn-primary btn-xs" href="/shopcart/{{ entry3.id }}/join/{{ entry.id }}" role="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                 </td>
 
             </tr>
         {% endfor %}
-    </div>
-{% else %}
-   <p>No anything in shopcart!</p>
-
-
+      </table>
+     </div>
 </div>
-  {% endif %}
-    	{% else %}
-    		<p>No any Group now!</p>
-    	{% endfor %}
+</div>
+  
+</div>
+
+
+
+{% endfor %}
+
 
 
 
@@ -309,9 +264,11 @@
     </div>
   </div>
 </div>
-		
-		
-	</div>
+
+	
+
+
+
 
 
 

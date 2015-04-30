@@ -31,8 +31,10 @@ ORDER_CONFIRM = 30
 @order.route('/index')
 @order.route('/page/1')
 def show_groups():
-    group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
-    entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
+    group = db.session.execute('select case when length(title) > 40 then substr(title,1,40)||"..." else title end as subtitle,a.*, '\
+                                ' case when length(desc) > 150 then substr(desc,1,150)||"..." else desc end as subdesc from "group" a where status = :status'
+                                , {'status':GROUP_PUBLISH}).fetchall()
+    entries = [dict(id=row.id, title=row.subtitle, desc=row.subdesc, status=row.status, create_user=row.create_user, category=row.category, 
                 type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     navbar = pinpin.CurrentActive(home='active')
     return render_template('show_groups.html', entries=entries, page=1)
