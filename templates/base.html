@@ -1,67 +1,58 @@
 ﻿{% block doc -%}
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html{% block html_attribs %}{% endblock html_attribs %}>
 {%- block html %}
-  <head>
+<head>
     {%- block head %}
-    <title>{% block title %}{% endblock title %}</title>
+<title>{% block title %}{% endblock title %}</title>
+{%- block metas %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{%- endblock metas %}
+{%- block styles %}
+<!-- Bootstrap -->
+<link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen">
 
-    {%- block metas %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {%- endblock metas %}
-
-    {%- block styles %}
-    <!-- Bootstrap -->
-    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet" media="screen">
-    
-    {%- endblock styles %}
-    {%- endblock head %}
-  </head>
-  <body{% block body_attribs %}{% endblock body_attribs %}>
-    {% block body -%}
-    {% block navbar %}
-    {%- endblock navbar %}
-    {% block content -%}
+{%- endblock styles %}
+{%- endblock head %}
+</head>
+<body{% block body_attribs %}{% endblock body_attribs %}>
+{% block body -%}
+{% block navbar %}
+{%- endblock navbar %}
+{% block content -%}
     {%- endblock content %}
-
     {% block scripts %}
-     <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
-    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
-    
-    {%- endblock scripts %}
-    {%- endblock body %}
-	
-	 <footer class="footer">
-        <div class="container">
-            <div class="row footer-top">
-                <div class="col-sm-9">
-                    <ul class="list-inline text-center">
-                        <li><a target="_blank" href="#">备案号</a></li>
-                        <li>沪ICP XXXXXCXXX</li>
-                        <li>|</li>
-                        <li><a href="/about/">关于</a></li>
-                        <li><a title="拼拼官方微博" href="http://weibo.com/xingkaixin">新浪微博</a></li>
-                        <li><a title="Keep in touch :)" href="mailto:hi@pinpin.com" _hover-ignore="1">电子邮件</a></li>
-                        <li><a href="/jobs/">工作</a></li>
-                        <li><a href="/agreement/" target="_blank">协议</a></li>
-                        <li><a href="/links/">友情链接</a></li>
-                    </ul>
-
-
-                </div>
-                <div class="col-sm-3">
-                    <ul class="list-inline text-center">
-                        <li><i class="glyphicon glyphicon-copyright-mark"></i>&nbsp; 2015 拼拼</li>
-                    </ul>
+        <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+        <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
+        
+        {%- endblock scripts %}
+        {%- endblock body %}
+        
+        <footer class="footer">
+            <div class="container">
+                <div class="row footer-top">
+                    <div class="col-sm-9">
+                        <ul class="list-inline text-center">
+                            <li><a target="_blank" href="#">备案号</a></li>
+                            <li>沪ICP XXXXXCXXX</li>
+                            <li>|</li>
+                            <li><a href="/about/">关于</a></li>
+                            <li><a title="拼拼官方微博" href="http://weibo.com/xingkaixin">新浪微博</a></li>
+                            <li><a title="Keep in touch :)" href="mailto:hi@pinpin.com" _hover-ignore="1">电子邮件</a></li>
+                            <li><a href="/jobs/">工作</a></li>
+                            <li><a href="/agreement/" target="_blank">协议</a></li>
+                            <li><a href="/links/">友情链接</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="list-inline text-center">
+                            <li><i class="glyphicon glyphicon-copyright-mark"></i>&nbsp; 2015 拼拼</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-
-
-
-        </div>
-    </footer>
-  </body>
-{%- endblock html %}
+        </footer>
+    </body>
+    {%- endblock html %}
 </html>
 {% endblock doc -%}

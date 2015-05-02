@@ -1,94 +1,81 @@
 ﻿{% extends "base.html" %}
 {% import "bootstrap/utils.html" as util %}
-
 {% block html_attribs %} lang="zh-CN"{% endblock %}
-
 {% block title %}PinPin{% endblock %}
-
 {%- block metas %}
 <meta  charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {%- endblock %}
-
 {%- block styles %}
-    <!-- Bootstrap -->
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-	<link href="/static/site.css" rel="stylesheet">
-    
+<!-- Bootstrap -->
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/site.css" rel="stylesheet">
+
 {%- endblock styles %}
-
 {% block navbar %}
-
-<header class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="border-bottom: 0;opacity: 0.9;">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle=".collapse" data-target=".navbar-collapse">
+    <header class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="border-bottom: 0;opacity: 0.9;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle=".collapse" data-target=".navbar-collapse">
                 <span class="sr-only">导航条</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">
-                <img alt="拼拼" src="/static/imgs/logo.png" width="50" height="26" >
-            </a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                 
-                {% if not session.logged_in %}
-                    <li><a href="{{ url_for('user.login') }}"></a>登陆</li>
-                    <li><a href="{{ url_for('user.register') }}">注册</a></li>                    
-                {% else %}
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle glyphicon glyphicon-user btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{ url_for('order.show_user_groups')}}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;我的拼拼</a></li>
-                        <li><a href="{{ url_for('shopcart.view_shopcart')}}"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;我喜爱的商品</a></li>
-                        <li class="divider"></li>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img alt="拼拼" src="/static/imgs/logo.png" width="50" height="26" >
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    
+                    {% if not session.logged_in %}
+                        <li><a href="{{ url_for('user.login') }}">登陆</a></li>
+                        <li><a href="{{ url_for('user.register') }}">注册</a></li>
+                    {% else %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle glyphicon glyphicon-user btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url_for('order.show_user_groups')}}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;我的拼拼</a></li>
+                                <li><a href="{{ url_for('shopcart.view_shopcart')}}"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;我喜爱的商品</a></li>
+                                <li class="divider"></li>
+                                
+                                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;设置</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{{ url_for('user.logout') }}"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;退出</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="btn btn-deault btn-lg" href="{{ url_for('user.notification') }}" role="button">&nbsp;<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><span class="round"></span></a></li>
                         
-                        <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;设置</a></li>
-                        <li class="divider"></li>
-                        <li><a href="{{ url_for('user.logout') }}"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;退出</a></li>
-                      </ul>
-                    </li>       
-
-                     <li><a class="btn btn-deault btn-lg" href="{{ url_for('user.notification') }}" role="button">&nbsp;<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><span class="round"></span></a></li>
-    
-			</ul>
-
-
-			<ul class="nav navbar-nav navbar-right">
-                    
-					<li class="dropdown">
-                      <a href="#" class="dropdown-toggle glyphicon glyphicon-plus btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="{{ url_for('order.publish_group') }}">group</a></li>
-                        <li><a href="#">shopcart</a></li>
-                      </ul>
-                    </li>
-					
-                    <form class="navbar-form navbar-left" role="search" method="get" action="/search">
-                        <div class="form-group">
-                            <input name="s_url" type="text" class="form-control" placeholder="搜你想要的">
-                        </div>
-                    </form>
-                    
-                                        
-                {% endif %}
-            </ul>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle glyphicon glyphicon-plus btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url_for('order.publish_group') }}">group</a></li>
+                                <li><a href="#">shopcart</a></li>
+                            </ul>
+                        </li>
+                        
+                        <form class="navbar-form navbar-left" role="search" method="get" action="/search">
+                            <div class="form-group">
+                                <input name="s_url" type="text" class="form-control" placeholder="搜你想要的">
+                            </div>
+                        </form>
+                        
+                        
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 {% endblock %}
-
-
-
 {% block content %}
- 
+    
 {% endblock %}
-
 {% block scripts %}
-     <script src="/static/jquery.js"></script>
+    <script src="/static/jquery.js"></script>
     <script src="/static/js/bootstrap.js"></script>
     
     {%- endblock scripts %}

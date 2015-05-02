@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash#, g
+    abort, render_template, flash, jsonify
 from control import pinpin
 from app import db
 from pinpin.user.module import User
@@ -13,6 +13,23 @@ from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
 
 #user = Blueprint('user',__name__, template_folder='templates') 
 user = Blueprint('user',__name__) 
+
+
+@user.route('/usermain')
+def user_main():
+    return render_template('userindex.html')
+
+@user.route('/userlist')
+def list_user():
+    searchValue = request.args.get('searchValue')
+    print '12312312',searchValue
+    if searchValue:
+        user = User.query.filter_by(id=searchValue).all()
+    else:
+        user = User.query.all()
+    user = [u.to_json() for u in user]
+    return jsonify(status="success", messages=user)
+
 
 
 ##user logon

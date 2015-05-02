@@ -29,6 +29,10 @@ from sqlalchemy import or_
 
 
 
+user = User.query.all()
+user = [u.to_json() for u in user]
+print user
+
 # l = Line(100, 100, 100, 100)
 # db.session.add(l)
 # db.session.commit()
@@ -44,10 +48,10 @@ from sqlalchemy import or_
 # g = Group.query..first()
 # print g.title
 
-groups = Group.query.all()
-for g in groups:
-	g.desc = u'Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。'
-	db.session.commit()
+# groups = Group.query.all()
+# for g in groups:
+# 	g.desc = u'Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。Porselli，意大利手工芭蕾鞋世家，以用料精良和做工精湛闻名。色彩选择更是多样，已经不是少女的我果然还是想要黑色。'
+# 	db.session.commit()
 # g = Group('title', 'desc',  1, 1,'create_dt', 'category', 'type', 'item', 1, 2, 'kickoff_dt', 'update_dt','ems_ticket')
 # print g.id
 

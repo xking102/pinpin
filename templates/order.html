@@ -1,29 +1,29 @@
 ﻿{% extends "layout.html" %}
 {% block body %}
-{% if mode == "view" %}
-    <ul class="entries">
-        {% for entry in entries %}
-        {% if session.logged_id|int == entry.user|int %}
-        <div><a href="/order/{{ entry.id }}/edit">Update</a></div>
-        {% endif %}
-        <li><h2>{{ entry.id }}</h2>{{ entry.title }}</li>
-        {% else %}
-        <li><em>the order is not  exist</em></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <ul class="entries">
-        {% for entry in entries %}
-        {% if session.logged_id|int == entry.user|int %}
-        <div><a href="/order/{{ entry.id }}/edit">Edit</a></div>
-        {% endif %}
-        <li>
-            <dt>Title:</dt>
-            <dd><input type="text" name="name" value={{ entry.title}}></dd>
-        </li>
-        {% else %}
-        <li><em>the order is not  exist</em></li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    {% if mode == "view" %}
+        <ul class="entries">
+            {% for entry in entries %}
+                {% if session.logged_id|int == entry.user|int %}
+                    <div><a href="/order/{{ entry.id }}/edit">Update</a></div>
+                {% endif %}
+                <li><h2>{{ entry.id }}</h2>{{ entry.title }}</li>
+            {% else %}
+                <li><em>the order is not  exist</em></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <ul class="entries">
+            {% for entry in entries %}
+                {% if session.logged_id|int == entry.user|int %}
+                    <div><a href="/order/{{ entry.id }}/edit">Edit</a></div>
+                {% endif %}
+                <li>
+                    <dt>Title:</dt>
+                    <dd><input type="text" name="name" value={{ entry.title}}></dd>
+                </li>
+            {% else %}
+                <li><em>the order is not  exist</em></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

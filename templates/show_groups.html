@@ -1,11 +1,10 @@
 ﻿{% extends "layout.html" %}
 {% block content %}
- <div class="container">
-
-    <div class="row">
-        <div class="col-md-12">
-            {% for entry in entries %}
-          <div class="col-md-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% for entry in entries %}
+                    <div class="col-md-4">
                         <div class="thumbnail entity">
                             
                             <div class="img-box">
@@ -17,77 +16,54 @@
                             <div class="col-md-12">
                                 <p class="title">{{ entry.title }}</p>
                             </div>
-
-
                             
                             <div class="col-md-12">
                                 <a href='#'><img src="/static/imgs/4.jpg" class="img-circle"   width="25" height="25"></a>
                             </div>
-
                             
                             
                             <div class="col-md-12">
                                 <p class="note">{{ entry.desc }}</p>
                             </div>
-
-
-
-
-
                             <div class="col-md-6">
                                 <p class="number">{{ entry.limit_price }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="number">{{ entry.limit_weight }}</p>
                             </div>
-
                             <div class="col-md-6">
                                 <p class="number">限价</p>
-
-                               <!--  <div class="col-md-12"> -->
-                                 <!--    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;height: 10px">
+                                <!--  <div class="col-md-12"> -->
+                                <!--    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;height: 10px">
                                     <span class="sr-only">60% Complete</span>
-                                    </div> -->
+                                </div> -->
                                 <!-- </div> -->
-
                             </div>
                             <div class="col-md-6">
                                 <p class="number">限重</p>
-
-                            <!--     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;height: 10px">
+                                <!--     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;height: 10px">
                                     <span class="sr-only">60% Complete</span>
                                 </div> -->
-
                             </div>
-
                             <div class="col-md-12">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;height: 10px">
-                                <span class="sr-only">60% Complete</span>
+                                    <span class="sr-only">60% Complete</span>
                                 </div>
                             </div>
-
                             <div class="col-md-12">
                                 <div class="pull-left"><p>有&nbsp;15&nbsp;人在团里</p></div>
                                 <div class="pull-right"><p> <span class="glyphicon glyphicon-time" aria-hidden="true"></span>一天前</p></div>
-
-                            </div>  
+                            </div>
                             
-
                         </div>
-          </div>
-        {% else %}
-            <p>No any Groups now!</p>
-        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No any Groups now!</p>
+                {% endfor %}
+            </div>
+            
+            
+            
         </div>
-    	
-
-
-	
-	
-	</div>
-
-
-
-</div>
-
+    </div>
 {% endblock %}
