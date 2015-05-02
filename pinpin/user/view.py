@@ -15,14 +15,12 @@ from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
 user = Blueprint('user',__name__) 
 
 
-@user.route('/usermain')
-def user_main():
-    return render_template('userindex.html')
+
+
 
 @user.route('/userlist')
 def list_user():
     searchValue = request.args.get('searchValue')
-    print '12312312',searchValue
     if searchValue:
         user = User.query.filter_by(id=searchValue).all()
     else:
