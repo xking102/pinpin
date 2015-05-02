@@ -17,10 +17,12 @@ from app import db
 from pinpin.user.module import User
 from pinpin.order.module import Order, Group, Line
 from pinpin.shopcart.module import Shopcart
+from pinpin.exchange.module import Exchange
+from pinpin.transport.module import Transport
 from sqlalchemy import or_
 
 # db.drop_all()
-# db.create_all()
+db.create_all()
 
 
 # cart = Shopcart.query.all()
