@@ -5,6 +5,8 @@ import hashlib
 import time
 import urlparse
 
+import arrow
+
 salt = 'pinpin.com'
 
 def getmd5(str):
@@ -14,6 +16,10 @@ def getmd5(str):
 def getsysdate():
 	return time.strftime('%Y-%m-%d %H%M%S',time.localtime(time.time()))
 
+
+def gethumanzie(date):
+	u = arrow.get(date, 'YYYY-MM-DD HHmmss').replace(hours=-8)
+	return u.humanize(locale='zh')
 
 def CurrentActive(**current):
 	navbar = {}

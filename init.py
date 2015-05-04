@@ -21,8 +21,10 @@ from pinpin.exchange.module import Exchange
 from pinpin.transport.module import Transport
 from sqlalchemy import or_
 
+import arrow
+
 # db.drop_all()
-db.create_all()
+#db.create_all()
 
 
 # cart = Shopcart.query.all()
@@ -31,9 +33,10 @@ db.create_all()
 
 
 
-user = User.query.all()
-user = [u.to_json() for u in user]
-print user
+group = Group.query.filter_by(id=3).first()
+print group.create_dt
+group.create_dt ='2015-05-04 230000'
+db.session.commit()
 
 # l = Line(100, 100, 100, 100)
 # db.session.add(l)
