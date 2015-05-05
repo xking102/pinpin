@@ -15,7 +15,16 @@ from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
 user = Blueprint('user',__name__) 
 
 
+@user.route("/addmain")  
+def addmain():  
+# 主页面  
+    return render_template("addtest.html")  
 
+@user.route('/add')
+def addtest():
+    a = request.args.get('a', 0, type=int)  
+    b = request.args.get('b', 0, type=int)  
+    return jsonify(result = a + b)  
 
 
 @user.route('/userlist')
