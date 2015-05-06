@@ -33,10 +33,9 @@ import arrow
 
 
 
-group = Group.query.filter_by(id=3).first()
+group = Group.query.get(8)
 print group.create_dt
-group.create_dt ='2015-05-04 230000'
-db.session.commit()
+
 
 # l = Line(100, 100, 100, 100)
 # db.session.add(l)

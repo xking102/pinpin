@@ -27,7 +27,7 @@ Bootstrap(app)
 # def before_request():
 #     g.db = connect_db()
 
-# #when close or other exception close db conn
+# #when close or other exception close db connect_db`
 # @app.teardown_request
 # def teardown_request(exception):
 #     db = getattr(g, 'db', None)
@@ -43,7 +43,8 @@ from pinpin.shopcart.view import shopcart
 from pinpin.admin.view import admin
 from pinpin.search.view import search
 from pinpin.api.user.user import Users
-
+from pinpin.api.group.group import Groups, Group
+from pinpin.api.order.order import Orders, Order, Order_lines, Order_line
 
 app.register_blueprint(user)
 app.register_blueprint(order)
@@ -53,7 +54,18 @@ app.register_blueprint(search, url_prefix='/search')
 
 
 api.add_resource(Users, '/users')
+
+api.add_resource(Groups, '/groups')
+api.add_resource(Group, '/group/<int:id>')
+
+api.add_resource(Orders, '/orders')
+api.add_resource(Order, '/order/<int:id>')
+
+api.add_resource(Order_lines, '/lines/<int:id>')
+api.add_resource(Order_line, '/line/<int:id>')
+
 app.register_blueprint(api_bp, url_prefix='/api/v1')
+
 
 @app.errorhandler(404)
 def page_not_found(error):

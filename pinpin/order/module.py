@@ -39,7 +39,6 @@ class Group(db.Model):
         self.create_user = create_user
         self.create_dt = create_dt
         self.category = category
-        self.category = category
         self.type = type
         self.item = item
         self.limit_price = limit_price
@@ -51,6 +50,35 @@ class Group(db.Model):
 
     def __repr__(self):
         return '<Group %r>' % self.id
+
+
+    @property
+    def to_json(self):
+        return {
+            'id' : self.id,
+            'title' : self.title,
+            'desc' : self.desc,
+            'status' : self.status,
+            'create_user' : self.create_user,
+            'create_dt' : self.create_dt,
+            'category' : self.category,
+            'type' : self.type,
+            'item' : self.item,
+            'limit_price' : self.limit_price,
+            'limit_weight' : self.limit_weight,
+            'kickoff_dt' : self.kickoff_dt,
+            'update_dt' : self.update_dt,
+            'ems_ticket' : self.ems_ticket
+        }
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+            db.session.commit()
+            return 'create'
+        else:
+            db.session.commit()
+            return 'update' 
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)

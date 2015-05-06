@@ -24,3 +24,12 @@ class User(db.Model):
             'nickname' : self.nickname,
             'email' : self.email
         }
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+            db.session.commit()
+            return 'create'
+        else:
+            db.session.commit()
+            return 'update'

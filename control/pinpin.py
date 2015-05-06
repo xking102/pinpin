@@ -9,6 +9,25 @@ import arrow
 
 salt = 'pinpin.com'
 
+
+
+class statusRef():
+	GROUP_DRAFT = 1
+	GROUP_CANCEL = 0
+	GROUP_PUBLISH = 10
+	GROUP_PROCESSING = 15
+	GROUP_CONFIRM = 20
+	GROUP_CLOSE = 30
+
+	ORDER_DRAFT = 1
+	ORDER_CANCEL = 0
+	ORDER_APPLY = 10
+	ORDER_APPORVED = 20
+	ORDER_REJECT = 15
+	ORDER_CONFIRM = 30
+
+
+
 def getmd5(str):
 	md5=hashlib.md5(str + salt).hexdigest()
 	return md5
