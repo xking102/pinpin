@@ -17,7 +17,6 @@ user = Blueprint('user',__name__)
 
 @user.route("/addmain")  
 def addmain():  
-# 主页面  
     return render_template("addtest.html")  
 
 @user.route('/add')

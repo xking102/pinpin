@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 
-from flask import Flask, render_template#, g
+from flask import Flask, render_template, Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
-
+from flask.ext.restful import Api, Resource
 import app
 
 
@@ -16,8 +16,10 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-Bootstrap(app)
+api_bp = Blueprint('api', __name__)
+api = Api(api_bp)
 db = SQLAlchemy(app)
+Bootstrap(app)
 
 
 # #when request conn db
@@ -40,12 +42,18 @@ from pinpin.order.view import order
 from pinpin.shopcart.view import shopcart
 from pinpin.admin.view import admin
 from pinpin.search.view import search
+from pinpin.api.user.user import Users
+
 
 app.register_blueprint(user)
 app.register_blueprint(order)
 app.register_blueprint(shopcart, url_prefix='/shopcart')
 app.register_blueprint(admin, url_prefix='/admin')
 app.register_blueprint(search, url_prefix='/search')
+
+
+api.add_resource(Users, '/users')
+app.register_blueprint(api_bp, url_prefix='/api/v1')
 
 @app.errorhandler(404)
 def page_not_found(error):
