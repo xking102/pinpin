@@ -43,7 +43,7 @@ from pinpin.shopcart.view import shopcart
 from pinpin.admin.view import admin
 from pinpin.search.view import search
 from pinpin.api.user.user import Users
-from pinpin.api.group.group import Groups, Group
+from pinpin.api.group.group import Groups, Group, showUserGroups
 from pinpin.api.order.order import Orders, Order, Order_lines, Order_line
 
 app.register_blueprint(user)
@@ -55,8 +55,9 @@ app.register_blueprint(search, url_prefix='/search')
 
 api.add_resource(Users, '/users')
 
-api.add_resource(Groups, '/groups')
-api.add_resource(Group, '/group/<int:id>')
+api.add_resource(Groups, '/groups', methods=['GET','POST'])
+api.add_resource(Group, '/groups/<int:id>', methods=['GET','PUT','DELETE'])
+api.add_resource(showUserGroups, '/u/<int:id>/groups', methods=['GET'])
 
 api.add_resource(Orders, '/orders')
 api.add_resource(Order, '/order/<int:id>')
