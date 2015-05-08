@@ -95,13 +95,7 @@ Groups.GroupController = Ember.ObjectController.extend({
       }
     } else {
       var new_status = null;
-      if (value){
-        new_status = 30;
-      }
-      else {
-        new_status = 10;
-      }
-      model.set('status', new_status);
+      model.set('status', value ? 30:10);
       model.save();
       return value;
     }
@@ -128,7 +122,7 @@ Groups.GroupsController = Ember.ArrayController.extend({
       todo.save();
     },
     clearCompleted: function () {
-      var completed = this.filterProperty('status', 10);
+      var completed = this.filterProperty('status', 30);
       completed.invoke('deleteRecord');
       completed.invoke('save');
     }
@@ -148,12 +142,12 @@ Groups.GroupsController = Ember.ArrayController.extend({
   }.property('completed'),
 
   completed: function () {
-    return this.filterProperty('isCompleted', true).get('length');
+    return this.filterProperty('status', 30).get('length');
   }.property('@each.isCompleted'),
   
   allAreDone: function (key, value) {
     if (value === undefined) {
-      return !!this.get('length') && this.everyProperty('isCompleted', true);
+      return !!this.get('length') && this.everyProperty('isCompleted', 10);
     } else {
       this.setEach('isCompleted', value);
       this.invoke('save');
