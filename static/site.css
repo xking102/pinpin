@@ -1,12 +1,29 @@
+hr {
+  margin-top: 10px;
+  margin-bottom: 12px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+table {
+  font-family: Arial, Verdana, 宋体;
+  font-size: 15px;
+  color: #666;
+}
 body { 
+font-family: Arial, Verdana, 宋体;
+font-size: 16px;
+color: #666;
+background: #fff;
 padding-top: 50px;
+padding-bottom: 50px;
 }
 footer {
 border-top:1px solid #e5e5e5;
 color:#9c9c9d;
 margin-top:70px;
 padding:30px 0;
-font-size:14px
+font-size:14px;
+position:absolute;
 }
 .footer a{
 color:#9c9c9d

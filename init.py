@@ -33,8 +33,8 @@ import arrow
 
 
 
-group = Group.query.get(8)
-print group.create_dt
+group = Group.query.filter_by(id=20).all()
+print len(group)
 
 
 # l = Line(100, 100, 100, 100)

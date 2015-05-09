@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash#, g
+    abort, render_template, flash, current_app
 from sqlalchemy import or_
-from control import pinpin
+from utils.pagination import get_pagination, get_page_items
+from control import pinpin 
 from pinpin.order.module import Group, Order, Line, Tags
 from pinpin.shopcart.module import Shopcart
 from pinpin.order.form import NewGroupForm
@@ -28,27 +29,39 @@ ORDER_CONFIRM = 30
 
 #show groups
 @order.route('/')
-@order.route('/index')
-@order.route('/page/1')
 def show_groups():
+    allgroup = Group.query.filter_by(status=GROUP_PUBLISH).all()
+    total = len(allgroup)
+    page, per_page, offset = get_page_items()
     group = db.session.execute('select case when length(title) > 40 then substr(title,1,40)||"..." else title end as subtitle,a.*, '\
                                 ' case when length(desc) > 150 then substr(desc,1,150)||"..." else desc end as subdesc from "group" a '\
-                                'where status = :status', {'status':GROUP_PUBLISH}).fetchall()
+                                'where status = :status order by create_dt desc limit :limit offset :offset', {'status':GROUP_PUBLISH,'limit':per_page,'offset':offset}).fetchall()
     entries = [dict(id=row.id, title=row.subtitle, desc=row.subdesc, status=row.status, create_dt=pinpin.gethumanzie(row.create_dt), 
                 create_user=row.create_user, category=row.category, type=row.type, item=row.item, limit_price=row.limit_price, 
                 limit_weight=row.limit_weight, kickoff_dt=row.kickoff_dt) for row in group]
     navbar = pinpin.CurrentActive(home='active')
-    return render_template('show_groups.html', entries=entries, page=1)
+    pagination = get_pagination(page=page,
+                                per_page=per_page,
+                                total=total,
+                                record_name='groups',
+                                format_total=True,
+                                format_number=True,
+                                )
+    return render_template('show_groups.html', entries=entries, 
+                            page=page,
+                            per_page=per_page,
+                            pagination=pagination,
+                            )
 
-#show groups by page
-@order.route('/page/<int:pageid>')
-def show_groups_bypage(pageid):
-    group = Group.query.filter(or_(Group.status==GROUP_PUBLISH,Group.status==GROUP_PROCESSING)).all()
-    entries = [dict(id=row.id, title=row.title, status=row.status, create_user=row.create_user, category=row.category, 
-                type=row.type, item=row.item, limit_price=row.limit_price, limit_weight=row.limit_weight, 
-                kickoff_dt=row.kickoff_dt) for row in group]
-    navbar = pinpin.CurrentActive(home='active')
-    return render_template('show_groups.html', entries=entries, page=pageid)
+
+@order.route('/uutest')
+def uutest():
+    return render_template('./user/uutest.html')
+
+@order.route('/mypinpin')
+def show_mine():
+    return render_template('./user/show_mine.html')
+
 
 #show  user's groups
 @order.route('/group')
