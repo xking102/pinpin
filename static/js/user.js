@@ -25,6 +25,57 @@ App.AddressesRoute = Ember.Route.extend({
 
 
 
+App.InfoController = Ember.ObjectController.extend({
+	isEditing: false,
+
+	actions: {
+		editInfo: function () {
+      		this.set('isEditing', true);
+    	},
+    	acceptChanges: function () {
+      		this.set('isEditing', false);
+
+      		// if (Ember.isEmpty(this.get('model.title'))) {
+        // 		this.send('removeGroup');
+      		// } else {
+        // 		this.get('model').save();
+      		// }
+   		}
+	}
+});
+
+App.AddressesController = Ember.ArrayController.extend({
+	itemController: 'address'
+});
+
+App.AddressController = Ember.ObjectController.extend({
+	isEditing: false,
+
+	actions: {
+		edit: function() {
+			this.set('isEditing', true);
+		},
+
+		doneEditing: function() {
+			this.set('isEditing', false);
+		},
+		editInfo: function () {
+      		this.set('isEditing', true);
+    	},
+    	acceptChanges: function () {
+      		this.set('isEditing', false);
+
+      		// if (Ember.isEmpty(this.get('model.title'))) {
+        // 		this.send('removeGroup');
+      		// } else {
+        // 		this.get('model').save();
+      		// }
+   		}
+	}
+});
+
+
+
 
 Ember.Handlebars.helper('format-date', function(date) {
 	return moment(date).format('YYYY-MM-DD');
@@ -40,15 +91,22 @@ Ember.Handlebars.helper('format-fromnow', function(date) {
 });
 
 
+App.EditInfoView = Ember.TextField.extend({
+  didInsertElement: function () {
+    this.$().focus();
+  }
+});
 
-var info = [{
+Ember.Handlebars.helper('edit-info', App.EditInfoView);
+
+
+var info = {
 	id: 1,
 	nickname:'Kevin',
 	user_img: '/static/imgs/3.jpg',
 	email: 'kevin@pinpin.com',
 	reg_dt: '2015-01-01 22:22:22'
-}
-];
+};
 
 
 

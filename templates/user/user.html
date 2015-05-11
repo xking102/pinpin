@@ -23,7 +23,6 @@
 
 
 <script type="text/x-handlebars" id="info">
-{{#each}}
 <div class="container">
 	<div class="col-md-4">
 		<div class="img-box">
@@ -33,15 +32,26 @@
 		</div>
 	</div>
 	
+	
+
 	<div class="col-md-8">
-		<div class="col-md-8">{{nickname}}</div>
+	{{#if isEditing}}
+	<div class="col-md-8">{{edit-info class="edit" value=nickname focus-out="acceptChanges" insert-newline="acceptChanges"}}</div>
+	{{else}}
+		<div class="col-md-8" {{action "editInfo" on="doubleClick"}}>{{nickname}}</div>
+	{{/if}}
 		<div class="col-md-8">{{email}}</div>
 		<div class="col-md-8">{{format-fromnow reg_dt}}</div>
 	</div>
+
+	
+
 </div>
 
-{{/each}}
 </script>
+
+
+
 
 
 <script type="text/x-handlebars" id="addresses">
@@ -61,10 +71,22 @@
 		{{else}}
 		<button type="button" class="btn btn-success btn-xs">设为默认</button>
 		{{/if}}
+		{{#if isEditing}}
+			{{partial 'address/edit'}}
+			<button {{action "doneEditing"}}>Done</button>
+		{{else}}
+			<button {{action "edit"}}>Edit</button>
+		{{/if}}
 		</td>
 	</tr>
 {{/each}}
 </table>
+</script>
+
+
+<script type="text/x-handlebars" id="address/_edit">
+<p>{{input type="text" value=address_line1}}</p>
+<p>{{input type="text" value=address_line2}}</p>
 </script>
 
 
