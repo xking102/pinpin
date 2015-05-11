@@ -1,3 +1,9 @@
+.flash {
+  position: fixed;
+  bottom: 0;
+  font-size: 9px;
+  font-family: Arial, Verdana, 宋体;
+}
 hr {
   margin-top: 10px;
   margin-bottom: 12px;

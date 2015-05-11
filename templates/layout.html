@@ -10,7 +10,6 @@
 <!-- Bootstrap -->
 <link href='/static/css/bootstrap.css' rel="stylesheet">
 <link href="/static/site.css" rel="stylesheet">
-
 {%- endblock styles %}
 {% block navbar %}
     <header class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="border-bottom: 0;opacity: 0.9;">
@@ -33,7 +32,7 @@
                         <li><a href="{{ url_for('user.login') }}">登陆</a></li>
                         <li><a href="{{ url_for('user.register') }}">注册</a></li>
                     {% else %}
-                   
+                        
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle glyphicon glyphicon-user btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -41,7 +40,7 @@
                                 <li><a href="{{ url_for('shopcart.view_shopcart')}}"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;我喜爱的商品</a></li>
                                 <li class="divider"></li>
                                 
-                                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;设置</a></li>
+                                <li><a href="/setting#/info"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;设置</a></li>
                                 <li class="divider"></li>
                                 <li><a href="{{ url_for('user.logout') }}"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;退出</a></li>
                             </ul>
@@ -71,6 +70,19 @@
             </div>
         </div>
     </header>
+    {% if get_flashed_messages() %}
+    <div class="flash col-md-2 bs-example bs-example-standalone" data-example-id="dismissible-alert-js">
+    {% for message in get_flashed_messages() %}
+    
+        <div class="alert alert-warning alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            {{ message }}
+        </div>
+        
+   
+    {% endfor %}
+     </div>
+    {% endif %}
 {% endblock %}
 {% block content %}
     

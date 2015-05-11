@@ -5,7 +5,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
 from control import pinpin
 from app import db
 from pinpin.user.module import User
-from pinpin.user.form import LoginForm, RegisterForm
+from pinpin.user.form import LoginForm, RegisterForm, ModifyPasswordForm
 from pinpin.order.module import Group, Order, Line
 from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
     GROUP_PROCESSING,GROUP_CONFIRM,GROUP_CLOSE,ORDER_DRAFT,ORDER_CANCEL, \
@@ -28,6 +28,18 @@ def addtest():
     a = request.args.get('a', 0, type=int)  
     b = request.args.get('b', 0, type=int)  
     return jsonify(result = a + b)  
+
+
+@user.route('/setting', methods=['GET', 'POST'])
+def user_setting():
+    form = ModifyPasswordForm()
+    error = None
+    if request.method == 'POST' and form.validate_on_submit():
+        flash('password has changed')
+        #return redirect(url_for('order.show_groups'))  
+        return redirect('/setting#/password')
+    return render_template('./user/user.html', error=error, form=form)
+
 
 
 @user.route('/userlist')

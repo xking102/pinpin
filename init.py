@@ -32,9 +32,10 @@ import arrow
 # 	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt
 
 
-
-group = Group.query.filter_by(id=20).all()
-print len(group)
+u = User.query.get(1)
+print pinpin.getmd5('kevin')
+print pinpin.getmd5('kevinkevin')
+print u.password
 
 
 # l = Line(100, 100, 100, 100)

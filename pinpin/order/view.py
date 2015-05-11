@@ -63,6 +63,20 @@ def show_mine():
     return render_template('./user/show_mine.html')
 
 
+
+@order.route('/orderdetail/<int:id>')
+def show_order_detail(id):
+    if not session.get('logged_in'):
+        abort(401)
+    uid = session.get('logged_id')
+    order = Order.query.get(id)
+    if not order:
+        abort(404)
+    if uid != order.create_user:
+        abort(401)
+    return render_template('./order/order_detail.html', order=order)
+
+
 #show  user's groups
 @order.route('/group')
 def show_user_groups():

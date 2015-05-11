@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from flask import session
 from flask_wtf import Form
 from flask_wtf.html5 import EmailField
 from wtforms import StringField, PasswordField, SubmitField,validators
@@ -34,7 +35,7 @@ class RegisterForm(Form):
 	nickname = StringField('nickname', validators=[DataRequired()])
 	submit = SubmitField('submit')
 
-	def validate_email(self,filed):
+	def validate_email(self,field):
 		email = self.email.data
 		password = self.password.data
 		nickname = self.nickname.data
@@ -50,3 +51,28 @@ class RegisterForm(Form):
 			return user
 		return ValueError('Something wrong')
 
+
+class ModifyPasswordForm(Form):
+	old_password = PasswordField('Old password', validators=[DataRequired()])
+	password = PasswordField('New Password', [
+		validators.DataRequired(),
+		validators.EqualTo('confirm', message='Passwords must match')
+	])
+	confirm = PasswordField('Repeat Password',  validators=[DataRequired()])
+	submit = SubmitField('modify')
+
+
+	def validate_password(self, field):
+		old_password = self.old_password.data
+		password = self.password.data
+		uid = session['logged_id']
+		user  = User.query.get(uid)
+		if pinpin.getmd5(old_password) != user.password:
+			raise ValueError('password is wrong')
+		else:
+			user.password = pinpin.getmd5(password)
+			print password
+			user.save()
+			self.user = user
+			return user
+		return ValueError('Something wrong')
