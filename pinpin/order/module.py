@@ -119,6 +119,15 @@ class Order(db.Model):
     def __repr__(self):
         return '<Order %r>' % self.id
 
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+            db.session.commit()
+            return 'create'
+        else:
+            db.session.commit()
+            return 'update' 
+
 
 class Line(db.Model):
     id = db.Column(db.Integer, primary_key=True)

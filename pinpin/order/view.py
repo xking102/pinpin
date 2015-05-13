@@ -145,6 +145,31 @@ def apply_order(gid):
     return redirect(url_for('.show_group',id=gid))
 
 
+
+#create the order
+@order.route('/group/order/<int:gid>/')
+def new_order(gid):
+    uid = session.get('logged_id')
+    if not uid:
+        flash('You need log in')
+        return redirect(url_for('order.show_group',id=gid))
+    group = Group.query.get(gid)
+    if not group:
+        flash('group is not exist')
+        abort(404)
+    price = 0
+    weight = 0
+    receiver = ''
+    receiver_tel = ''
+    receiver_address = ''
+    order = Order(gid, group.title, group.desc, ORDER_APPORVED, uid, pinpin.getsysdate(), group.category, \
+                group.type, gropu.item, price, weight, receiver, receiver_tel, receiver_address, 0, \
+                pinpin.getsysdate(), pinpin.getsysdate(), group.create_user)
+    order.save()
+    flash('You hava an order into this group')
+    return redirect(url_for('.show_group',id=gid))
+
+
 #remove a line into user's shopcart
 @order.route('/line/<int:id>/remove')
 def remove_line(id):
