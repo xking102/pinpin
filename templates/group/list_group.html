@@ -29,46 +29,46 @@
 											<div class="col-md-4">
 															<h2 class="dynamic_subtotal">
 															<span class="circle_number to_center_vertically" style="display: inline-block;">{{reqnum}}</span>
-															<span class="value to_center_vertically">{{total}}</span>
+															<span class="value to_center_vertically">￥&nbsp;{{total}}</span>
 															</h2>
 											</div>
 											
 							</div>
 			</div>
 		<div class="container">
-						<div class="col-md-6">
-										<img  src="{{unbound img}}" class="img-responsive img-rounded" alt="Responsive image">
-						</div>
-						
-						
-						<div class="col-md-6">
-										<div class="row">
-														<label>到手单价:{{price}}</label>
-										</div>
-										<div class="row">
-														<label>团购数量:{{amount}}</label>
-										</div>
-										<div class="row">
-														<label>参加人数:{{mans}}</label>
-										</div>
-										
-										
-										<div class="row">
-														<div class="col-md-3">
-																		<div class="input-group">
-																					<span class="input-group-btn">
-																									<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
-																					</span>
-																					<input type="tel" readonly="readonly" class="form-control" placeholder="1">
-																					<span class="input-group-btn">
-																									<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-																					</span>
-																		</div>
-														</div>
-														
-										</div>
-								</div>
+	<div class="col-md-6">
+					<img  src="{{unbound img}}" class="img-responsive img-rounded" alt="Responsive image">
+	</div>
+	
+	
+	<div class="col-md-6">
+					<div class="row">
+									<label>到手单价:{{price}}</label>
+					</div>
+					<div class="row">
+									<label>团购数量:{{amount}}</label>
+					</div>
+					<div class="row">
+									<label>参加人数:{{mans}}</label>
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="input-group">
+								<span class="input-group-btn">
+									<button {{action "reqMinus"}} class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+								</span>
+								<label>{{reqnum}}</label>
+								<span class="input-group-btn">
+									<button {{action "reqPlus"}}class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+								</span>
 							</div>
+						</div>
+									
+					</div>
+			</div>
+		</div>
 	</script>
 {% endraw %}
 {% endblock %}

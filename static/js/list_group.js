@@ -25,16 +25,37 @@ App.OrderRoute = Ember.Route.extend({
 App.OrderController = Ember.ObjectController.extend({
 	actions: {
 		reqPlus: function () {
-			var value = this.get('model.reqnum');
-			console.log(value);
+			if ( this.get('model.reqnum')  == this.get('model.amount') ) {
+
+			}
+			else {
+				var model = this.get('model');
+				var price = this.get('model.price');
+				var value = this.get('model.reqnum');
+				this.set('model.reqnum',value + 1);
+				var reqnum = this.get('model.reqnum');
+				this.set('total',price*reqnum);
+			}
 		},
 		reqMinus: function () {
+			if ( this.get('model.reqnum') == 1) {
 
+			}
+			else {
+				var model = this.get('model');
+				var price = this.get('model.price');
+				var value = this.get('model.reqnum');
+				this.set('model.reqnum',value - 1);
+				var reqnum = this.get('model.reqnum');
+				this.set('total',price*reqnum);
+			}
+			
 		}
 	},
 	total: function(key){
     	var price = this.get('model.price');
     	var reqnum = this.get('model.reqnum');
+    	console.log(this.get('model'));
 		return reqnum*price;
   	}.property('model.price')
 });
