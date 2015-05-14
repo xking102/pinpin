@@ -17,7 +17,7 @@ App.InfoRoute = Ember.Route.extend({
 			id: info.id,
 			nickname: info.nickname,
 			user_img: info.user_img,
-			email: info.email.email,
+			email: info.email,
 			reg_dt: info.reg_dt
 
 		};

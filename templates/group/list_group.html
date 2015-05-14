@@ -5,20 +5,6 @@
 <link href="/static/group.css" rel="stylesheet">
 {%- endblock styles %}
 {% block navbar %}
-	<div class="top_breadcrumbs">
-		<div class="container">
-			<div class="col-md-8">
-				<h2 class="dynamic_subtotal">Titlte</h2>
-			</div>
-			<div class="col-md-4">
-				<h2 class="dynamic_subtotal">
-				<span class="circle_number to_center_vertically" style="display: inline-block;">2</span>
-				<span class="value to_center_vertically">399.00</span>
-				</h2>
-			</div>
-			
-		</div>
-	</div>
 	{% if get_flashed_messages() %}
 		<div class="flash col-md-2 bs-example bs-example-standalone" data-example-id="dismissible-alert-js">
 			{% for message in get_flashed_messages() %}
@@ -32,36 +18,68 @@
 	{% endif %}
 {% endblock %}
 {% block content %}
-	<div class="container">
-		<div class="col-md-6">
-			<img  src="/static/imgs/2.png" class="img-responsive img-rounded" alt="Responsive image">
-		</div>
-		
-		
-		<div class="col-md-6">
-			<div class="row">
-				<label>TotNum:</label>
+	{% raw %}
+
+	<script type="text/x-handlebars" id="order">
+	<div class="top_breadcrumbs">
+							<div class="container">
+											<div class="col-md-8">
+															<h2 class="dynamic_subtotal">{{title}}</h2>
+											</div>
+											<div class="col-md-4">
+															<h2 class="dynamic_subtotal">
+															<span class="circle_number to_center_vertically" style="display: inline-block;">{{reqnum}}</span>
+															<span class="value to_center_vertically">{{total}}</span>
+															</h2>
+											</div>
+											
+							</div>
 			</div>
-			<div class="row">
-				<label>TotNum:</label>
-			</div>
-			<div class="row">
-				<label>TotNum:</label>
-			</div>
-			
-			
-			<div class="row">
-				<div class="col-md-3">
-					<div class="input-group">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
-					</span>
-					<input type="tel" readonly="readonly" class="form-control" placeholder="1">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-					</span>
-				</div>
-				</div>
-				
-			</div>
-		{% endblock %}
+		<div class="container">
+						<div class="col-md-6">
+										<img  src="{{unbound img}}" class="img-responsive img-rounded" alt="Responsive image">
+						</div>
+						
+						
+						<div class="col-md-6">
+										<div class="row">
+														<label>到手单价:{{price}}</label>
+										</div>
+										<div class="row">
+														<label>团购数量:{{amount}}</label>
+										</div>
+										<div class="row">
+														<label>参加人数:{{mans}}</label>
+										</div>
+										
+										
+										<div class="row">
+														<div class="col-md-3">
+																		<div class="input-group">
+																					<span class="input-group-btn">
+																									<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+																					</span>
+																					<input type="tel" readonly="readonly" class="form-control" placeholder="1">
+																					<span class="input-group-btn">
+																									<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+																					</span>
+																		</div>
+														</div>
+														
+										</div>
+								</div>
+							</div>
+	</script>
+{% endraw %}
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/lib/jquery.js"></script>
+<script src="/static/js/lib/bootstrap.js"></script>
+<script src="/static/js/lib/handlebars.js"></script>
+<script src="/static/js/lib/ember.debug.js"></script>
+<script src="/static/js/lib/ember-template-compiler.js"></script>
+<script src="/static/js/lib/ember-data.js"></script>
+<script src="/static/js/lib/moment-with-locales.min.js"></script>
+<script src="/static/js/lib/showdown.js"></script>
+<script src="/static/js/list_group.js"></script>
+{%- endblock scripts %}
