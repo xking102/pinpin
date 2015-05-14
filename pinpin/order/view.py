@@ -63,6 +63,10 @@ def show_mine():
     return render_template('./user/show_mine.html')
 
 
+@order.route('/group/test')
+def list_group_test():
+    return render_template('./group/list_group.html')
+
 
 @order.route('/orderdetail/<int:id>')
 def show_order_detail(id):

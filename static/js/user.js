@@ -13,7 +13,14 @@ App.Router.map(function() {
 
 App.InfoRoute = Ember.Route.extend({
 	model: function() {
-		return info;
+		return {
+			id: info.id,
+			nickname: info.nickname,
+			user_img: info.user_img,
+			email: info.email.email,
+			reg_dt: info.reg_dt
+
+		};
 	}
 });
 
