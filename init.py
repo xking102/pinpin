@@ -14,17 +14,22 @@ sys.setdefaultencoding('utf-8')
 
 from control import pinpin
 from app import db
-from pinpin.user.module import User
-from pinpin.order.module import Order, Group, Line
-from pinpin.shopcart.module import Shopcart
-from pinpin.exchange.module import Exchange
-from pinpin.transport.module import Transport
+# from pinpin.user.module import User
+# from pinpin.order.module import Order, Group, Line
+# from pinpin.shopcart.module import Shopcart
+# from pinpin.exchange.module import Exchange
+# from pinpin.transport.module import Transport
 from sqlalchemy import or_
+from module.group.group import Group
+from module.order.order import Order
+from module.user.user import User
+from module.user.useraddress import UserAddress
+from module.user.userinfo import UserInfo
 
 import arrow
 
 # db.drop_all()
-#db.create_all()
+db.create_all()
 
 
 # cart = Shopcart.query.all()
@@ -32,10 +37,10 @@ import arrow
 # 	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt
 
 
-u = User.query.get(1)
-print pinpin.getmd5('kevin')
-print pinpin.getmd5('kevinkevin')
-print u.password
+# u = User.query.get(1)
+# print pinpin.getmd5('kevin')
+# print pinpin.getmd5('kevinkevin')
+# print u.password
 
 
 # l = Line(100, 100, 100, 100)
