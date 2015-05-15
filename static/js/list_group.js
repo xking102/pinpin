@@ -15,7 +15,6 @@ App.OrderRoute = Ember.Route.extend({
 			img: order.img,
 			price: order.price,
 			amount: order.amount,
-			reqnum: 1,
 			mans: order.mans
 		};
 	}
@@ -25,39 +24,40 @@ App.OrderRoute = Ember.Route.extend({
 App.OrderController = Ember.ObjectController.extend({
 	actions: {
 		reqPlus: function () {
-			if ( this.get('model.reqnum')  == this.get('model.amount') ) {
+			if ( this.get('reqnum')  == this.get('model.amount') ) {
 
 			}
 			else {
-				var model = this.get('model');
 				var price = this.get('model.price');
-				var value = this.get('model.reqnum');
-				this.set('model.reqnum',value + 1);
-				var reqnum = this.get('model.reqnum');
+				var value = this.get('reqnum');
+				this.set('reqnum',value + 1);
+				var reqnum = this.get('reqnum');
 				this.set('total',price*reqnum);
 			}
 		},
 		reqMinus: function () {
-			if ( this.get('model.reqnum') == 1) {
+			if ( this.get('reqnum') == 1) {
 
 			}
 			else {
-				var model = this.get('model');
 				var price = this.get('model.price');
-				var value = this.get('model.reqnum');
-				this.set('model.reqnum',value - 1);
-				var reqnum = this.get('model.reqnum');
+				var value = this.get('reqnum');
+				this.set('reqnum',value - 1);
+				var reqnum = this.get('reqnum');
 				this.set('total',price*reqnum);
 			}
 			
 		}
 	},
+	reqnum: function () {
+		return 1
+	}.property('reqnum'),
 	total: function(key){
     	var price = this.get('model.price');
-    	var reqnum = this.get('model.reqnum');
+    	var reqnum = this.get('reqnum');
     	console.log(this.get('model'));
 		return reqnum*price;
-  	}.property('model.price')
+  	}.property('total')
 });
 
 
