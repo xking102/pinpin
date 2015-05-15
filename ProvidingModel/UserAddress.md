@@ -1,0 +1,9 @@
+id
+uid
+address_line1
+address_line2
+tel
+reciver
+create_dt
+update_dt
+isDefault

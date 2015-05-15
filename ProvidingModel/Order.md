@@ -1,0 +1,10 @@
+id
+gid
+status
+create_dt
+create_userid
+req_qty,
+unit_price,
+total_price,
+actual_price,
+actual_transfer_fee
