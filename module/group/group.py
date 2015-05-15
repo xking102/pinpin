@@ -14,3 +14,30 @@ class Group(db.Model):
     create_userid = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)
     status = db.Column(db.Integer, unique=False)
+
+
+    @property
+    def to_json(self):
+        return {
+            'id' : self.id,
+            'title' : self.title,
+            'desc' : self.desc,
+            'unit_price' : self.unit_price,
+            'list_price' : self.list_price,
+            'total_qty' : self.total_qty,
+            'create_dt' : self.create_dt,
+            'create_userid' : self.create_userid,
+            'update_dt' : self.update_dt,
+            'status' : self.status
+        }
+
+
+    @property
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+            db.session.commit()
+            return 'create'
+        else:
+            db.session.commit()
+            return 'update'

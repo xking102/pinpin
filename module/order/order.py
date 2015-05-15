@@ -14,3 +14,30 @@ class Order(db.Model):
     total_price = db.Column(db.Float, unique=False)
     actual_price = db.Column(db.Float, unique=False)
     actual_transfer_fee = db.Column(db.Float, unique=False)
+
+
+    @property
+    def to_json(self):
+        return {
+            'id' : self.id,
+            'gid' : self.gid,
+            'status' : self.status,
+            'create_dt' : self.create_dt,
+            'create_userid' : self.create_userid,
+            'req_qty' : self.req_qty,
+            'unit_price' : self.unit_price,
+            'total_price' : self.total_price,
+            'actual_price' : self.actual_price,
+            'actual_transfer_fee' : self.actual_transfer_fee
+        }
+
+
+    @property
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+            db.session.commit()
+            return 'create'
+        else:
+            db.session.commit()
+            return 'update'
