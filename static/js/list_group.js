@@ -51,13 +51,13 @@ App.OrderController = Ember.ObjectController.extend({
 	},
 	reqnum: function () {
 		return 1
-	}.property('reqnum'),
+	}.property(),
 	total: function(key){
     	var price = this.get('model.price');
     	var reqnum = this.get('reqnum');
     	console.log(this.get('model'));
 		return reqnum*price;
-  	}.property('total')
+  	}.property()
 });
 
 
