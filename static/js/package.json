@@ -1,0 +1,17 @@
+{
+  "name": "pinpin",
+  "version": "1.0.0",
+  "description": "pinpin an ecommerce website",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xingkaixin",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^3.8.0",
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2"
+  }
+}
