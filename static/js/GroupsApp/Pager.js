@@ -12,8 +12,7 @@ module.exports = React.createClass({
 			display : this.props.pager_display ? 'block':'none',
 		}
 		return(
-			<button style={styleObj} onClick={this.clickHandler}>这里放分页</button>
-
+			<button style={styleObj} disabled={this.props.query_flag} onClick={this.clickHandler}>{this.props.button_name}</button>
 		)
 	}
 })

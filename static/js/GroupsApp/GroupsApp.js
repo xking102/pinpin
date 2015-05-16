@@ -21,14 +21,19 @@ module.exports = React.createClass({
 			groups: [],
 			page: 1,
 			pages: 1,
-			pager_display: false
+			pager_display: false,
+			query_flag:'',
+			button_name:'这里以后放分页'
 		}
 	},
 	listGroups:function(){
 		var data = {
 			page : 1
 		};
-
+		this.setState({
+            		query_flag:'yes',
+            		button_name:'加载中'
+            	});
 		$.ajax({
             type:'get',
             url:'/api/v1/groups',
@@ -37,13 +42,17 @@ module.exports = React.createClass({
         	if(resp.status == 201){
         		this.setState({
             		groups:resp.groups,
-            		pager_display:true
+            		pager_display:true,
+            		query_flag:'',
+            		button_name:'这里以后放分页'
             	});
         	}
         	else{
         		this.setState({
             		groups:[],
-            		pager_display:false
+            		pager_display:false,
+            		query_flag:'',
+            		button_name:'这里以后放分页'
 
             	});
         	}
@@ -63,7 +72,9 @@ module.exports = React.createClass({
 		});
 		var pager_props = {
 			listGroups : this.listGroups,
-			pager_display : this.state.pager_display
+			pager_display : this.state.pager_display,
+			query_flag : this.state.query_flag,
+			button_name : this.state.button_name
 		};
 		return (
 			<div>

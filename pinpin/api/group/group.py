@@ -7,13 +7,14 @@ from app import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from pinpin.order.module import Group as GroupModel
-
+import time
 
 
 
 class Groups(Resource):
 	def get(self):
 		groups = GroupModel.query.all()
+		time.sleep( 3 )
 		return jsonify({ "groups" : [g.to_json for g in groups] ,"status":201})
 
 
