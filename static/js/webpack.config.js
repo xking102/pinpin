@@ -1,7 +1,11 @@
+var webpack = require('webpack');
+
 module.exports = {
     entry : {
         index : "./index.js",
-        hello : './hello.js'
+        hello : './hello.js',
+        groupsapp : "./groupsapp.js",
+        sidebar: "./sidebar.js"
     },
     output : {
         path : "./build",
@@ -9,8 +13,18 @@ module.exports = {
     },
     module : {
         loaders :[
-            {test:/\.js$/, loader:'jsx-loader'}
+            {test:/\.js$/, loader:'babel-loader'}
         ]
 
-    }
+    },
+	
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin({
+			compress: {
+				warnings: false
+			}
+	})
+		
+		
+	]
 }

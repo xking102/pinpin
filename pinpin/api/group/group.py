@@ -14,7 +14,7 @@ from pinpin.order.module import Group as GroupModel
 class Groups(Resource):
 	def get(self):
 		groups = GroupModel.query.all()
-		return make_response(jsonify({ "groups" : [g.to_json for g in groups] }), 201)
+		return jsonify({ "groups" : [g.to_json for g in groups] ,"status":201})
 
 
 	def post(self):

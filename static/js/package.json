@@ -8,8 +8,13 @@
   "author": "xingkaixin",
   "license": "MIT",
   "dependencies": {
+    "babel-core": "^5.4.3",
+    "babel-loader": "^5.1.0",
     "lodash": "^3.8.0",
-    "react": "^0.12.2"
+    "node-libs-browser": "^0.5.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "webpack": "^1.9.6"
   },
   "devDependencies": {
     "jsx-loader": "^0.12.2"

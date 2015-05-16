@@ -14,6 +14,14 @@ from pinpin.order.view import GROUP_DRAFT, GROUP_CANCEL, GROUP_PUBLISH, \
 #user = Blueprint('user',__name__, template_folder='templates') 
 user = Blueprint('user',__name__) 
 
+@user.route('/test4')
+def test4():
+    return render_template("./tmp/sidebar.html")
+
+@user.route('/test3')
+def test3():
+    return render_template("./group/index.html")
+
 @user.route('/test1')
 def test1():
     return render_template("./tmp/index.html")
