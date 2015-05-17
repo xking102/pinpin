@@ -6,38 +6,22 @@ module.exports = React.createClass({
 		var group = this.props.group;
 		var detail_link = '#/group/'+group.id;
 		return(
-			<div className="col-md-4">
-				<div>
-					<div className="thumbnail entity">
-						<div className="img-box">
-                                <a href={detail_link}>
-                                    <img  src={group.img} className="img-responsive img-rounded" alt="Responsive image"/>
-                                </a>
-                        </div>
-
-                        <div className="col-md-12">
-                                <p className="title">{group.title}</p>
-                        </div>
-
-
-                        <div className="col-md-6">
-                                <p className="number">{group.amount}</p>
-                        </div>
-
-                        <div className="col-md-6">
-                                <p className="number">{group.unit_price}</p>
-                        </div>
-
-                        <div className="col-md-6">
-                                <p className="number">限价</p>
-
-                        </div>
-                        <div className="col-md-6">
-                                <p className="number">限重</p>
-                                
-                        </div>
-					</div>
-				</div>
+			<div className="col-md-3">
+                <div className="thumbnail">
+                    <img alt="230x200" src="/static/imgs/groups/230x200.gif" />
+                     <div className="caption">
+                        <h3>Product AAAAAAAA</h3>
+                        <p>Cras justo odio, dapibus ac facapibus ac faapibus a
+                        c faapibus ac faapibus ac faapibus ac failisis in, egestas eget quam.
+                         Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultr
+                         Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultr
+                         icies vehicula ut id elit.</p>
+                         <h4>剩余数量：15</h4>
+                         <h4>到手单价：30</h4>
+                        <p><a href={detail_link} className="btn btn-primary">View</a></p>
+                        <p className="momenttime">5天前</p>
+                    </div>
+                </div>
 			</div>
 		)		
 	}
