@@ -4,7 +4,7 @@ var React = require("react");
 module.exports = React.createClass({
 	render:function(){
 		var group = this.props.group;
-		var detail_link = '/group/'+group.id;
+		var detail_link = '#/group/'+group.id;
 		return(
 			<div className="col-md-4">
 				<div>

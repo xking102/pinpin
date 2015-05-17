@@ -17,11 +17,26 @@ table {
 }
 body { 
 font-family: Arial, Verdana, 宋体;
-font-size: 16px;
+font-size: 14px;
+line-height: 1.42857143;
+height:100%;
+width:100%;
 color: #666;
 background: #fff;
 padding-top: 50px;
 padding-bottom: 50px;
+}
+a {
+  color:#AD5251;
+  transition:all ease-in-out 200ms;
+}
+
+a:hover {
+  text-decoration:none;
+  color:#000;
+}
+.lightgray {
+  background:#f5f5f5;
 }
 footer {
 border-top:1px solid #e5e5e5;

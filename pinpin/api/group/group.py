@@ -14,7 +14,7 @@ import time
 class Groups(Resource):
 	def get(self):
 		groups = GroupModel.query.all()
-		time.sleep( 3 )
+		time.sleep( 1 )
 		return jsonify({ "groups" : [g.to_json for g in groups] ,"status":201})
 
 
@@ -43,7 +43,7 @@ class Groups(Resource):
 class Group(Resource):
 	def get(self, id):
 		group = GroupModel.query.get(id)
-		return jsonify({ "groups" : group.to_json })
+		return jsonify({ "groups" : group.to_json ,"status":201})
 
 
 	def put(self, id):

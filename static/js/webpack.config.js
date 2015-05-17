@@ -4,8 +4,8 @@ module.exports = {
     entry : {
         index : "./index.js",
         hello : './hello.js',
-        groupsapp : "./groupsapp.js",
-        sidebar: "./sidebar.js"
+        sidebar: "./sidebar.js",
+        groupsindex: "./groupsindex.js"
     },
     output : {
         path : "./build",
