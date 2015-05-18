@@ -29,8 +29,21 @@ from module.user.userinfo import UserInfo
 import arrow
 
 # db.drop_all()
-db.create_all()
+# db.create_all()
 
+
+
+utc = arrow.utcnow().to('local')
+print utc
+time = utc.timestamp
+print time
+date =  arrow.get(time)
+date2 = arrow.get(1431916642)
+
+print date
+print date2
+print date.humanize(locale="zh")
+print date2.humanize(locale="zh")
 
 # cart = Shopcart.query.all()
 # for c in cart:
