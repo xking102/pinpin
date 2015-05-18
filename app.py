@@ -22,29 +22,16 @@ db = SQLAlchemy(app)
 Bootstrap(app)
 
 
-# #when request conn db
-# @app.before_request
-# def before_request():
-#     g.db = connect_db()
+# from pinpin.user.view import user
+# from pinpin.order.view import order
+# from pinpin.shopcart.view import shopcart
+# from pinpin.admin.view import admin
+# from pinpin.search.view import search
 
-# #when close or other exception close db connect_db`
-# @app.teardown_request
-# def teardown_request(exception):
-#     db = getattr(g, 'db', None)
-#     if db is not None:
-#         db.close()
-#     g.db.close()
+from view.group.group import group
+from view.user.user import user
+# from view.order.order import order
 
-
-#register blueprint
-from pinpin.user.view import user
-from pinpin.order.view import order
-from pinpin.shopcart.view import shopcart
-from pinpin.admin.view import admin
-from pinpin.search.view import search
-# from pinpin.api.user.user import Users
-# from pinpin.api.group.group import Groups, Group, showUserGroups
-# from pinpin.api.order.order import Orders, Order, Order_lines, Order_line
 from api.group.group import Groups,Group,MyGroups
 from api.order.order import Orders,Order,MyOrders
 from api.user.user import MyUserInfo
@@ -52,10 +39,11 @@ from api.user.useraddress import MyAddresses,MyAddress
 
 
 app.register_blueprint(user)
-app.register_blueprint(order)
-app.register_blueprint(shopcart, url_prefix='/shopcart')
-app.register_blueprint(admin, url_prefix='/admin')
-app.register_blueprint(search, url_prefix='/search')
+app.register_blueprint(group)
+# app.register_blueprint(order)
+# app.register_blueprint(shopcart, url_prefix='/shopcart')
+# app.register_blueprint(admin, url_prefix='/admin')
+# app.register_blueprint(search, url_prefix='/search')
 
 
 
