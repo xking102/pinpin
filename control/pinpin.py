@@ -37,6 +37,16 @@ def getsysdate():
 	return time.strftime('%Y-%m-%d %H%M%S',time.localtime(time.time()))
 
 
+
+def getCurTimestamp():
+	utc = arrow.utcnow().to('local')
+	return utc.timestamp
+
+def getMoment(timestamp):
+	u = arrow.get(timestamp)
+	return u.humanize(locale='zh')
+
+
 def gethumanzie(date):
 	u = arrow.get(date, 'YYYY-MM-DD HHmmss').replace(hours=-8)
 	return u.humanize(locale='zh')
