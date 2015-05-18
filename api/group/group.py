@@ -14,7 +14,7 @@ from module.group.group import Group as GroupModel
 class Groups(Resource):
 	def get(self):
 		groups = GroupModel.query.all()
-		return make_response(jsonify({ "groups" : [g.to_json for g in groups] }), 201)
+		return jsonify({ "groups" : [g.to_json for g in groups] ,"status":200})
 
 
 	def post(self):
@@ -24,9 +24,9 @@ class Groups(Resource):
 			unit_price = request.json['group']['unit_price']
 			list_price = request.json['group']['list_price']
 			total_qty = request.json['group']['total_qty']
-			create_dt = pinpin.getsysdate() ##todo
+			create_dt = pinpin.getCurTimestamp()
 			create_userid = session.get('logged_id')
-			create_dt = pinpin.getsysdate() ##todo
+			update_dt = pinpin.getCurTimestamp()
 			status = status.GROUP_PUBLISH
 			g = GroupModel()
 			g.title = title
@@ -37,16 +37,19 @@ class Groups(Resource):
 			g.create_dt = create_dt
 			g.create_userid = create_userid
 			g.status = status
+			g.update_dt = update_dt
 			g.save
-			return make_response(jsonify({'messages' : 'ok'}), 201)
-		return make_response(jsonify({'messages' : 'fail'}), 401)
+			return jsonify({'messages' : 'ok', "status":201})
+		return jsonify({'messages' : 'fail', "status":401})
 
 
 class Group(Resource):
 	def get(self, id):
-		group = GroupModel.query.get(id)
-		return jsonify({ "group" : group.to_json })
-
+		g = GroupModel.query.get(id)
+		if g:
+			group = GroupModel.query.get(id)
+			return jsonify({ "group" : group.to_json,"status":200 })
+		return jsonify({'messages' : 'not exist',"status":404})
 
 
 	def delete(self, id):
@@ -55,16 +58,16 @@ class Group(Resource):
 			if  g and g.create_user == session.get('logged_id'):
 				g.status = statusRef.GROUP_CANCEL
 				g.save
-				return make_response(jsonify({'messages' : 'ok'}), 201)
-			return make_response(jsonify({'messages' : 'not access'}), 404)
-		return make_response(jsonify({'messages' : 'please login'}),401)
+				return jsonify({'messages' : 'ok',"status":201})
+			return jsonify({'messages' : 'not access',"status": 404})
+		return jsonify({'messages' : 'please login',"status":401})
 
 
 
 class MyGroups(Resource):
 	def get(self):
-		if not session.get('logged_in'):
+		if session.get('logged_in'):
 			uid = session.get('logged_id')
 			groups =GroupModel.query.filter_by(create_userid=id).all()
-			return make_response(jsonify({ "groups" : [g.to_json for g in groups] }), 201)
-		return make_response(jsonify({'messages' : 'please login'}),401)
+			return jsonify({ "groups" : [g.to_json for g in groups],"status":200 })
+		return jsonify({'messages' : 'please login',"status":401})

@@ -12,7 +12,7 @@ from module.user.userinfo import UserInfo as UserInfoModel
 
 class MyUserInfo(Resource):
 	def get(self):
-		if not session.get('logged_in'):
+		if session.get('logged_in'):
 			uid = session.get('logged_id')
 			user =UserModel.query.get(uid)
 			info = UserModel.query.filter_by(uid=uid).first()
@@ -22,11 +22,11 @@ class MyUserInfo(Resource):
 				'email': user.email,
 				'avatar': info.avatar
 			}
-			return make_response(jsonify({ "user" : userlist }), 201)
-		return make_response(jsonify({'messages' : 'please login'}),401)
+			return jsonify({ "user" : userlist ,"status":200})
+		return jsonify({'messages' : 'please login',"status":401})
 
 	def put(self):
-		if not session.get('logged_in'):
+		if session.get('logged_in'):
 			uid = session.get('logged_id')
 			user =UserModel.query.get(uid)
 			info = UserModel.query.filter_by(uid=uid).first()
@@ -36,5 +36,5 @@ class MyUserInfo(Resource):
 			info.avatar = avatar
 			user.save
 			info.save
-			return make_response(jsonify({ "messages" : 'ok' }), 201)
-		return make_response(jsonify({'messages' : 'please login'}),401)
+			return jsonify({ "messages" : 'ok' ,"status":201})
+		return jsonify({'messages' : 'please login',"status":401})
