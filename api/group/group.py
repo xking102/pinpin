@@ -10,11 +10,10 @@ from module.group.group import Group as GroupModel
 
 
 
-
 class Groups(Resource):
 	def get(self):
 		groups = GroupModel.query.all()
-		return jsonify({ "groups" : [g.to_json for g in groups] ,"status":200})
+		return make_response(jsonify({ "groups" : [g.to_json for g in groups] ,"status":200}),200)
 
 
 	def post(self):

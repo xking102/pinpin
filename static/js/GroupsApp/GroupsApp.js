@@ -50,7 +50,7 @@ module.exports = React.createClass({
         	else{
         		this.setState({
             		groups:[],
-            		pager_display:false,
+            		pager_display:true,
             		query_flag:'',
             		button_name:'这里以后放分页'
 
