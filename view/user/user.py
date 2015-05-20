@@ -24,8 +24,7 @@ def login():
         session['logged_id'] = form.user.id
         flash('You were logged in')
         return redirect(url_for('group.list_groups')) 
-    navbar = pinpin.CurrentActive(login='active')
-    return render_template('login.html', error=error, form=form)
+    return render_template('./user/login.html', error=error, form=form)
 
 
 #user register
@@ -39,8 +38,7 @@ def register():
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
         return redirect(url_for('group.list_groups'))
-    navbar = pinpin.CurrentActive(register='active')
-    return render_template('register.html', error=error, form=form)
+    return render_template('./user/register.html', error=error, form=form)
 
 
 #user logout
