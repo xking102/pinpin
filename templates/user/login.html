@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% block content %}
     <div class="row-fluid">
         
@@ -11,6 +12,7 @@
                         <div class="input-prepend" title="Username">
                             <span class="add-on"><i class="halflings-icon user"></i></span>
                             <input class="input-large span10" name="username" id="username" type="text" placeholder="type username"/>
+
                         </div>
                         <div class="clearfix"></div>
                         <div class="input-prepend" title="Password">
@@ -70,6 +72,9 @@
                             
                         </div>
                         
+
+
+
                     {% endblock %}
                     {% block scripts %}
                         <!-- start: JavaScript-->
