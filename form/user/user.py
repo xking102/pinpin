@@ -5,13 +5,13 @@ from flask import session
 from flask_wtf import Form
 from flask_wtf.html5 import EmailField
 from wtforms import StringField, PasswordField, SubmitField,validators
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, InputRequired
 from module.user.user import User
 from control import pinpin
 from app import db
 
 class LoginForm(Form):
-	email = EmailField('email', validators=[DataRequired(), Email()])
+	email = EmailField('email', description='账号', validators=[DataRequired(), Email()])
 	password = PasswordField('password', validators=[DataRequired()])
 	submit = SubmitField('submit')
 
@@ -30,12 +30,12 @@ class LoginForm(Form):
 
 
 class RegisterForm(Form):
-	email = EmailField('email', validators=[DataRequired(), Email()])
-	password = PasswordField('password', validators=[DataRequired()])
-	nickname = StringField('nickname', validators=[DataRequired()])
+	email = EmailField('email', [InputRequired(),Email(message='邮箱格式错误')])
+	password = PasswordField('New Password', [InputRequired()])
+	nickname = StringField('nickname', [InputRequired()])
 	submit = SubmitField('submit')
 
-	def validate_email(self,field):
+	def validate_password(self,field):
 		email = self.email.data
 		password = self.password.data
 		nickname = self.nickname.data
