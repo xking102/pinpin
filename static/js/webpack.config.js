@@ -5,7 +5,8 @@ module.exports = {
         index : "./index.js",
         hello : './hello.js',
         sidebar: "./sidebar.js",
-        groupsindex: "./groupsindex.js"
+        groupsindex: "./groupsindex.js",
+        my_order_list:"./my_order_list.js"
     },
     output : {
         path : "./build",
