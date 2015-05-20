@@ -46,8 +46,8 @@ jQuery(document).ready(function($){
 });	
 
 $(document).ready(function(){
-		
-			
+
+
 	$("#username").focus(function() {
 		
 		$(this).parent(".input-prepend").addClass("input-prepend-focus");
@@ -55,6 +55,18 @@ $(document).ready(function(){
 	});
 	
 	$("#username").focusout(function() {
+		
+		$(this).parent(".input-prepend").removeClass("input-prepend-focus");
+	
+	});
+
+	$("#email").focus(function() {
+		
+		$(this).parent(".input-prepend").addClass("input-prepend-focus");
+	
+	});
+	
+	$("#email").focusout(function() {
 		
 		$(this).parent(".input-prepend").removeClass("input-prepend-focus");
 	
