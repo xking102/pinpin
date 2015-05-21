@@ -50,5 +50,6 @@ def register():
 def logout():
     session.pop('logged_in', None)
     session.pop('logged_name', None)
+    session.pop('logged_id', None)
     flash('You were logged out')
     return redirect(url_for('group.list_groups'))

@@ -53,34 +53,13 @@ module.exports = React.createClass({
 			
 		];
 		return {
-			orders: []
+			orders: orders
 		}
-	},
-	listOrders:function(){
-		$.ajax({
-            type:'get',
-            url:'/api/v1/u/orders',
-            datetype:'json'
-        }).done(function (resp) {
-        	this.setState({
-            		orders:resp.orders
-            	});
-            console.log(this.state.orders);
-        }.bind(this));
-	},
-	componentDidMount : function(){
-		this.listOrders();
-	},
-	componentWillReceiveProps  : function(){
-		this.listOrders();
 	},
 	render:function(){
 		var orders = this.state.orders;
 		var orderComps = orders.map(function(item){
-			return <OrderItem key={item.id}
-							id={item.id} 
-							gid={item.gid}
-							price={item.unit_price} />
+			return <OrderItem order={item}/>
 
 		});
 		return (
@@ -92,18 +71,21 @@ module.exports = React.createClass({
 					</div>
 
 					<div className="box-content">
-						<div className="row-fluid">
-									<div className="span3">id</div>
-									<div className="span3">title</div>
-									<div className="span3">price</div>
-									<div className="span3">Actions</div>
-								
-							</div>
+						<table className="table table-striped">
+							<thead>
+								<tr>
+									<th>id</th>
+									<th>title</th>
+									<th>price</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
 
-							
+							<tbody>
 								<div>{orderComps}</div>
-							
+							</tbody>
 
+						</table>
 					</div>
 
 
@@ -114,3 +96,6 @@ module.exports = React.createClass({
 		)
 	}
 })
+
+
+

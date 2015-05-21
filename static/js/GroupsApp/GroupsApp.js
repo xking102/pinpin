@@ -43,8 +43,8 @@ module.exports = React.createClass({
             		button_name:'这里以后放分页'
 
             	});
+
         	}
-            
                 
         }.bind(this));
 

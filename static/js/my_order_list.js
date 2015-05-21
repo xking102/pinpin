@@ -2,6 +2,7 @@ var React = require('react');
 var Router = require('react-router');
 var { Route, DefaultRoute, RouteHandler, Link } = Router;
 var MyOrdersApp = require('./MyOrdersApp/OrdersApp');
+var OrderDetailApp = require('./MyOrdersApp/OrderDetailApp');
 
 var App = React.createClass({
 
@@ -24,6 +25,7 @@ var App = React.createClass({
 var routes = (
   <Route handler={App}>
     <DefaultRoute handler={MyOrdersApp}/>
+    <Route name="order" path="order/:gid" handler={OrderDetailApp} />
   </Route>
 );
 

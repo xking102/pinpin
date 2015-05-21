@@ -51,15 +51,13 @@ import urllib2
 
 
 
-# url = 'http://localhost:5000/api/v1/orders'
-# values = {}
-# data = urllib.urlencode(values)
-# print data
-# req = urllib2.Request(url, data)
-# response = urllib2.urlopen(req)
-# the_page = response.read()
-# print the_page
-
+url = 'http://localhost:5000/api/v1/orders'
+values = {}
+data = urllib.urlencode(values)
+print data
+req = urllib2.Request(url, data)
+response = urllib2.urlopen(req)
+print response
 # cart = Shopcart.query.all()
 # for c in cart:
 # 	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt

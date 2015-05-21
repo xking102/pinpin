@@ -19,16 +19,16 @@ class Orders(Resource):
 
 	def post(self):
 		if session.get('logged_in'):
-			gid = request.json['order']['gid']
+			gid = request.json['gid']
 			if gid:
 				status = statusRef.ORDER_APPORVED
 				create_dt = pinpin.getCurTimestamp()
 				create_userid = session.get('logged_id')
-				req_qty = request.json['order']['req_qty']
-				unit_price = request.json['order']['unit_price']
-				total_price = request.json['order']['total_price']
-				actual_price = request.json['order']['actual_price']
-				actual_transfer_fee = request.json['order']['actual_transfer_fee']
+				req_qty = request.json['req_qty']
+				unit_price = request.json['unit_price']
+				total_price = request.json['total_price']
+				actual_price = request.json['actual_price']
+				actual_transfer_fee = request.json['actual_transfer_fee']
 				o = OrderModel()
 				o.gid = gid
 				o.status = status
@@ -41,19 +41,22 @@ class Orders(Resource):
 				o.actual_transfer_fee = actual_transfer_fee
 				o.save
 				return make_response(jsonify({'oid':o.id, 'messages' : 'ok',"status":201}),201)
-			return make_response(jsonify({'messages' : 'fail',"status":404}),404)
-		return make_response(jsonify({'messages' : 'fail',"status":401}),401)
+			return make_response('not exist',404)
+		return make_response('need login',401)
 
 
 class Order(Resource):
 	def get(self, id):
-		order = OrderModel.query.get(id)
-		if order:
-			return jsonify({ "order" : order.to_json,"status":200 })
-		return jsonify({'messages' : 'not exist',"status":404})
+		if session.get('logged_in'):
+			uid = session.get('logged_id')
+			order = OrderModel.query.get(id)
+			if order and order.create_userid == uid:
+				return make_response(jsonify({ "order" : order.to_json}),200)
+			return make_response('not exist',404)
+		return make_response('need login',401)
 
 
-	def post(self, id):
+	def put(self, id):
 		if session.get('logged_in'):
 			uid = session.get('logged_id')
 			order = OrderModel.query.get(id)
@@ -67,7 +70,7 @@ class Order(Resource):
 
 	def delete(self, id):
 		if session.get('logged_in'):
-			o = GroupModel.query.get(id)
+			o = OrderModel.query.get(id)
 			if  o and o.create_userid == session.get('logged_id'):
 				o.status = statusRef.ORDER_CANCEL
 				o.save
@@ -81,6 +84,9 @@ class MyOrders(Resource):
 	def get(self):
 		if session.get('logged_in'):
 			uid = session.get('logged_id')
-			orders =OrderModel.query.filter_by(create_userid=id).all()
-			return jsonify({ "orders" : [o.to_json for o in orders] ,"status":200})
-		return jsonify({'messages' : 'please login',"status":401})
+			orders =OrderModel.query.filter_by(create_userid=uid).all()
+			if orders:
+				return make_response(jsonify({ "orders" : [o.to_json for o in orders]}),200)
+			return make_response('not exist',404)
+		return make_response('need login',401)
+

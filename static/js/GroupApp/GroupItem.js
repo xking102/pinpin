@@ -23,69 +23,45 @@ module.exports = React.createClass({
         if(this.state.query_flag){
             console.log('waiting');
         }else{
-            var order ={
-            gid:this.props.group.id,
-            req_qty:this.state.reqnum,
-            unit_price:this.props.group.unit_price,
-            total_price:this.props.group.unit_price*this.state.reqnum,
-            actual_price:this.props.group.unit_price*this.state.reqnum,
-            actual_transfer_fee:0
-        }
-        this.setState({
-            btn_buy_name:'稍等',
-            query_flag: true
-        });
-        var data = {
-            order:order
-        };
-        $.ajax({
-            type:'post',
-            url:'/api/v1/orders',
-            data:data
-        }).done(function (resp) {
-            console.log(resp);
-            if(resp.status == 201){
-                this.setState({
-                    btn_buy_name:'成功',
-                    query_flag: false,
-                });
-            }
-            else{
-                this.setState({
-                    btn_buy_name:'失败',
-                    query_flag: false
-
-                });
-            }
-            
-                
-        }.bind(this))
-        .error(function (resp){
-          console.log(resp);
           this.setState({
-                    btn_buy_name:'失败',
-                    query_flag: false
-
-                });
-          if(resp.status==401){
-            //window.location.href = '/login';
-            console.log(resp.responseText);
-            var aa = resp.responseText;
-          }else{
-            window.location.href = '/';
-          }
-          
-        }.bind(this));
-        }
-        
-    },
-	render:function(){
-		var group = this.props.group;
+              btn_buy_name:'稍等',
+              query_flag: true
+          });
+          $.ajax({
+              type:'post',
+              url:'/api/v1/orders',
+              contentType: "application/json",
+              data:JSON.stringify({
+                'gid':this.props.group.id,
+                'req_qty':this.state.reqnum,
+                'unit_price':this.props.group.unit_price,
+                'total_price':this.props.group.unit_price*this.state.reqnum,
+                'actual_price':this.props.group.unit_price*this.state.reqnum,
+                'actual_transfer_fee':0
+              })
+          }).success(function (resp) {
+              this.setState({
+                      btn_buy_name:'成功',
+                      query_flag: false,
+                  });
+              window.location.href='/u/order#/'+resp.oid;
+          }.bind(this))
+          .error(function (resp){
+            this.setState({
+                      btn_buy_name:'失败',
+                      query_flag: false
+  
+                  });
+          }.bind(this));
+          }  
+      },
+  render:function(){
+    var group = this.props.group;
         var styleObj={
             width: '45px',
         }
-		return(
-			<div>
+    return(
+      <div>
   
               <div className="box span6">
                 <div className="box-header" data-original-title>
@@ -148,6 +124,6 @@ module.exports = React.createClass({
 
               
             </div>
-		)		
-	}
+    )   
+  }
 })
