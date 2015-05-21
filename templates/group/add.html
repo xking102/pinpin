@@ -1,9 +1,18 @@
 {% extends "layout.html" %}
 {% import "wtf.html" as wtf %}
 {% block content %}
+     <ul class="breadcrumb">
+                        <li>
+                            <i class="icon-home"></i>
+                            <a href="/">首页</a>
+                            <i class="icon-angle-right"></i>
+                        </li>
+                        <li><a href="/groups">我来做团长</a></li>
+                    </ul>
+                    <div class="row-fluid">
     <div class="row-fluid">
         
-        add group
+        {{ wtf.quick_form(form, form_type="basic", button_map={'submit': 'primary'}) }}
      </div>    
     {% endblock %}
     {% block scripts %}
