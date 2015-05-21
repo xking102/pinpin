@@ -7,7 +7,7 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), unique=False)
     desc = db.Column(db.String(250), unique=False)
-    unit_price = db.Column(db.Integer, unique=False)
+    unit_price = db.Column(db.Float, unique=False)
     list_price = db.Column(db.Float, unique=False)
     total_qty = db.Column(db.Integer, unique=False)
     create_dt = db.Column(db.Integer, unique=False)
