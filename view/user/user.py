@@ -16,7 +16,7 @@ user = Blueprint('user',__name__)
 #user logon
 @user.route('/login', methods=['GET', 'POST'])
 def login():
-    if session.get['logged_in']:
+    if session.get('logged_in'):
         return redirect(url_for('group.list_groups'))
     form = LoginForm()
     error = None
@@ -32,7 +32,7 @@ def login():
 #user register
 @user.route('/register', methods=['GET', 'POST'])
 def register():
-    if session.get['logged_in']:
+    if session.get('logged_in'):
         return redirect(url_for('group.list_groups'))
     form = RegisterForm()
     error = None

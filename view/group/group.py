@@ -23,9 +23,8 @@ def list_groups():
 #add group
 @group.route('/groups', methods=['GET','POST'])
 def add_group():
-	if not session.get['logged_in']:
-		return redirect('/login')
+	error = None
 	form = newGroupForm()
-	if request.methods == 'POST' and form.validate_on_submit():
+	if request.method == 'POST' and form.validate_on_submit():
 		return redirect(url_for('group.list_groups'))
 	return render_template('./group/add.html', error=error, form=form)
