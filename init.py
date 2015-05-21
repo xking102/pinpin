@@ -28,22 +28,37 @@ from module.user.userinfo import UserInfo
 
 import arrow
 
+import urllib
+import urllib2
 # db.drop_all()
 # db.create_all()
 
 
 
-utc = arrow.utcnow().to('local')
-print utc
-time = utc.timestamp
-print time
-date =  arrow.get(time)
-date2 = arrow.get(1431916642)
+# utc = arrow.utcnow().to('local')
+# print utc
+# time = utc.timestamp
+# print time
+# date =  arrow.get(time)
+# date2 = arrow.get(1431916642)
 
-print date
-print date2
-print date.humanize(locale="zh")
-print date2.humanize(locale="zh")
+# print date
+# print date2
+# print date.humanize(locale="zh")
+# print date2.humanize(locale="zh")
+
+
+
+
+
+url = 'http://localhost:5000/api/v1/orders'
+values = {}
+data = urllib.urlencode(values)
+print data
+req = urllib2.Request(url, data)
+response = urllib2.urlopen(req)
+the_page = response.read()
+print the_page
 
 # cart = Shopcart.query.all()
 # for c in cart:
