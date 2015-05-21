@@ -26,6 +26,6 @@ def add_group():
 	if not session['logged_in']:
 		return redirect('/login')
 	form = newGroupForm()
-	if request.methods == 'POST' and from.validate_on_submit():
+	if request.methods == 'POST' and form.validate_on_submit():
 		return redirect(url_for('group.list_groups'))
 	return render_template('./group/add.html', error=error, form=form)
