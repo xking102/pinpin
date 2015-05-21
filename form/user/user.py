@@ -5,7 +5,7 @@ from flask import session
 from flask_wtf import Form
 from flask_wtf.html5 import EmailField
 from wtforms import StringField, PasswordField, SubmitField,validators
-from wtforms.validators import DataRequired, Email, InputRequired
+from wtforms.validators import DataRequired, Email, InputRequired, EqualTo
 from module.user.user import User
 from module.user.userinfo import UserInfo
 from control import pinpin
@@ -33,7 +33,7 @@ class LoginForm(Form):
 class RegisterForm(Form):
 	email = EmailField('email', [InputRequired(),Email(message='邮箱格式错误')])
 	password = PasswordField('New Password', 
-				[InputRequired(),,EqualTo('confirm', message='Passwords must match'])
+				[InputRequired() ,EqualTo('confirm', message='Passwords must match')])
 	confirm = PasswordField('Repeat Password',  [InputRequired()])
 	nickname = StringField('nickname', [InputRequired()])
 	submit = SubmitField('submit')
