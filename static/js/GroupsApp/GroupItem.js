@@ -7,7 +7,6 @@ module.exports = React.createClass({
 		var detail_link = '#/group/'+group.id;
         var mod = group.id%3;
         var stylecolor = "greenDark";
-        console.log(mod);
         if(mod == 0){
             stylecolor = "greenDark";
         }else if(mod == 1){

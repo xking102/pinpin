@@ -23,11 +23,10 @@ module.exports = React.createClass({
             		button_name:'加载中'
             	});
 		$.ajax({
-            type:'post',
+            type:'get',
             url:'/api/v1/groups',
             data:data
         }).done(function (resp) {
-        	console.log(resp);
         	if(resp.status === 200){
         		this.setState({
             		groups:resp.groups,
