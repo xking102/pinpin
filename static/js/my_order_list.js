@@ -25,7 +25,7 @@ var App = React.createClass({
 var routes = (
   <Route handler={App}>
     <DefaultRoute handler={MyOrdersApp}/>
-    <Route name="order" path="order/:gid" handler={OrderDetailApp} />
+    <Route name="order" path="order/:oid" handler={OrderDetailApp} />
   </Route>
 );
 

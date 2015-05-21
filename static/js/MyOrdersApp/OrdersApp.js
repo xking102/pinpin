@@ -78,9 +78,7 @@ module.exports = React.createClass({
 		var orders = this.state.orders;
 		var orderComps = orders.map(function(item){
 			return <OrderItem key={item.id}
-							id={item.id} 
-							gid={item.gid}
-							price={item.unit_price} />
+							order={item}  />
 
 		});
 		return (
@@ -93,11 +91,10 @@ module.exports = React.createClass({
 
 					<div className="box-content">
 						<div className="row-fluid">
-									<div className="span3">id</div>
-									<div className="span3">title</div>
-									<div className="span3">price</div>
-									<div className="span3">Actions</div>
-								
+									<div className="span3"><h3>id</h3></div>
+									<div className="span3"><h3>title</h3></div>
+									<div className="span3"><h3>price</h3></div>
+									<div className="span3"><h3>Actions</h3></div>
 							</div>
 
 							
