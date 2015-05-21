@@ -68,7 +68,9 @@ module.exports = React.createClass({
 
                 });
           if(resp.status==401){
-            window.location.href = '/login';
+            //window.location.href = '/login';
+            console.log(resp.responseText);
+            var aa = resp.responseText;
           }else{
             window.location.href = '/';
           }
