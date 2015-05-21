@@ -9,7 +9,7 @@ module.exports = React.createClass({
   	},
 	getInitialState:function(){
 		return {
-			groups: [],
+			group: [],
 			query_flag:'',
 			button_name:'这里以后放分页'
 		}
@@ -25,16 +25,16 @@ module.exports = React.createClass({
             type:'get',
             url:'/api/v1/groups/'+ gid,
         }).done(function (resp) {
-        	if(resp.status == 201){
+        	if(resp.status == 200){
         		this.setState({
-            		groups:resp.groups,
+            		group:resp.group,
             		query_flag:'',
             		button_name:'这里以后放分页'
             	});
         	}
         	else{
         		this.setState({
-            		groups:[],
+            		group:[],
             		pager_display:false,
             		query_flag:'',
             		button_name:'这里以后放分页'
@@ -58,7 +58,7 @@ module.exports = React.createClass({
 			pager_display : this.state.pager_display,
 			query_flag : this.state.query_flag,
 			button_name : this.state.button_name,
-			group : this.state.groups
+			group : this.state.group
 		};
 		return (
 			<div>
