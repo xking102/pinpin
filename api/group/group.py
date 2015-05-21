@@ -38,7 +38,7 @@ class Groups(Resource):
 			g.status = status
 			g.update_dt = update_dt
 			g.save
-			return jsonify({'messages' : 'ok', "status":201})
+			return jsonify({'id':g.id, 'messages' : 'ok', "status":201})
 		return jsonify({'messages' : 'fail', "status":401})
 
 
@@ -57,7 +57,7 @@ class Group(Resource):
 			if  g and g.create_user == session.get('logged_id'):
 				g.status = statusRef.GROUP_CANCEL
 				g.save
-				return jsonify({'messages' : 'ok',"status":201})
+				return jsonify({'gid':g.id, 'messages' : 'ok',"status":201})
 			return jsonify({'messages' : 'not access',"status": 404})
 		return jsonify({'messages' : 'please login',"status":401})
 

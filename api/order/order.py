@@ -40,7 +40,7 @@ class Orders(Resource):
 				o.actual_price = actual_price
 				o.actual_transfer_fee = actual_transfer_fee
 				o.save
-				return make_response(jsonify({'messages' : 'ok',"status":201}),201)
+				return make_response(jsonify({'oid':o.id, 'messages' : 'ok',"status":201}),201)
 			return make_response(jsonify({'messages' : 'fail',"status":404}),404)
 		return make_response(jsonify({'messages' : 'fail',"status":401}),401)
 
@@ -53,6 +53,17 @@ class Order(Resource):
 		return jsonify({'messages' : 'not exist',"status":404})
 
 
+	def post(self, id):
+		if session.get('logged_in'):
+			uid = session.get('logged_id')
+			order = OrderModel.query.get(id)
+			if order and order.create_userid == uid:
+				order.status = request.json['order']['status']
+				order.save
+				return make_response(jsonify({'oid':o.id, 'messages' : 'ok',"status":201}),201)
+			return jsonify({'messages' : 'not access',"status":404})
+		return jsonify({'messages' : 'please login',"status":401})
+
 
 	def delete(self, id):
 		if session.get('logged_in'):
@@ -60,7 +71,7 @@ class Order(Resource):
 			if  o and o.create_userid == session.get('logged_id'):
 				o.status = statusRef.ORDER_CANCEL
 				o.save
-				return jsonify({'messages' : 'ok',"status":201})
+				return jsonify({'oid':o.id, 'messages' : 'ok',"status":201})
 			return jsonify({'messages' : 'not access',"status":404})
 		return jsonify({'messages' : 'please login',"status":401})
 
