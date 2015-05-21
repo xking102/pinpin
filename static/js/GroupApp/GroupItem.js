@@ -43,7 +43,7 @@ module.exports = React.createClass({
             url:'/api/v1/orders',
             data:data
         }).done(function (resp) {
-            console.log(123);
+            console.log(resp);
             if(resp.status == 201){
                 this.setState({
                     btn_buy_name:'成功',
@@ -59,6 +59,20 @@ module.exports = React.createClass({
             }
             
                 
+        }.bind(this))
+        .error(function (resp){
+          console.log(resp);
+          this.setState({
+                    btn_buy_name:'失败',
+                    query_flag: false
+
+                });
+          if(resp.status==401){
+            window.location.href = '/login';
+          }else{
+            window.location.href = '/';
+          }
+          
         }.bind(this));
         }
         
