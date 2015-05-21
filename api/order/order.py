@@ -14,7 +14,7 @@ from module.order.order import Order as OrderModel
 class Orders(Resource):
 	def get(self):
 		orders = OrderModel.query.all()
-		return jsonify({ "orders" : [o.to_json for o in orders],"status":200 })
+		return make_response(jsonify({ "orders" : [o.to_json for o in orders],"status":200 }),200)
 
 
 	def post(self):
@@ -40,9 +40,9 @@ class Orders(Resource):
 				o.actual_price = actual_price
 				o.actual_transfer_fee = actual_transfer_fee
 				o.save
-				return jsonify({'messages' : 'ok',"status":201})
-			return jsonify({'messages' : 'fail',"status":404})
-		return jsonify({'messages' : 'fail',"status":401})
+				return make_response(jsonify({'messages' : 'ok',"status":201}),201)
+			return make_response(jsonify({'messages' : 'fail',"status":404}),404)
+		return make_response(jsonify({'messages' : 'fail',"status":401}),401)
 
 
 class Order(Resource):
