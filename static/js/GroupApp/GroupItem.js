@@ -5,96 +5,133 @@ module.exports = React.createClass({
     getInitialState : function(){
         return{
             reqnum : 1,
-            amount : 30
+            btn_buy_name: '购买',
+            query_flag: false
         }    
     },
     handlerReqnum:function(e){
         var newval  = e.target.value;
         if(newval > 0){
-            if(newval<=this.state.amount){
+            if(newval<=this.props.group.total_qty){
                 this.setState({
-                    reqnum : newval
+                    reqnum : parseInt(newval)
                 })
             }
         }
     },
+    handlerOrder:function(e){
+        if(this.state.query_flag){
+            console.log('waiting');
+        }else{
+            var order ={
+            gid:this.props.group.id,
+            req_qty:this.state.reqnum,
+            unit_price:this.props.group.unit_price,
+            total_price:this.props.group.unit_price*this.state.reqnum,
+            actual_price:this.props.group.unit_price*this.state.reqnum,
+            actual_transfer_fee:0
+        }
+        this.setState({
+            btn_buy_name:'稍等',
+            query_flag: true
+        });
+        var data = {
+            order:order
+        };
+        console.log(data);
+        $.ajax({
+            type:'post',
+            url:'/api/v1/orders/',
+            data:data
+        }).done(function (resp) {
+            console.log(resp.status);
+            if(resp.status == 201){
+                this.setState({
+                    btn_buy_name:'成功',
+                    query_flag: false,
+                });
+            }
+            else{
+                this.setState({
+                    btn_buy_name:'失败',
+                    query_flag: false
+
+                });
+            }
+            
+                
+        }.bind(this));
+        }
+        
+    },
 	render:function(){
 		var group = this.props.group;
+        var styleObj={
+            width: '45px',
+        }
 		return(
 			<div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <h1>Product Name</h1>
-                    </div>
+  
+              <div className="box span6">
+                <div className="box-header" data-original-title>
+                  <h2>
+                  <i className="halflings-icon picture"></i>
+                  <span className="break"></span>
+                  {group.title}</h2>
                 </div>
-
-                <div className="row">
-                    <div className="col-md-7">
-                        <div className="panel panel-default">
-                             <div className="panel-heading">
-                                <div className="panel-title">Product Images</div>
-                            </div>
-                            <div className="panel-body">
-                                 <img alt="550x400" src="/static/imgs/groups/620x400.gif" />
-                            </div>
-                        </div>
-                    </div>
-
-                     <div className="col-md-5">
-                        <div className="panel panel-default">
-                             <div className="panel-heading">
-                                <div className="panel-title">Product Name</div>
-                            </div>
-                            <div className="panel-body">
-                                 <div className="col-md-12">
-                                    <h4>description</h4>
-                                    <p className="muted">
-                                    Cras justo odio, dapibus ac facilisis in, egestas eget quam.Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-                                    </p>
-                                 </div>
-                                 <div className="col-md-12">
-                                        <div className="row"><div className="col-md-5"><label>原到手价格：</label></div><div className="col-md-7"><s>￥200</s></div></div>
-                                        <div className="row"><div className="col-md-5"><label>拼团价格：</label></div><div className="col-md-7"><strong>￥120</strong></div></div>
-                                        <div className="row"><div className="col-md-5"><label>剩余拼团数量：</label></div><div className="col-md-7"><strong>35</strong></div></div>
-                                 </div>
-                                 <div className="col-md-12">
-                                    <div className="col-md-3">
-                                        <input className="form-control"  type="number" value={this.state.reqnum} onChange={this.handlerReqnum} />
-                                 
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <a href="#"className="btn btn-danger">购买</a>
-                                 
-                                    </div>
-
-                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
+            
+                <div className="box-content">
+                  <img className="grayscale" src="/static/imgs/groups/2.png" alt="Sample Image 1"/>
                 </div>
-
-
-
-            <div className="col-md-4">
-                <div className="panel panel-default">
-                    <div className="panel-heading">
-                    <div className="panel-title">FAQ</div>
+            
+              </div>
+            
+            
+              <div className="box span4">
+                
+                <div className="box-header" data-original-title>
+                  <h2>
+                  <i className="halflings-icon list-alt"></i>
+                  <span className="break"></span>
+                  购买信息</h2>
                 </div>
-                    <div className="panel-body">
-                       <li>1</li>
-                       <li>2</li>
-                       <li>3</li>
-                       <li>4</li>
-                       <li>5</li>
-                       <li>6</li>
+            
+                <div className="box-content">
+                  <h3>到手价：{group.unit_price}</h3>
+                  <h3>原价：{group.list_price}</h3>
+                  <h3>剩余数：{group.total_qty}</h3>
+                  <div className="row-fluid">
+            
+                    <div className="span2">
+                      <input  style={styleObj} type="number" value={this.state.reqnum} onChange={this.handlerReqnum} />
                     </div>
+            
+                    <div className="span2">
+                      <a href="#" onClick={this.handlerOrder} className="btn btn-danger">{this.state.btn_buy_name}</a>
                     </div>
-             </div>
-                 
+                    
+                  </div>
+            
+                </div>
+                
+              </div>
 
 
+              <div className="box span10">
+                <div className="box-header" data-original-title>
+                  <h2>
+                  <i className="halflings-icon book"></i>
+                  <span className="break"></span>
+                  详细描述</h2>
+                </div>
+            
+                <div className="box-content">
+                 {group.desc}
+                </div>
+            
+              </div>
+
+              
             </div>
 		)		
 	}
