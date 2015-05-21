@@ -6,6 +6,7 @@ from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group
+from form.group.group import newGroupForm
 from app import db
 
 
@@ -16,3 +17,15 @@ group = Blueprint('group',__name__)
 @group.route('/')
 def list_groups():
 	return render_template("./group/index.html")
+
+
+
+#add group
+@group.route('/groups', methods=['GET','POST'])
+def add_group():
+	if not session['logged_in']:
+		return redirect('/login')
+	form = newGroupForm()
+	if request.methods == 'POST' and from.validate_on_submit():
+		return redirect(url_for('group.list_groups'))
+	return render_template('./group/add.html', error=error, form=form)
