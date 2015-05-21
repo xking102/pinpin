@@ -31,6 +31,7 @@ Bootstrap(app)
 from view.group.group import group
 from view.user.user import user
 from view.order.order import order
+from view.other.other import other
 
 from api.group.group import Groups,Group,MyGroups
 from api.order.order import Orders,Order,MyOrders
@@ -41,6 +42,7 @@ from api.user.useraddress import MyAddresses,MyAddress
 app.register_blueprint(user)
 app.register_blueprint(group)
 app.register_blueprint(order)
+app.register_blueprint(other)
 # app.register_blueprint(shopcart, url_prefix='/shopcart')
 # app.register_blueprint(admin, url_prefix='/admin')
 # app.register_blueprint(search, url_prefix='/search')
