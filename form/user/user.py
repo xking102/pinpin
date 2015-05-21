@@ -75,7 +75,7 @@ class ModifyPasswordForm(Form):
 	def validate_password(self, field):
 		old_password = self.old_password.data
 		password = self.password.data
-		uid = session['logged_id']
+		uid = session.get('logged_id')
 		user  = User.query.get(uid)
 		if pinpin.getmd5(old_password) != user.password:
 			raise ValueError('password is wrong')
