@@ -38,13 +38,12 @@ module.exports = React.createClass({
         var data = {
             order:order
         };
-        console.log(data);
         $.ajax({
             type:'post',
-            url:'/api/v1/orders/',
+            url:'/api/v1/orders',
             data:data
         }).done(function (resp) {
-            console.log(resp.status);
+            console.log(123);
             if(resp.status == 201){
                 this.setState({
                     btn_buy_name:'成功',
