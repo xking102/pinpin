@@ -7,12 +7,13 @@ from flask_wtf.html5 import EmailField
 from wtforms import StringField, PasswordField, SubmitField,validators
 from wtforms.validators import DataRequired, Email, InputRequired
 from module.user.user import User
+from module.user.userinfo import UserInfo
 from control import pinpin
 from app import db
 
 class LoginForm(Form):
-	email = EmailField('email', description='账号', validators=[DataRequired(), Email()])
-	password = PasswordField('password', validators=[DataRequired()])
+	email = EmailField('email', [InputRequired(),Email(message='邮箱格式错误')])
+	password = PasswordField('password', [InputRequired()])
 	submit = SubmitField('submit')
 
 	def validate_password(self, field):
@@ -20,18 +21,20 @@ class LoginForm(Form):
 		password = self.password.data
 		user = User.query.filter_by(email=email).first()
 		if not user:
-			raise ValueError(('Wrong email'))
+			raise ValueError(('账号不存在'))
 		else:
 			if pinpin.getmd5(password) == user.password:
 				self.user = user
 				return user
 			else:
-				raise ValueError(('Wrong password'))
+				raise ValueError(('错误的密码'))
 
 
 class RegisterForm(Form):
 	email = EmailField('email', [InputRequired(),Email(message='邮箱格式错误')])
-	password = PasswordField('New Password', [InputRequired()])
+	password = PasswordField('New Password', 
+				[InputRequired(),,EqualTo('confirm', message='Passwords must match'])
+	confirm = PasswordField('Repeat Password',  [InputRequired()])
 	nickname = StringField('nickname', [InputRequired()])
 	submit = SubmitField('submit')
 
@@ -41,24 +44,31 @@ class RegisterForm(Form):
 		nickname = self.nickname.data
 		user = User.query.filter_by(email=email).first()
 		if user:
-			raise ValueError('Exist email!')
+			raise ValueError('账号已被人注册，请更换')
 		else:
-			u = User(nickname, email, pinpin.getmd5(password))
-			db.session.add(u)
-			db.session.commit()
+			u = User()
+			u.nickname = nickname
+			u.password = pinpin.getmd5(password)
+			u.email = email
+			u.reg_dt = pinpin.getCurTimestamp()
+			u.update_dt = pinpin.getCurTimestamp()
+			u.save
 			user = User.query.filter_by(email=email).first()
 			self.user = user
+			info = UserInfo()
+			info.uid = user.id
+			info.avatar = '/static/imgs/avatar.jpg'
+			info.save
 			return user
-		return ValueError('Something wrong')
+		return ValueError('发生了奇怪的错误')
 
 
 class ModifyPasswordForm(Form):
-	old_password = PasswordField('Old password', validators=[DataRequired()])
-	password = PasswordField('New Password', [
-		validators.DataRequired(),
-		validators.EqualTo('confirm', message='Passwords must match')
+	old_password = PasswordField('Old password', [InputRequired()])
+	password = PasswordField('New Password', 
+				[InputRequired(),EqualTo('confirm', message='Passwords must match')
 	])
-	confirm = PasswordField('Repeat Password',  validators=[DataRequired()])
+	confirm = PasswordField('Repeat Password',  [InputRequired()])
 	submit = SubmitField('modify')
 
 
@@ -71,8 +81,7 @@ class ModifyPasswordForm(Form):
 			raise ValueError('password is wrong')
 		else:
 			user.password = pinpin.getmd5(password)
-			print password
-			user.save()
+			user.save
 			self.user = user
 			return user
 		return ValueError('Something wrong')
