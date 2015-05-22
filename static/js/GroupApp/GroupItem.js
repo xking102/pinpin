@@ -44,7 +44,7 @@ module.exports = React.createClass({
                       btn_buy_name:'成功',
                       query_flag: false,
                   });
-              window.location.href='/u/order#/'+resp.oid;
+              window.location.href='/u/order#/'+resp.oid+'/pay';
           }.bind(this))
           .error(function (resp){
             this.setState({
