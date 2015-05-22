@@ -1,8 +1,0 @@
-﻿{% extends "layout.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% block content %}
-	<div class="container">
-		<h1>Register</h1>
-		{{ wtf.quick_form(form, button_map={'submit_button': 'primary'}) }}
-	</div>
-{% endblock %}
