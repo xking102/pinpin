@@ -16,3 +16,5 @@ order = Blueprint('order',__name__)
 @order.route('/u/order')
 def list_u_orders():
 	return render_template("./order/order_list.html")
+
+
