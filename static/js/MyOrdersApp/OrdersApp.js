@@ -4,54 +4,6 @@ var OrderItem = require('./OrderItem');
 
 module.exports = React.createClass({
 	getInitialState:function(){
-		var orders = [
-			{
-				id: 1,
-				title:'订单1',
-				price: 137
-			},
-			{
-				id: 2,
-				title:'订单2',
-				price: 137
-			},
-			{
-				id: 3,
-				title:'订单3',
-				price: 137
-			},
-			{
-				id: 4,
-				title:'订单4',
-				price: 137
-			},
-			{
-				id: 5,
-				title:'订单5',
-				price: 137
-			},
-			{
-				id: 6,
-				title:'订单6',
-				price: 137
-			},
-			{
-				id: 7,
-				title:'订单7',
-				price: 137
-			},
-			{
-				id: 8,
-				title:'订单8',
-				price: 137
-			},
-			{
-				id: 9,
-				title:'订单9',
-				price: 137
-			}
-			
-		];
 		return {
 			orders: []
 		}
