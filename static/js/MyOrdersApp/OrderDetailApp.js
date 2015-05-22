@@ -2,13 +2,7 @@ var React = require('react');
 
 
 module.exports = React.createClass({
-	contextTypes: {
-    	router: React.PropTypes.func.isRequired
-  	},
 	render:function(){
-		var params = this.context.router.getCurrentParams();
-		var oid = params.oid;
-		console.log(oid);
 		return (
 			<div className="row-fluid sortable">
 
@@ -18,21 +12,19 @@ module.exports = React.createClass({
 					</div>
 
 					<div className="box-content">
-						<table className="table table-striped">
-							<thead>
-								<tr>
-									<th>id</th>
-									<th>title</th>
-									<th>price</th>
-									<th>Actions</th>
-								</tr>
-							</thead>
+						<div className="row-fluid">
+							<div>id</div>
+							<div>title</div>
+							<div>price</div>
+							<div>Actions</div>
+								
+						</div>
+						<div className="row-fluid">
+								<div>{this.props.oid}</div>
+						</div>
+						
 
-							<tbody>
-								<div>{oid}</div>
-							</tbody>
-
-						</table>
+					
 					</div>
 
 

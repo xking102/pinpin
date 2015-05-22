@@ -17,7 +17,6 @@ module.exports = React.createClass({
         	this.setState({
             		orders:resp.orders
             	});
-            console.log(this.state.orders);
         }.bind(this));
 	},
 	componentDidMount : function(){
@@ -31,7 +30,6 @@ module.exports = React.createClass({
 		var orderComps = orders.map(function(item){
 			return <OrderItem key={item.id}
 							order={item}  />
-
 		});
 		return (
 			<div className="row-fluid sortable">
