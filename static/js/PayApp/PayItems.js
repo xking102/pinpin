@@ -9,14 +9,15 @@ module.exports = React.createClass({
 		var order = this.props.order;
 		return (
 			<div>
+				<div>
 
-				<OrderItem order={order} />
-			</div>
+					<OrderItem order={order} />
+				</div>
 
-			<div>
-				<PayItem />
-			</div>
-
+				<div>
+					<PayItem />
+				</div>
+			</div>	
 		)
 	}
 })
