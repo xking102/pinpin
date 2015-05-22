@@ -54,3 +54,4 @@ docs/_build/
 # PyBuilder
 target/
 static/js/node_modules/
+static/js/build/
