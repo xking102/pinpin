@@ -22,14 +22,14 @@ def list_u_orders():
 
 
 #user payment the order
-@order.route('/order_pay/<int:oid>')
+@order.route('/order_pay/<int:oid>', methods=['PUT'])
 def order_pay(oid):
 	if session.get('logged_in'):
 		uid = session.get('logged_id')
 		order = Order.query.get(oid)
 		if order and order.create_userid == uid and is_pay(oid):
-			o.status = statusRef.ORDER_PAIED
-			o.save
+			order.status = statusRef.ORDER_PAIED
+			order.save
 			return make_response('payment succ',201)
 		return make_response('no permission',404)
 	return make_response('need login',401)
