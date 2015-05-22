@@ -5,7 +5,7 @@ var PayItems = require('./PayItems');
 module.exports = React.createClass({
 	getInitialState:function(){
 		return {
-			orders: []
+			order: []
 		}
 	},
 	listOrders:function(){
@@ -15,7 +15,7 @@ module.exports = React.createClass({
             datetype:'json'
         }).done(function (resp) {
         	this.setState({
-            		orders:resp.orders
+            		order:resp.order
             	});
         }.bind(this));
 	},
@@ -26,15 +26,9 @@ module.exports = React.createClass({
 		this.listOrders();
 	},
 	render:function(){
-		var orders = this.state.orders;
-		var payComps = orders.map(function(item){
-			return <PayItems key={item.id}
-							order={item}  />
-
-		});
 		return (
 			<div className="row-fluid">		
-				<div>{payComps}</div>
+				<div><PayItems order={this.state.order} /></div>
 			</div>
 
 		)

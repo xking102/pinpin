@@ -8,16 +8,19 @@ module.exports = React.createClass({
 	render:function(){
 		var order = this.props.order;
 		return (
-			<div>
-				<div>
+			<div className="row-fluid sortable">
 
-					<OrderItem order={order} />
+				<div className="box span6">
+					<OrderItem order={this.props.order} />
+					
 				</div>
 
-				<div>
-					<PayItem />
+				<div className="box span4">
+					<PayItem order={this.props.order} />
+					
 				</div>
-			</div>	
+
+			</div>
 		)
 	}
 })
