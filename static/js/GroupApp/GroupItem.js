@@ -55,7 +55,19 @@ module.exports = React.createClass({
           }.bind(this));
           }  
       },
-
+  componentDidMount: function() {
+    if($('.timeline')) {
+    
+        $('.timeslot').each(function(){
+          
+          var timeslotHeight = $(this).find('.task').outerHeight();
+          
+          $(this).css('height',timeslotHeight);
+          
+        });
+    
+    }
+  },
   render:function(){
     var group = this.props.group;
     var styleObj={

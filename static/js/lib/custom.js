@@ -2280,16 +2280,6 @@ function widthFunctions(e) {
 		
 	}
 	
-	if($('.timeline')) {
-		
-		$('.timeslot').each(function(){
-			
-			var timeslotHeight = $(this).find('.task').outerHeight();
-			
-			$(this).css('height',timeslotHeight);
-			
-		});
-		
-	}
+
 
 }
