@@ -109,11 +109,11 @@ module.exports = React.createClass({
             <h3>剩余数：{group.total_qty}</h3>
             <div className="row-fluid">
               
-              <div className="span2">
+              <div className="span12">
                 <input  style={styleObj} type="number" value={this.state.reqnum} onChange={this.handlerReqnum} />
               </div>
               
-              <div className="span2">
+              <div className="span11">
                 <a href="#" onClick={this.handlerOrder} className="btn btn-danger">{this.state.btn_buy_name}</a>
               </div>
               
