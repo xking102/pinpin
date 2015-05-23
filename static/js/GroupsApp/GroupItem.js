@@ -16,7 +16,7 @@ module.exports = React.createClass({
         };
         stylecolor = "circleStatsItemBox " + stylecolor;
 		return(
-			<div className="span2">
+			<div className="span3">
                 <div className={stylecolor}>
                     <div className="header">{group.title}</div>
                     <div className="circleStat">
