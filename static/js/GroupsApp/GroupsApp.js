@@ -55,7 +55,8 @@ module.exports = React.createClass({
 	render:function(){
 		var groups = this.state.groups;
 		var groupComps = groups.map(function(item){
-			return <GroupItem group={item}/>
+			return <GroupItem key={item.id} 
+							group={item}/>
 
 		});
 		var pager_props = {
