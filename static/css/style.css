@@ -2144,12 +2144,12 @@ div.uploader{
 	height: 16px;
 	width: 16px;
 	position: absolute !important;
-	background: url("../img/slider_r8.png") no-repeat center center scroll #f4f4f4 !important;
-	background: url("../img/slider_r8.png") no-repeat center center scroll, -webkit-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
-	background: url("../img/slider_r8.png") no-repeat center center scroll, -moz-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
-	background: url("../img/slider_r8.png") no-repeat center center scroll, -o-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
-	background: url("../img/slider_r8.png") no-repeat center center scroll, -ms-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
-	background: url("../img/slider_r8.png") no-repeat center center scroll, linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
+	background: url("/static/imgs/slider_r8.png") no-repeat center center scroll #f4f4f4 !important;
+	background: url("/static/imgs/slider_r8.png") no-repeat center center scroll, -webkit-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
+	background: url("/static/imgs/slider_r8.png") no-repeat center center scroll, -moz-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
+	background: url("/static/imgs/slider_r8.png") no-repeat center center scroll, -o-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
+	background: url("/static/imgs/slider_r8.png") no-repeat center center scroll, -ms-linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
+	background: url("/static/imgs/slider_r8.png") no-repeat center center scroll, linear-gradient(top , #F4F4F4 0%, #F7F7F7 100%) !important;
 	margin-top: -1px !important;
 	outline: none !important;
 }
@@ -2599,7 +2599,7 @@ footer {
 /* Typography - Blockquote
 =================================================================== */	
 blockquote {
-	background: url(../img/quote.png) no-repeat 0px 10px;
+	background: url(/static/imgs/quote.png) no-repeat 0px 10px;
 	font-style: italic;
 	border-left: none;
 	padding: 0 0 0 30px;
@@ -2837,7 +2837,7 @@ ul.messagesList li span.date {
 	width: auto;
 	height: 100%;
 	margin: 20px auto; 
-	background: url(../img/timeline-bg.png) repeat-y center top; 
+	background: url(/static/imgs/timeline-bg.png) repeat-y center top; 
 }
 
 .timeslot {
@@ -2891,7 +2891,7 @@ ul.messagesList li span.date {
 	right: 0px;
 	height: 20px;
 	width: 20px;
-	background: url(../img/timeline-left-arrow.png) no-repeat;
+	background: url(/static/imgs/timeline-left-arrow.png) no-repeat;
 }
 
 .timeslot.alt .task .arrow {
@@ -2900,7 +2900,7 @@ ul.messagesList li span.date {
 	left: 0px;
 	height: 20px;
 	width: 20px;
-	background: url(../img/timeline-right-arrow.png) no-repeat;
+	background: url(/static/imgs/timeline-right-arrow.png) no-repeat;
 }
 
 .timeslot .icon {
@@ -2948,32 +2948,32 @@ ul.messagesList li span.date {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
 	
 	.timeslot .task .arrow {
-		background: url(../img/timeline-left-arrow@2x.png) no-repeat;
+		background: url(/static/imgs/timeline-left-arrow@2x.png) no-repeat;
 		background-size: 100%;
 	}
 	
 	.timeslot.alt .task .arrow {
-		background: url(../img/timeline-right-arrow@2x.png) no-repeat;
+		background: url(/static/imgs/timeline-right-arrow@2x.png) no-repeat;
 		background-size: 100%;
 	}
 	
 	ul.chat li.left .message .arrow {
-		background: url(../img/chat-left@2x.png) no-repeat 0px 0px;
+		background: url(/static/imgs/chat-left@2x.png) no-repeat 0px 0px;
 		background-size: 100%;
 	}
 
 	ul.chat li.right .message .arrow {
-		background: url(../img/chat-right@2x.png) no-repeat 0px 0px;
+		background: url(/static/imgs/chat-right@2x.png) no-repeat 0px 0px;
 		background-size: 100%;
 	}
 	
 	ul.chat.metro li.left .message .arrow {
-		background: url(../img/chat-left-metro@2x.png) no-repeat 0px 0px;
+		background: url(/static/imgs/chat-left-metro@2x.png) no-repeat 0px 0px;
 		background-size: 100%;
 	}
 
 	ul.chat.metro li.right .message .arrow {
-		background: url(../img/chat-right-metro@2x.png) no-repeat 0px 0px;
+		background: url(/static/imgs/chat-right-metro@2x.png) no-repeat 0px 0px;
 		background-size: 100%;
 	}
     
