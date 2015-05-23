@@ -265,6 +265,11 @@ hr {
 	margin-left: 0px !important;
 }
 
+.noMarginRight {
+	margin-right: 0px !important;
+}
+
+
 h1 {
 	font-size: 32px;
 	line-height: 32px;
@@ -2529,7 +2534,7 @@ footer {
 	background: #67C2EF;
 	width:100%;
 	min-width: 130px; 
-	height: 160px;
+	height: 300px;
 	padding-top: 40px;
 	margin-bottom: 28px;
 }
