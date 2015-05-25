@@ -39,3 +39,13 @@ class UserAddress(db.Model):
         else:
             db.session.commit()
             return 'update'
+
+
+    @property
+    def delete(self):
+        if self.id:
+            db.session.delete(self)
+            db.session.commit()
+            return 'delete'
+        else:
+            return 'None'
