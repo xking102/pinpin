@@ -7,14 +7,14 @@ from app import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from module.user.useraddress import UserAddress as UserAddressModel
-from control.useraddress import setisDefaultfromTruetoFalse
+from view.user import user
 
 
 
 class MyAddresses(Resource):
 	def get(self):
 		addresses = UserAddressModel.query.all()
-		return jsonify({ "addresses" : [a.to_json for a in addresses] ,"status":200})
+		return make_response(jsonify({ "addresses" : [a.to_json for a in addresses]}),200)
 
 
 	def post(self):
@@ -22,7 +22,7 @@ class MyAddresses(Resource):
 			uid = session.get('logged_id')
 			isDefault = request.json['address']['isDefault']
 			if isDefault:
-				setisDefaultfromTruetoFalse(uid)
+				setAddressDefault(uid)
 			address_line1 = request.json['address']['address_line1']
 			address_line2 = request.json['address']['address_line2']
 			tel = request.json['address']['tel']
@@ -39,16 +39,16 @@ class MyAddresses(Resource):
 			a.update_dt = update_dt
 			a.isDefault = isDefault
 			a.save
-			return jsonify({'messages' : 'ok', "status":201})
-		return jsonify({'messages' : 'fail',"status":401})
+			return make_response(jsonify({'id':a.id,'messages' : 'ok'}),201)
+		return make_response(jsonify({'messages' : 'fail',"status":401}),401)
 
 
 class MyAddress(Resource):
 	def get(self, id):
 		a = UserAddressModel.query.get(id)
 		if a:
-			return jsonify({ "address" : a.to_json,"status":201 })
-		return jsonify({'messages' : 'not exist',"status":404})
+			return make_response(jsonify({ "address" : a.to_json}),200)
+		return make_response(jsonify({'messages' : 'not exist'}),404)
 
 
 
@@ -58,8 +58,8 @@ class MyAddress(Resource):
 			isDefault = request.json['address']['isDefault']
 			a = UserAddressModel.query.get(id)
 			if a and a.uid == uid:
-				if isDefault:
-					setisDefaultfromTruetoFalse(uid)
+				if isDefault and a.isDefault == False:
+					setAddressDefault(uid)
 				address_line1 = request.json['address']['address_line1']
 				address_line2 = request.json['address']['address_line2']
 				tel = request.json['address']['tel']
@@ -72,9 +72,9 @@ class MyAddress(Resource):
 				a.update_dt = update_dt
 				a.isDefault = isDefault
 				a.save
-				return jsonify({'messages' : 'ok', "status":201})
-			return jsonify({'messages' : 'fail',"status":404})
-		return jsonify({'messages' : 'need login',"status":401})
+				return make_response(jsonify({'messages' : 'ok'}),201)
+			return make_response(jsonify({'messages' : 'fail'}),404)
+		return make_response(jsonify({'messages' : 'need login'}),401)
 
 
 
@@ -82,10 +82,9 @@ class MyAddress(Resource):
 		if session.get('logged_in'):
 			a = UserAddressModel.query.get(id)
 			if  a and a.create_user == session.get('logged_id'):
-				a.status = statusRef.GROUP_CANCEL
-				a.save
-				return jsonify({'messages' : 'ok',"status":201})
-			return jsonify({'messages' : 'not access',"status":404})
-		return jsonify({'messages' : 'please login',"status":401})
+				a.delete
+				return make_response(jsonify({'messages' : 'ok'}),201)
+			return make_response(jsonify({'messages' : 'not access'}),404)
+		return make_response(jsonify({'messages' : 'please login'}),401)
 
 
