@@ -2978,3 +2978,32 @@ ul.messagesList li span.date {
 	}
     
 }
+
+
+/* pagetop
+=================================================================== */
+.pagetop {
+  position: fixed;
+  right: 24px;
+
+}
+.pagetop a {
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: #3A3A3A;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.8;
+}
+.pagetop a:after {
+  line-height: 1.5;
+  font-family: 'FontAwesome';
+  content: "\f106";
+  font-size: 28px;
+  position: absolute;
+  right: 11px;
+  top: -2px;
+}

@@ -2283,3 +2283,55 @@ function widthFunctions(e) {
 
 
 }
+
+
+//<!-- ページトップへスクロールアップ -->
+//notes: needs jQuery
+jQuery(function($) {
+  var isDisplayed = false;
+  var pagetop = $('.pagetop');
+
+  $(window).scroll(function () {    
+    if ( $(window).scrollTop() / $(window).height() > 0.80) {
+      //スクロールの位置がwindow上部80%の範囲を超えた場合に表示
+      if (isDisplayed === false) {
+        isDisplayed = true;
+        pagetop.stop().animate({
+            'bottom': '45px'
+        }, {
+          duration: 200
+        });
+      }
+    } else {
+      //それ以外のスクロールの位置の場合は非表示
+      hidePageTop();
+    }
+  });
+  
+  //windowサイズが変わった場合も非表示
+  $(window).resize(function () {
+    hidePageTop();
+  });
+  
+  function hidePageTop () {
+    if (isDisplayed) {
+      isDisplayed = false;
+      pagetop.stop().animate({
+          'bottom': '-50px'
+      }, {
+        duration: 200
+      });
+    }
+  }
+  
+  pagetop.click(function () {
+    // Scroll 'em to top!
+    $('body, html').animate({ 
+      scrollTop: 0
+    }, {
+      duration: 500
+    });
+    return false;
+  });
+  
+});
