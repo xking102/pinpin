@@ -6,6 +6,7 @@ from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
 from module.user.user import User
+from module.user.useraddress import UserAddress
 from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
 from app import db
 
@@ -53,3 +54,14 @@ def logout():
     session.pop('logged_id', None)
     flash('You were logged out')
     return redirect(url_for('group.list_groups'))
+
+
+
+
+def setAddressDefault(uid):
+    address = UserAddressModel.querey.filter_by(uid=uid,isDefault=True).first()
+    if address:
+        address.isDefault = False
+        address.save
+    return None
+
