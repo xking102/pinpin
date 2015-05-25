@@ -68,8 +68,8 @@ api.add_resource(MyOrders, '/u/orders', methods=['GET'])
 api for user
 """
 api.add_resource(MyUserInfo, '/u', methods=['GET','PUT'])
-api.add_resource(MyAddresses, '/uadds', methods=['GET','POST'])
-api.add_resource(MyAddress, '/uadds/<int:id>', methods=['GET','PUT'])
+api.add_resource(MyAddresses, '/u/address', methods=['GET','POST'])
+api.add_resource(MyAddress, '/u/address/<int:id>', methods=['GET','PUT','DELETE'])
 
 app.register_blueprint(api_bp, url_prefix='/api/v1')
 
