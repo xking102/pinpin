@@ -8,7 +8,8 @@ module.exports = React.createClass({
 			btn_name: '确认付款',
 			query_flag: false,
 			result:false,
-			message:''
+			message:'',
+      isPay:false
 		}
 	},
 	handlerPay: function(){
@@ -28,9 +29,9 @@ module.exports = React.createClass({
                       btn_name:'付款成功',
                       query_flag: true,
                       result:true,
+                      isPay:true,
                       message:'{"text":"支付成功","layout":"bottomLeft","type":"information"}'
                   });
-              document.getElementById("pay").click();
           }.bind(this))
           .error(function (resp){
             this.setState({
@@ -39,7 +40,6 @@ module.exports = React.createClass({
                       message:'{"text":"支付失败","layout":"bottomLeft","type":"information"}'
   
                   });
-           	document.getElementById("pay").click();
           }.bind(this));
           }
 	},
@@ -47,15 +47,23 @@ module.exports = React.createClass({
         var styleObj={
             display: 'block',
          };
-        if(this.state.result||this.props.order.status==25){
-            styleObj={
-                display: 'none',
-            };
-        }else{
-            styleObj={
-                
-            };
-        }
+        var PayContent = this.state.isPay||this.props.order.status==25 ? 
+       <div>
+ <div className="row-fluid">
+            已支付 {this.props.order.total_price}
+          </div>
+ <a   href="/" className="btn btn-danger">去看看别的</a>   
+       </div> :
+         <div>
+ <div className="row-fluid">
+            共需要支付 {this.props.order.total_price}
+          </div>
+
+            
+          <div className="row-fluid">
+            <a href="#"  onClick={this.handlerPay} className="btn btn-danger">{this.state.btn_name}</a>   
+          </div>
+       </div> ;
 		return (
 			<div>
 				<div className="box-header" data-original-title>
@@ -67,15 +75,7 @@ module.exports = React.createClass({
 				</div>
 
 				<div className="box-content">
-					<div className="row-fluid">
-						共需要支付 {this.props.order.total_price}
-					</div>
-
-						
-					<div className="row-fluid">
-						<a href="#" id='pay' data-noty-options={this.state.message} style={styleObj}  onClick={this.handlerPay} className="btn btn-danger noty">{this.state.btn_name}</a>		
-					</div>
-
+					{PayContent}
 						
 
 				</div>
