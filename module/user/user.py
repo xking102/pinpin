@@ -11,18 +11,16 @@ class User(db.Model):
     reg_dt = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)
 
-
     @property
     def to_json(self):
         return {
-            'id' : self.id,
-            'nickname' : self.nickname,
-            'email' : self.email,
-            'password' : self.password,
-            'reg_dt' : self.reg_dt,
-            'update_dt' : self.update_dt
+            'id': self.id,
+            'nickname': self.nickname,
+            'email': self.email,
+            'password': self.password,
+            'reg_dt': self.reg_dt,
+            'update_dt': self.update_dt
         }
-
 
     @property
     def save(self):

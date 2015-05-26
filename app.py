@@ -33,10 +33,10 @@ from view.user.user import user
 from view.order.order import order
 from view.other.other import other
 
-from api.group.group import Groups,Group,MyGroups
-from api.order.order import Orders,Order,MyOrders
+from api.group.group import Groups, Group, MyGroups
+from api.order.order import Orders, Order, MyOrders
 from api.user.user import MyUserInfo
-from api.user.useraddress import MyAddresses,MyAddress
+from api.user.useraddress import MyAddresses, MyAddress
 
 
 app.register_blueprint(user)
@@ -48,28 +48,28 @@ app.register_blueprint(other)
 # app.register_blueprint(search, url_prefix='/search')
 
 
-
 """
 api for groups
 """
-api.add_resource(Groups, '/groups', methods=['GET','POST'])
-api.add_resource(Group, '/groups/<int:id>', methods=['GET','PUT','DELETE'])
+api.add_resource(Groups, '/groups', methods=['GET', 'POST'])
+api.add_resource(Group, '/groups/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 api.add_resource(MyGroups, '/u/groups', methods=['GET'])
 
 
 """
 api for orders
 """
-api.add_resource(Orders, '/orders', methods=['GET','POST'])
-api.add_resource(Order, '/orders/<int:id>', methods=['GET','PUT','DELETE'])
+api.add_resource(Orders, '/orders', methods=['GET', 'POST'])
+api.add_resource(Order, '/orders/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 api.add_resource(MyOrders, '/u/orders', methods=['GET'])
 
 """
 api for user
 """
-api.add_resource(MyUserInfo, '/u', methods=['GET','PUT'])
-api.add_resource(MyAddresses, '/u/address', methods=['GET','POST'])
-api.add_resource(MyAddress, '/u/address/<int:id>', methods=['GET','PUT','DELETE'])
+api.add_resource(MyUserInfo, '/u', methods=['GET', 'PUT'])
+api.add_resource(MyAddresses, '/u/address', methods=['GET', 'POST'])
+api.add_resource(
+    MyAddress, '/u/address/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 
 app.register_blueprint(api_bp, url_prefix='/api/v1')
 
@@ -85,4 +85,4 @@ def no_permission(error):
 
 
 if __name__ == "__main__":
-	app.run(host='0.0.0.0',port=5000)
+    app.run(host='0.0.0.0', port=5000)

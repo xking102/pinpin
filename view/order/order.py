@@ -9,33 +9,29 @@ from module.order.order import Order
 from app import db
 
 
-order = Blueprint('order',__name__) 
+order = Blueprint('order', __name__)
 
 
-#list user orders
+# list user orders
 @order.route('/u/order')
 def list_u_orders():
-	return render_template("./order/order_list.html")
+    return render_template("./order/order_list.html")
 
 
-
-
-
-#user payment the order
+# user payment the order
 @order.route('/order_pay/<int:oid>', methods=['PUT'])
 def order_pay(oid):
-	if session.get('logged_in'):
-		uid = session.get('logged_id')
-		order = Order.query.get(oid)
-		if order and order.create_userid == uid and is_pay(oid):
-			order.status = statusRef.ORDER_PAIED
-			order.save
-			return make_response('payment succ',201)
-		return make_response('no permission',404)
-	return make_response('need login',401)
+    if session.get('logged_in'):
+        uid = session.get('logged_id')
+        order = Order.query.get(oid)
+        if order and order.create_userid == uid and is_pay(oid):
+            order.status = statusRef.ORDER_PAIED
+            order.save
+            return make_response('payment succ', 201)
+        return make_response('no permission', 404)
+    return make_response('need login', 401)
 
 
-
-#check order ispay?
+# check order ispay?
 def is_pay(id):
-	return True
+    return True

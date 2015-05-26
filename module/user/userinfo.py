@@ -8,15 +8,13 @@ class UserInfo(db.Model):
     uid = db.Column(db.Integer, unique=False)
     avatar = db.Column(db.String(100), unique=False)
 
-
     @property
     def to_json(self):
         return {
-            'id' : self.id,
-            'uid' : self.uid,
-            'avatar' : self.avatar
+            'id': self.id,
+            'uid': self.uid,
+            'avatar': self.avatar
         }
-
 
     @property
     def save(self):

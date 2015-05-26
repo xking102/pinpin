@@ -10,21 +10,20 @@ from form.group.group import newGroupForm
 from app import db
 
 
-group = Blueprint('group',__name__) 
+group = Blueprint('group', __name__)
 
 
-#list groups
+# list groups
 @group.route('/')
 def list_groups():
-	return render_template("./group/index.html")
+    return render_template("./group/index.html")
 
 
-
-#add group
-@group.route('/groups', methods=['GET','POST'])
+# add group
+@group.route('/groups', methods=['GET', 'POST'])
 def add_group():
-	error = None
-	form = newGroupForm()
-	if request.method == 'POST' and form.validate_on_submit():
-		return redirect(url_for('group.list_groups'))
-	return render_template('./group/add.html', error=error, form=form)
+    error = None
+    form = newGroupForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        return redirect(url_for('group.list_groups'))
+    return render_template('./group/add.html', error=error, form=form)

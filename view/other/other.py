@@ -8,15 +8,14 @@ from control.pinpin import statusRef
 from app import db
 
 
-other = Blueprint('other',__name__) 
-
+other = Blueprint('other', __name__)
 
 
 @other.route('/faq')
 def faq():
-	return render_template("./other/faq.html")
+    return render_template("./other/faq.html")
 
 
 @other.route('/terms')
 def terms():
-	return render_template("./other/terms.html")
+    return render_template("./other/terms.html")

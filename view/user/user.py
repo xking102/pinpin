@@ -11,10 +11,10 @@ from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
 from app import db
 
 
-user = Blueprint('user',__name__) 
+user = Blueprint('user', __name__)
 
 
-#user logon
+# user logon
 @user.route('/login', methods=['GET', 'POST'])
 def login():
     if session.get('logged_in'):
@@ -26,11 +26,11 @@ def login():
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
         flash('You were logged in')
-        return redirect(url_for('group.list_groups')) 
+        return redirect(url_for('group.list_groups'))
     return render_template('./user/login.html', error=error, form=form)
 
 
-#user register
+# user register
 @user.route('/register', methods=['GET', 'POST'])
 def register():
     if session.get('logged_in'):
@@ -46,7 +46,7 @@ def register():
     return render_template('./user/register.html', error=error, form=form)
 
 
-#user logout
+# user logout
 @user.route('/logout')
 def logout():
     session.pop('logged_in', None)
@@ -56,12 +56,10 @@ def logout():
     return redirect(url_for('group.list_groups'))
 
 
-
-
 def setAddressDefault(uid):
-    address = UserAddressModel.querey.filter_by(uid=uid,isDefault=True).first()
+    address = UserAddressModel.querey.filter_by(
+        uid=uid, isDefault=True).first()
     if address:
         address.isDefault = False
         address.save
     return None
-

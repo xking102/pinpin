@@ -15,22 +15,20 @@ class Group(db.Model):
     update_dt = db.Column(db.Integer, unique=False)
     status = db.Column(db.Integer, unique=False)
 
-
     @property
     def to_json(self):
         return {
-            'id' : self.id,
-            'title' : self.title,
-            'desc' : self.desc,
-            'unit_price' : self.unit_price,
-            'list_price' : self.list_price,
-            'total_qty' : self.total_qty,
-            'create_dt' : self.create_dt,
-            'create_userid' : self.create_userid,
-            'update_dt' : self.update_dt,
-            'status' : self.status
+            'id': self.id,
+            'title': self.title,
+            'desc': self.desc,
+            'unit_price': self.unit_price,
+            'list_price': self.list_price,
+            'total_qty': self.total_qty,
+            'create_dt': self.create_dt,
+            'create_userid': self.create_userid,
+            'update_dt': self.update_dt,
+            'status': self.status
         }
-
 
     @property
     def save(self):
