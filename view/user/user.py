@@ -68,4 +68,6 @@ def setAddressDefault(uid):
 # user setting
 @user.route('/setting')
 def setting():
-    return render_template("./user/user.html")
+    if session.get('logged_in'):
+        return render_template("./user/user.html")
+    return redirect('/login')
