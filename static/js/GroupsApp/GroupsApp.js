@@ -2,8 +2,26 @@ var React = require('react');
 var GroupItem = require('./GroupItem'); 
 var Pager =  require("./Pager");
 
+var injectTapEventPlugin = require("react-tap-event-plugin");
+var mui = require('material-ui');
+var RaisedButton = mui.RaisedButton;
+var AppBar = mui.AppBar;
+var ThemeManager = require('material-ui/lib/styles/theme-manager')();
+var Colors = require('material-ui/lib/styles/colors');
+var {Tabs, Tab} = mui;
+var Typography = mui.Styles.Typography;
 
+
+injectTapEventPlugin();
 module.exports = React.createClass({
+	childContextTypes: {
+    	muiTheme: React.PropTypes.object
+  	},
+  	getChildContext: function() {
+    	return {
+    	  muiTheme: ThemeManager.getCurrentTheme()
+    	};
+ 	},
 	getInitialState:function(){
 		return {
 			groups: [],
