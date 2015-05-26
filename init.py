@@ -24,8 +24,7 @@ from module.group.group import Group
 from module.order.order import Order
 from module.user.user import User
 from module.user.useraddress import UserAddress
-from module.user.userinfo import UserInfo
-
+from module.user.userinfo import UserInfo as UserInfoModel
 import arrow
 
 import urllib
@@ -34,6 +33,9 @@ import urllib2
 # db.create_all()
 
 
+
+u = UserInfoModel.query.all()
+print u
 
 # utc = arrow.utcnow().to('local')
 # print utc
@@ -51,14 +53,14 @@ import urllib2
 
 
 
-url = 'http://localhost:5000/api/v1/orders'
-values = {}
-data = urllib.urlencode(values)
-print data
-req = urllib2.Request(url, data)
-response = urllib2.urlopen(req)
-print response
-# cart = Shopcart.query.all()
+# url = 'http://localhost:5000/api/v1/orders'
+# values = {}
+# data = urllib.urlencode(values)
+# print data
+# req = urllib2.Request(url, data)
+# response = urllib2.urlopen(req)
+# print response
+# # cart = Shopcart.query.all()
 # for c in cart:
 # 	print c.id,c.website,c.shop, c.title,c.price,c.weight,c.qty,c.user_id,c.create_dt
 

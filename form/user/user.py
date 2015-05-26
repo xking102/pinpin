@@ -54,10 +54,9 @@ class RegisterForm(Form):
             u.reg_dt = pinpin.getCurTimestamp()
             u.update_dt = pinpin.getCurTimestamp()
             u.save
-            user = User.query.filter_by(email=email).first()
             self.user = user
             info = UserInfo()
-            info.uid = user.id
+            info.uid = u.id
             info.avatar = '/static/imgs/avatar.jpg'
             info.save
             return user
