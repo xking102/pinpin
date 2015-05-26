@@ -63,3 +63,9 @@ def setAddressDefault(uid):
         address.isDefault = False
         address.save
     return None
+
+
+# user setting
+@user.route('/setting')
+def setting():
+    return render_template("./user/user.html")

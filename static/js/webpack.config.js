@@ -3,7 +3,8 @@ var webpack = require('webpack');
 module.exports = {
     entry : {
         groupsindex: "./groupsindex.js",
-        my_order_list:"./my_order_list.js"
+        my_order_list:"./my_order_list.js",
+        user:"./user.js"
     },
     output : {
         path : "./build",

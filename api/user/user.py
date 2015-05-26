@@ -16,7 +16,7 @@ class MyUserInfo(Resource):
         if session.get('logged_in'):
             uid = session.get('logged_id')
             user = UserModel.query.get(uid)
-            info = UserModel.query.filter_by(uid=uid).first()
+            info = UserInfoModel.query.filter_by(uid=uid).first()
             if user and info:
                 userlist = {
                     'id': user.id,

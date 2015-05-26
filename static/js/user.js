@@ -1,10 +1,10 @@
 var React = require('react');
 var Router = require('react-router');
 var { Route, DefaultRoute, RouteHandler, Link } = Router;
+
 var UserInfoApp = require('./UserApp/UserInfoApp');
 var UserAddressApp = require('./UserApp/UserAddressApp');
 var UserPassword = require('./UserApp/UserPassword');
-
 
 
 var App = React.createClass({
@@ -14,7 +14,7 @@ var App = React.createClass({
   },
   listUser:function(){
     $.ajax({
-      url      : '/api/v1/user',
+      url      : '/api/v1/u',
       dataType : 'json',
       type     : 'GET',
       success: function(resp) {
@@ -28,14 +28,32 @@ var App = React.createClass({
       }.bind(this)
     });
   },
+  listAddress:function(){
+    $.ajax({
+      url      : '/api/v1/u/address',
+      dataType : 'json',
+      type     : 'GET',
+      success: function(resp) {
+        this.setState({
+          address:resp.addresses
+        });
+      }.bind(this),
+
+      error: function(xhr, status, err) {
+        console.error(status, err.toString);
+      }.bind(this)
+    });
+  },
 
   getInitialState:function(){
     return {
-      user: []
+      user: [],
+      address:[]
     }
   },
   componentDidMount:function(){
     this.listUser();
+    this.listAddress();
   },
   render: function () {
     var params = this.context.router.getCurrentParams();
@@ -43,7 +61,8 @@ var App = React.createClass({
     var oid = params.oid;
     return (
       <div>
-          <RouteHandler user={this.state.user}/>
+
+          <RouteHandler user={this.state.user} address={this.state.address} />
       </div>
     );
   }
