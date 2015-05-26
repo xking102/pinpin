@@ -12,7 +12,7 @@ module.exports = {
     },
     module : {
         loaders :[
-            {test:/\.js$/,exclude: /node_modules/, loader:'babel-loader'}
+            {test:/\.js$/, loader:'babel-loader?stage=1'}
         ],
         noParse: /\.min\.js/
 
