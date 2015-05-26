@@ -8,7 +8,7 @@ module.exports = React.createClass({
 			<div>
 <div className="row-fluid">
 	
-	<div className="box span5">
+	<div className="box span12">
 		
 		<div className="box-header" data-original-title>
 			<h2>

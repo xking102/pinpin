@@ -1,16 +1,26 @@
 var React = require('react');
-var Router = require('react-router');
-var { Route, DefaultRoute, RouteHandler, Link } = Router;
 
 var UserInfoApp = require('./UserApp/UserInfoApp');
 var UserAddressApp = require('./UserApp/UserAddressApp');
 var UserPassword = require('./UserApp/UserPassword');
 
+var injectTapEventPlugin = require("react-tap-event-plugin");
+var mui = require('material-ui');
+var ThemeManager = require('material-ui/lib/styles/theme-manager')();
+var Colors = require('material-ui/lib/styles/colors');
+var {Tabs, Tab, Paper} = mui;
 
+var Steps = require('react-steps');
+
+injectTapEventPlugin();
 var App = React.createClass({
-
-  contextTypes: {
-    router: React.PropTypes.func.isRequired
+  childContextTypes: {
+      muiTheme: React.PropTypes.object
+    },
+    getChildContext: function() {
+      return {
+        muiTheme: ThemeManager.getCurrentTheme()
+      };
   },
   listUser:function(){
     $.ajax({
@@ -54,15 +64,89 @@ var App = React.createClass({
   componentDidMount:function(){
     this.listUser();
     this.listAddress();
+    ThemeManager.setPalette({
+      accent1Color: Colors.blueGrey50
+    });
   },
   render: function () {
-    var params = this.context.router.getCurrentParams();
-    console.log(this.context.router.getCurrentRoutes()[1].name);
-    var oid = params.oid;
+    var step = [
+        {
+            "text": " 不买吗？",
+            "isActive": false,
+            "isDone": true
+        },
+        {
+            "text": "一定要选好收货地址哦",
+            "isActive": true,
+            "isDone": false
+        },
+        {
+            "text": "去付款吧",
+            "isActive": false,
+            "isDone": false
+        },
+        {
+            "text": "等着凑满人数吧",
+            "isActive": false,
+            "isDone": false
+        },
+        {
+            "text": "团长在买买买的路上了",
+            "isActive": false,
+            "isDone": false
+        },
+        {
+            "text": "团长发货了",
+            "isActive": false,
+            "isDone": false
+        },
+        {
+            "text": "应该收到货了吧,记得确认",
+            "isActive": false,
+            "isDone": false
+        },
+        {
+            "text": "买买买，不要停",
+            "isActive": false,
+            "isDone": false
+        }
+    ];
+    var depth = 4
     return (
       <div>
-
-          <RouteHandler user={this.state.user} address={this.state.address} />
+      <Steps items={step}/>
+        <Tabs tabItemContainerStyle={{backgroundColor: '#3A3A3A'}} > 
+  <Tab  label="个人信息" > 
+    <div> 
+    <Paper zDepth={depth}>
+     <UserInfoApp user={this.state.user} />
+     </Paper>
+    </div> 
+  </Tab> 
+  <Tab label="收货地址" > 
+    <div> 
+      <Paper zDepth={depth}>
+      <div>&nbsp;</div>
+      <UserAddressApp />
+      </Paper>
+    </div> 
+  </Tab> 
+   <Tab label="密码修改" > 
+    <div> 
+     <Paper zDepth={depth}>
+      <h2>Tab Two Template Example</h2> 
+      <p> 
+        This is another example of a tab template! 
+      </p> 
+      <p> 
+        Fair warning - the next tab routes to home! 
+      </p> 
+      </Paper>
+    </div> 
+  </Tab> 
+ 
+</Tabs> 
+        
       </div>
     );
   }
@@ -71,14 +155,8 @@ var App = React.createClass({
 
 
 
-var routes = (
-  <Route handler={App}>
-    <DefaultRoute handler={UserInfoApp}/>
-    <Route name="address" path="address" handler={UserAddressApp} />
-    <Route name="password" path="password" handler={UserPassword} />
-  </Route>
-);
+var mainCom = React.render(
+  <App />,
+  document.getElementById('app')
+)
 
-Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.getElementById('app'));
-});
