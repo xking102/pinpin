@@ -3007,3 +3007,9 @@ ul.messagesList li span.date {
   right: 11px;
   top: -2px;
 }
+
+/* override input~!
+=================================================================== */
+label, input, button, select, textarea {
+  font-size: 16px;
+}
