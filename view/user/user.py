@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash, current_app
+    abort, render_template, flash, current_app, make_response, jsonify
 from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
@@ -57,7 +57,7 @@ def logout():
 
 
 def setAddressDefault(uid):
-    address = UserAddressModel.querey.filter_by(
+    address = UserAddress.query.filter_by(
         uid=uid, isDefault=True).first()
     if address:
         address.isDefault = False
@@ -70,4 +70,19 @@ def setAddressDefault(uid):
 def setting():
     if session.get('logged_in'):
         return render_template("./user/user.html")
+    return redirect('/login')
+
+# change user password
+@user.route('/password', methods=['PUT'])
+def change_pw():
+    if session.get('logged_in'):
+        uid = session.get('logged_id')
+        u = User.query.get(uid)
+        if u:
+            if  pinpin.getmd5(request.json['old_password']) == u.password:
+                u.password = pinpin.getmd5(request.json['new_password'])
+                u.save
+                return make_response(jsonify({'messages': '修改成功'}), 201)
+            return make_response(jsonify({'messages': '密码不一致'}), 201)
+        return redirect('/login')
     return redirect('/login')
