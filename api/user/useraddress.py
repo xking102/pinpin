@@ -19,13 +19,13 @@ class MyAddresses(Resource):
     def post(self):
         if session.get('logged_in'):
             uid = session.get('logged_id')
-            isDefault = request.json['address']['isDefault']
+            isDefault = request.json['isDefault']
             if isDefault:
-                setAddressDefault(uid)
-            address_line1 = request.json['address']['address_line1']
-            address_line2 = request.json['address']['address_line2']
-            tel = request.json['address']['tel']
-            reciver = request.json['addresss']['reciver']
+                user.setAddressDefault(uid)
+            address_line1 = request.json['address_line1']
+            address_line2 = request.json['address_line2']
+            tel = request.json['tel']
+            reciver = request.json['reciver']
             create_dt = pinpin.getCurTimestamp()
             update_dt = pinpin.getCurTimestamp()
             a = UserAddressModel()
@@ -38,7 +38,7 @@ class MyAddresses(Resource):
             a.update_dt = update_dt
             a.isDefault = isDefault
             a.save
-            return make_response(jsonify({'id': a.id, 'messages': 'ok'}), 201)
+            return make_response(jsonify({'address': a.to_json, 'messages': 'ok'}), 201)
         return make_response(jsonify({'messages': 'fail', "status": 401}), 401)
 
 
@@ -53,15 +53,15 @@ class MyAddress(Resource):
     def put(self, id):
         if session.get('logged_in'):
             uid = session.get('logged_id')
-            isDefault = request.json['address']['isDefault']
+            isDefault = request.json['isDefault']
             a = UserAddressModel.query.get(id)
             if a and a.uid == uid:
                 if isDefault and a.isDefault == False:
-                    setAddressDefault(uid)
-                address_line1 = request.json['address']['address_line1']
-                address_line2 = request.json['address']['address_line2']
-                tel = request.json['address']['tel']
-                reciver = request.json['addresss']['reciver']
+                    user.setAddressDefault(uid)
+                address_line1 = request.json['address_line1']
+                address_line2 = request.json['address_line2']
+                tel = request.json['tel']
+                reciver = request.json['reciver']
                 update_dt = pinpin.getCurTimestamp()
                 a.address_line1 = address_line1
                 a.address_line2 = address_line2
@@ -77,7 +77,7 @@ class MyAddress(Resource):
     def delete(self, id):
         if session.get('logged_in'):
             a = UserAddressModel.query.get(id)
-            if a and a.create_user == session.get('logged_id'):
+            if a and a.uid == session.get('logged_id'):
                 a.delete
                 return make_response(jsonify({'messages': 'ok'}), 201)
             return make_response(jsonify({'messages': 'not access'}), 404)
