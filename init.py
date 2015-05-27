@@ -34,8 +34,9 @@ import urllib2
 
 
 
-u = UserInfoModel.query.all()
-print u
+u = UserAddress.query.all()
+for u1 in u:
+	print u1.address_line1
 
 # utc = arrow.utcnow().to('local')
 # print utc
