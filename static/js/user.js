@@ -54,7 +54,6 @@ var App = React.createClass({
       }.bind(this)
     });
   },
-
   getInitialState:function(){
     return {
       user: [],
@@ -68,7 +67,16 @@ var App = React.createClass({
       accent1Color: Colors.blueGrey50
     });
   },
+  onNewAddress:function( newAddress ){
+
+    var newAddress = this.state.address.concat( newAddress );
+
+    this.setState({
+      address: newAddress,
+    })
+  },
   render: function () {
+
     var step = [
         {
             "text": " 不买吗？",
@@ -127,20 +135,14 @@ var App = React.createClass({
     <div> 
       <Paper zDepth={depth}>
       <div>&nbsp;</div>
-      <UserAddressApp />
+      <UserAddressApp addresses={this.state.address} listAddress={this.listAddress} onNewAddress={this.onNewAddress} />
       </Paper>
     </div> 
   </Tab> 
    <Tab label="密码修改" > 
     <div> 
      <Paper zDepth={depth}>
-      <h2>Tab Two Template Example</h2> 
-      <p> 
-        This is another example of a tab template! 
-      </p> 
-      <p> 
-        Fair warning - the next tab routes to home! 
-      </p> 
+      <UserPassword />
       </Paper>
     </div> 
   </Tab> 
