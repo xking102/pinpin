@@ -54,7 +54,7 @@ class RegisterForm(Form):
             u.reg_dt = pinpin.getCurTimestamp()
             u.update_dt = pinpin.getCurTimestamp()
             u.save
-            self.user = user
+            self.user = u
             info = UserInfo()
             info.uid = u.id
             info.avatar = '/static/imgs/avatar.jpg'
