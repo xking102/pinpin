@@ -25,6 +25,7 @@ from module.order.order import Order
 from module.user.user import User
 from module.user.useraddress import UserAddress
 from module.user.userinfo import UserInfo as UserInfoModel
+from module.workflow.workflow import Workflow
 import arrow
 
 import urllib
@@ -32,11 +33,12 @@ import urllib2
 # db.drop_all()
 # db.create_all()
 
+wf = Workflow.query.filter_by(id=1).order_by('sort_id').all()
+print wf
 
-
-u = UserAddress.query.all()
-for u1 in u:
-	print u1.address_line1
+# u = UserAddress.query.all()
+# for u1 in u:
+# 	print u1.address_line1
 
 # utc = arrow.utcnow().to('local')
 # print utc

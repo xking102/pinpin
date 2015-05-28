@@ -35,3 +35,11 @@ def order_pay(oid):
 # check order ispay?
 def is_pay(id):
     return True
+
+
+# group workflow 
+@order.route('/group/wf/<int:gid>')
+def group_workflow(gid):
+    pass
+
+
