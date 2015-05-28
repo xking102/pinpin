@@ -7,13 +7,14 @@ from app import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group as GroupModel
+from module.workflow.workflow import Workflow as WorkflowModel
 
 
 class Groups(Resource):
 
     def get(self):
         groups = GroupModel.query.all()
-        return make_response(jsonify({"groups": [g.to_json for g in groups], "status": 200}), 200)
+        return make_response(jsonify({"groups": [g.to_json for g in groups]}), 200)
 
     def post(self):
         if session.get('logged_in'):
@@ -37,7 +38,7 @@ class Groups(Resource):
             g.status = status
             g.update_dt = update_dt
             g.save
-            return jsonify({'id': g.id, 'messages': 'ok', "status": 201})
+            return make_response(jsonify({'id': g.id}),201)
         return jsonify({'messages': 'fail', "status": 401})
 
 
@@ -47,7 +48,9 @@ class Group(Resource):
         g = GroupModel.query.get(id)
         if g:
             group = GroupModel.query.get(id)
-            return jsonify({"group": group.to_json, "status": 200})
+            wfs = WorkflowModel.query.filter_by(
+                w_type=1, typeid=id).order_by('sort_id').all()
+            return make_response(jsonify({"group": group.to_json, 'workflow': [wf.to_json for wf in wfs]}),200)
         return jsonify({'messages': 'not exist', "status": 404})
 
     def delete(self, id):

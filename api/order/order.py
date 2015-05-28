@@ -7,6 +7,7 @@ from app import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from module.order.order import Order as OrderModel
+from module.workflow.workflow import Workflow as WorkflowModel
 
 
 class Orders(Resource):
@@ -50,7 +51,9 @@ class Order(Resource):
             uid = session.get('logged_id')
             order = OrderModel.query.get(id)
             if order and order.create_userid == uid:
-                return make_response(jsonify({"order": order.to_json}), 200)
+                wfs = WorkflowModel.query.filter_by(
+                    w_type=2, typeid=id).order_by('sort_id').all()
+                return make_response(jsonify({"order": order.to_json,'workflows':[wf.to_json for wf in wfs]}), 200)
             return make_response('not exist', 404)
         return make_response('need login', 401)
 
