@@ -1,5 +1,5 @@
-import React from 'react';
-import Radium from 'Radium';
+var React = require('react');
+var Radium = require('radium');
 const style = {
     item: {
         display: 'inline-block',
