@@ -10,6 +10,7 @@ module.exports = React.createClass({
 	getInitialState:function(){
 		return {
 			group: [],
+			workflow:[],
 			query_flag:'',
 			button_name:'这里以后放分页'
 		}
@@ -24,26 +25,19 @@ module.exports = React.createClass({
 		$.ajax({
             type:'get',
             url:'/api/v1/groups/'+ gid,
-        }).done(function (resp) {
-        	if(resp.status == 200){
-        		this.setState({
+            success:function(resp){
+            	this.setState({
             		group:resp.group,
+            		workflow:resp.workflow,
             		query_flag:'',
             		button_name:'这里以后放分页'
             	});
-        	}
-        	else{
-        		this.setState({
-            		group:[],
-            		pager_display:false,
-            		query_flag:'',
-            		button_name:'这里以后放分页'
-
-            	});
-        	}
-            
+            }.bind(this),
+            error: function(xhr, status, err) {
+        		console.error(status, err.toString);
+      		}.bind(this)
                 
-        }.bind(this));
+        });
 
 	},
 	componentDidMount : function(){
@@ -58,10 +52,11 @@ module.exports = React.createClass({
 			pager_display : this.state.pager_display,
 			query_flag : this.state.query_flag,
 			button_name : this.state.button_name,
-			group : this.state.group
+			group : this.state.group,
+			workflow:this.state.workflow
 		};
 		return (
-			<div>
+			<div style={{marginTop:'20px'}}>
 				<GroupItem {...group_props}/>
 			</div>
 

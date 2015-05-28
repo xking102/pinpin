@@ -5,15 +5,18 @@ from flask import Blueprint, request, session, redirect, url_for, \
 from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
-from module.workflow.workflow import WorkflowModel
+from module.workflow.workflow import Workflow as WorkflowModel
 from app import db
 
 
 workflow = Blueprint('workflow', __name__)
 
+group_title = ['正在组人，看的中么', '团长在买买买的路上', '团长发货了', '大功告成']
+order_title = ['下单了，赶紧去支付吧', '还在组队，稍等噢', '团长在买买买的路上', '发货了哦', '大功告成']
+
 
 def init_group_wf(gid):
-    title = ['正在组人，看的中么', '团长在买买买的路上', '团长发货了', '大功告成']
+    title = group_title
     sort_id = 0
     for t in title:
         sort_id += 1
@@ -22,7 +25,7 @@ def init_group_wf(gid):
         wf.typeid = gid
         wf.sort_id = sort_id
         wf.title = t
-        if wf.sort_id = 1:
+        if sort_id == 1:
             wf.isActive = True
         else:
             wf.isActive = False
@@ -33,8 +36,26 @@ def init_group_wf(gid):
     db.session.commit()
 
 
+def get_init_group():
+    title = group_title
+    sort_id = 0
+    wf = []
+    i = 0
+    for t in title:
+        a = {}
+        i += 1
+        a['text'] = t
+        if i == 1:
+            a['isActive'] = True
+        else:
+            a['isActive'] = False
+        a['isDone'] = False
+        wf.append(a)
+    return wf
+
+
 def init_order_wf(oid):
-    title = ['正在组人，看的中么', '团长在买买买的路上', '团长发货了', '大功告成']
+    title = order_title
     sort_id = 0
     for t in title:
         sort_id += 1
@@ -43,7 +64,7 @@ def init_order_wf(oid):
         wf.typeid = oid
         wf.sort_id = sort_id
         wf.title = t
-        if wf.sort_id = 1:
+        if sort_id == 1:
             wf.isActive = True
         else:
             wf.isActive = False
@@ -54,10 +75,28 @@ def init_order_wf(oid):
     db.session.commit()
 
 
+def get_init_order():
+    title = order_title
+    sort_id = 0
+    wf = []
+    i = 0
+    for t in title:
+        a = {}
+        i += 1
+        a['text'] = t
+        if i == 1:
+            a['isActive'] = True
+        else:
+            a['isActive'] = False
+        a['isDone'] = False
+        wf.append(a)
+    return wf
+
+
 def Push_Steps(type, id):
-    if type = 'group':
+    if type == 'group':
         i_type = 1
-    else type = 'order':
+    elif type == 'order':
         i_type = 2
     cur = WorkflowModel.query.filter_by(
         w_type=i_type, typeid=id, isActive=True).first()

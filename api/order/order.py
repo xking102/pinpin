@@ -6,8 +6,10 @@ from flask.ext.restful import Resource
 from app import db, api
 from control import pinpin
 from control.pinpin import statusRef
+from module.group.group import Group as GroupModel
 from module.order.order import Order as OrderModel
 from module.workflow.workflow import Workflow as WorkflowModel
+from view.group import group as GroupView
 
 
 class Orders(Resource):
@@ -28,18 +30,24 @@ class Orders(Resource):
                 total_price = request.json['total_price']
                 actual_price = request.json['actual_price']
                 actual_transfer_fee = request.json['actual_transfer_fee']
-                o = OrderModel()
-                o.gid = gid
-                o.status = status
-                o.create_dt = create_dt
-                o.create_userid = create_userid
-                o.req_qty = req_qty
-                o.unit_price = unit_price
-                o.total_price = total_price
-                o.actual_price = actual_price
-                o.actual_transfer_fee = actual_transfer_fee
-                o.save
-                return make_response(jsonify({'oid': o.id, 'messages': 'ok', "status": 201}), 201)
+                g = GroupModel.query.get(gid)
+                if g and g.total_qty>=req_qty:
+                    o = OrderModel()
+                    o.gid = gid
+                    o.status = status
+                    o.create_dt = create_dt
+                    o.create_userid = create_userid
+                    o.req_qty = req_qty
+                    o.unit_price = unit_price
+                    o.total_price = total_price
+                    o.actual_price = actual_price
+                    o.actual_transfer_fee = actual_transfer_fee
+                    o.save
+                    g.total_qty -= o.req_qty
+                    g.save
+                    GroupView.group_processing(gid)
+                    return make_response(jsonify({'oid': o.id, 'status': 'succ'}), 201)
+                return make_response(jsonify({'status': 'oversold'}), 200)
             return make_response('not exist', 404)
         return make_response('need login', 401)
 

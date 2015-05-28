@@ -1,4 +1,8 @@
 var React = require("react");
+var Steps = require('../Step/index');
+
+var mui = require('material-ui');
+var {Paper} = mui;
 
 
 module.exports = React.createClass({
@@ -28,32 +32,40 @@ module.exports = React.createClass({
               query_flag: true
           });
           $.ajax({
-              type:'post',
-              url:'/api/v1/orders',
-              contentType: "application/json",
-              data:JSON.stringify({
-                'gid':this.props.group.id,
-                'req_qty':this.state.reqnum,
-                'unit_price':this.props.group.unit_price,
-                'total_price':this.props.group.unit_price*this.state.reqnum,
-                'actual_price':this.props.group.unit_price*this.state.reqnum,
-                'actual_transfer_fee':0
-              })
-          }).success(function (resp) {
+            type:'post',
+            url:'/api/v1/orders',
+            contentType: "application/json",
+            data:JSON.stringify({
+              'gid':this.props.group.id,
+              'req_qty':this.state.reqnum,
+              'unit_price':this.props.group.unit_price,
+              'total_price':this.props.group.unit_price*this.state.reqnum,
+              'actual_price':this.props.group.unit_price*this.state.reqnum,
+              'actual_transfer_fee':0
+            }),
+            success:function (resp) {
+                if(resp.status=='succ'){
+                  this.setState({
+                        btn_buy_name:'成功',
+                        query_flag: false,
+                  });
+                  window.location.href='/u/order#/'+resp.oid+'/pay';
+                }else{
+                  this.setState({
+                        btn_buy_name:'卖光了',
+                        query_flag: false,
+                  });
+                }
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.error(status, err.toString);
               this.setState({
-                      btn_buy_name:'成功',
-                      query_flag: false,
-                  });
-              window.location.href='/u/order#/'+resp.oid+'/pay';
-          }.bind(this))
-          .error(function (resp){
-            this.setState({
-                      btn_buy_name:'失败',
-                      query_flag: false
-  
-                  });
-          }.bind(this));
-          }  
+                        btn_buy_name:'失败',
+                        query_flag: false
+              });
+            }.bind(this)
+          });
+        }  
       },
   componentDidMount: function() {
     if($('.timeline')) {
@@ -75,8 +87,9 @@ module.exports = React.createClass({
         };
     return(
     <div>
-  
-  <div className="row-fluid">
+    <Paper zDepth={4}>
+ <div style={{marginLeft:"20%"}}> <Steps items={this.props.workflow}/> </div>
+  <div className="row-fluid" style={{marginLeft:'20px',marginTop:'10px'}}>
     
     <div className="span7 noMarginRight">
       
@@ -281,7 +294,7 @@ module.exports = React.createClass({
       </div>
     </div>
   </div>
-  
+  </Paper>
 </div>
     )   
   }

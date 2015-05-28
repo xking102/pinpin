@@ -8,7 +8,7 @@ from control.pinpin import statusRef
 from module.group.group import Group
 from form.group.group import newGroupForm
 from app import db
-
+from view.workflow.workflow import Push_Steps
 
 group = Blueprint('group', __name__)
 
@@ -27,3 +27,13 @@ def add_group():
     if request.method == 'POST' and form.validate_on_submit():
         return redirect(url_for('group.list_groups'))
     return render_template('./group/add.html', error=error, form=form)
+
+
+
+def group_processing(gid):
+	g = Group.query.get(gid)
+	if g:
+		if g.total_qty==0 and g.status==statusRef.GROUP_PUBLISH:
+			g.status=statusRef.GROUP_PROCESSING
+			g.save
+			Push_Steps(1,g.id)

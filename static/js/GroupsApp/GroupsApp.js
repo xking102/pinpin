@@ -43,28 +43,19 @@ module.exports = React.createClass({
 		$.ajax({
             type:'get',
             url:'/api/v1/groups',
-            data:data
-        }).done(function (resp) {
-        	if(resp.status === 200){
-        		this.setState({
+            data:data,
+            success:function(resp){
+            	this.setState({
             		groups:resp.groups,
             		pager_display:true,
             		query_flag:'',
             		button_name:'这里以后放分页'
-            	});
-        	}
-        	else{
-        		this.setState({
-            		groups:[],
-            		pager_display:true,
-            		query_flag:'',
-            		button_name:'这里以后放分页'
-
-            	});
-
-        	}
-                
-        }.bind(this));
+            	})
+            }.bind(this),
+            error: function(xhr, status, err) {
+        		console.error(status, err.toString);
+      		}.bind(this)
+        });
 
 	},
 	componentDidMount : function(){

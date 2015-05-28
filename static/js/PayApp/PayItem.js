@@ -15,33 +15,32 @@ module.exports = React.createClass({
 	handlerPay: function(){
 		if(this.state.query_flag){
             console.log('waiting');
-        }else{
-          this.setState({
-              btn_name:'正在付款',
-              query_flag: true
-          });
-          $.ajax({
-              type:'put',
-              url:'/order_pay/'+this.props.order.id,
-              contentType: "application/json",
-          }).success(function (resp) {
+    }else{
+        this.setState({
+            btn_name:'正在付款',
+            query_flag: true
+        });
+        $.ajax({
+            type:'put',
+            url:'/order_pay/'+this.props.order.id,
+            contentType: "application/json",
+            success:function (resp) {
+                this.setState({
+                        btn_name:'付款成功',
+                        query_flag: true,
+                        result:true,
+                        isPay:true
+                });
+            }.bind(this),
+            error:function (resp){
               this.setState({
-                      btn_name:'付款成功',
-                      query_flag: true,
-                      result:true,
-                      isPay:true,
-                      message:'{"text":"支付成功","layout":"bottomLeft","type":"information"}'
-                  });
-          }.bind(this))
-          .error(function (resp){
-            this.setState({
-                      btn_name:'付款失败',
-                      query_flag: false,
-                      message:'{"text":"支付失败","layout":"bottomLeft","type":"information"}'
+                        btn_name:'付款失败',
+                        query_flag: false
   
-                  });
-          }.bind(this));
-          }
+              });
+            }.bind(this)
+        });
+    }
 	},
 	render:function(){
         var styleObj={

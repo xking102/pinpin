@@ -10,7 +10,6 @@ var ThemeManager = require('material-ui/lib/styles/theme-manager')();
 var Colors = require('material-ui/lib/styles/colors');
 var {Tabs, Tab, Paper} = mui;
 
-var Steps = require('react-steps');
 
 injectTapEventPlugin();
 var App = React.createClass({
@@ -76,53 +75,10 @@ var App = React.createClass({
     })
   },
   render: function () {
-
-    var step = [
-        {
-            "text": " 不买吗？",
-            "isActive": false,
-            "isDone": true
-        },
-        {
-            "text": "一定要选好收货地址哦",
-            "isActive": true,
-            "isDone": false
-        },
-        {
-            "text": "去付款吧",
-            "isActive": false,
-            "isDone": false
-        },
-        {
-            "text": "等着凑满人数吧",
-            "isActive": false,
-            "isDone": false
-        },
-        {
-            "text": "团长在买买买的路上了",
-            "isActive": false,
-            "isDone": false
-        },
-        {
-            "text": "团长发货了",
-            "isActive": false,
-            "isDone": false
-        },
-        {
-            "text": "应该收到货了吧,记得确认",
-            "isActive": false,
-            "isDone": false
-        },
-        {
-            "text": "买买买，不要停",
-            "isActive": false,
-            "isDone": false
-        }
-    ];
     var depth = 4
     return (
       <div>
-      <Steps items={step}/>
+
         <Tabs tabItemContainerStyle={{backgroundColor: '#3A3A3A'}} > 
   <Tab  label="个人信息" > 
     <div> 

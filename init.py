@@ -33,7 +33,15 @@ import urllib2
 # db.drop_all()
 # db.create_all()
 
-wf = Workflow.query.filter_by(id=1).order_by('sort_id').all()
+title = ['正在组人，看的中么', '团长在买买买的路上', '团长发货了', '大功告成']
+sort_id = 0
+wf = []
+for t in title:
+	a={}
+	a['text'] = t
+	a['isActive'] = True
+	a['isDone'] =False
+	wf.append(a)
 print wf
 
 # u = UserAddress.query.all()

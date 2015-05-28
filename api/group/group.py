@@ -8,21 +8,23 @@ from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group as GroupModel
 from module.workflow.workflow import Workflow as WorkflowModel
+from view.workflow.workflow import init_group_wf, get_init_group
 
 
 class Groups(Resource):
 
     def get(self):
-        groups = GroupModel.query.all()
+        groups = GroupModel.query.filter_by(
+            status=statusRef.GROUP_PUBLISH).all()
         return make_response(jsonify({"groups": [g.to_json for g in groups]}), 200)
 
     def post(self):
         if session.get('logged_in'):
-            title = request.json['group']['title']
-            desc = request.json['group']['desc']
-            unit_price = request.json['group']['unit_price']
-            list_price = request.json['group']['list_price']
-            total_qty = request.json['group']['total_qty']
+            title = request.json['title']
+            desc = request.json['desc']
+            unit_price = request.json['unit_price']
+            list_price = request.json['list_price']
+            total_qty = request.json['total_qty']
             create_dt = pinpin.getCurTimestamp()
             create_userid = session.get('logged_id')
             update_dt = pinpin.getCurTimestamp()
@@ -38,7 +40,8 @@ class Groups(Resource):
             g.status = status
             g.update_dt = update_dt
             g.save
-            return make_response(jsonify({'id': g.id}),201)
+            init_group_wf(g.id)
+            return make_response(jsonify({'id': g.id}), 201)
         return jsonify({'messages': 'fail', "status": 401})
 
 
@@ -50,7 +53,10 @@ class Group(Resource):
             group = GroupModel.query.get(id)
             wfs = WorkflowModel.query.filter_by(
                 w_type=1, typeid=id).order_by('sort_id').all()
-            return make_response(jsonify({"group": group.to_json, 'workflow': [wf.to_json for wf in wfs]}),200)
+            if wfs:
+                return make_response(jsonify({"group": group.to_json, 'workflow': [wf.to_json for wf in wfs]}), 200)
+            else:
+                return make_response(jsonify({"group": group.to_json, 'workflow': get_init_group()}), 200)
         return jsonify({'messages': 'not exist', "status": 404})
 
     def delete(self, id):

@@ -4,8 +4,21 @@ var { Route, DefaultRoute, RouteHandler, Link } = Router;
 var GroupsApp = require('./GroupsApp/GroupsApp');
 var GroupApp = require('./GroupApp/GroupApp');
 
-var App = React.createClass({
+var injectTapEventPlugin = require("react-tap-event-plugin");
+var mui = require('material-ui');
+var ThemeManager = require('material-ui/lib/styles/theme-manager')();
 
+
+injectTapEventPlugin();
+var App = React.createClass({
+  childContextTypes: {
+      muiTheme: React.PropTypes.object
+    },
+    getChildContext: function() {
+      return {
+        muiTheme: ThemeManager.getCurrentTheme()
+      };
+  },
   contextTypes: {
     router: React.PropTypes.func.isRequired
   },

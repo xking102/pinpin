@@ -17,15 +17,9 @@ class Workflow(db.Model):
     @property
     def to_json(self):
         return {
-            'id': self.id,
-            'w_type': self.w_type,
-            'typeid': self.typeid,
-            'sort_id': self.sort_id,
-            'title': self.title,
+            'text': self.title,
             'isActive': self.isActive,
-            'isDone': self.isDone,
-            'create_dt': self.create_dt,
-            'update_dt': self.update_dt
+            'isDone': self.isDone
         }
 
     @property
