@@ -35,7 +35,7 @@ def order_pay(oid):
             group_processing(g.id)
             order.status = statusRef.ORDER_PAIED
             order.save
-            Push_Steps(2,oid)
+            Push_Steps(2, oid)
             return make_response('payment succ', 201)
         return make_response('no permission', 404)
     return make_response('need login', 401)
@@ -46,9 +46,7 @@ def is_pay(id):
     return True
 
 
-# group workflow 
+# group workflow
 @order.route('/group/wf/<int:gid>')
 def group_workflow(gid):
     pass
-
-

@@ -39,7 +39,7 @@ class Groups(Resource):
             g.create_userid = create_userid
             g.status = status
             g.update_dt = update_dt
-            g.req_qty =0
+            g.req_qty = 0
             g.confirm_qty = 0
             g.save
             init_group_wf(g.id)
@@ -78,5 +78,23 @@ class MyGroups(Resource):
         if session.get('logged_in'):
             uid = session.get('logged_id')
             groups = GroupModel.query.filter_by(create_userid=id).all()
-            return jsonify({"groups": [g.to_json for g in groups], "status": 200})
-        return jsonify({'messages': 'please login', "status": 401})
+            return make_response(jsonify({"groups": [g.to_json for g in groups]}), 200)
+        return make_response(jsonify({'messages': 'please login'}), 401)
+
+
+class MyGroup(Resource):
+
+    def get(self, id):
+        if session.get('logged_in'):
+            uid = session.get('logged_id')
+            g = GroupModel.query.get(id)
+            if g and uid == g.create_userid:
+                group = GroupModel.query.get(id)
+                wfs = WorkflowModel.query.filter_by(
+                    w_type=1, typeid=id).order_by('sort_id').all()
+                if wfs:
+                    return make_response(jsonify({"group": group.to_json, 'workflow': [wf.to_json for wf in wfs]}), 200)
+                else:
+                    return make_response(jsonify({"group": group.to_json, 'workflow': get_init_group()}), 200)
+            return jsonify({'messages': 'not exist', "status": 404})
+        return make_response(jsonify({'messages': 'please login'}), 401)

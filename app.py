@@ -33,7 +33,7 @@ from view.user.user import user
 from view.order.order import order
 from view.other.other import other
 
-from api.group.group import Groups, Group, MyGroups
+from api.group.group import Groups, Group, MyGroups, MyGroup
 from api.order.order import Orders, Order, MyOrders
 from api.user.user import MyUserInfo
 from api.user.useraddress import MyAddresses, MyAddress
@@ -52,9 +52,9 @@ app.register_blueprint(other)
 api for groups
 """
 api.add_resource(Groups, '/groups', methods=['GET', 'POST'])
-api.add_resource(Group, '/groups/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+api.add_resource(Group, '/groups/<int:id>', methods=['GET', 'DELETE'])
 api.add_resource(MyGroups, '/u/groups', methods=['GET'])
-
+api.add_resource(MyGroup, '/u/groups/<int:id>', methods=['GET'])
 
 """
 api for orders
