@@ -6,7 +6,10 @@ from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
 from module.order.order import Order
+from module.group.group import Group
 from app import db
+from view.workflow.workflow import Push_Steps
+from view.group.group import group_processing
 
 
 order = Blueprint('order', __name__)
@@ -25,8 +28,14 @@ def order_pay(oid):
         uid = session.get('logged_id')
         order = Order.query.get(oid)
         if order and order.create_userid == uid and is_pay(oid):
+            g = Group.query.get(o.gid)
+            g.req_qty -= o.req_qty
+            g.confirm_qty += o.req_qty
+            g.save
+            group_processing(g.id)
             order.status = statusRef.ORDER_PAIED
             order.save
+            Push_Steps(2,oid)
             return make_response('payment succ', 201)
         return make_response('no permission', 404)
     return make_response('need login', 401)

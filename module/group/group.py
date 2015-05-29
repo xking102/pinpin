@@ -14,6 +14,8 @@ class Group(db.Model):
     create_userid = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)
     status = db.Column(db.Integer, unique=False)
+    req_qty = db.Column(db.Integer, unique=False)
+    confirm_qty = db.Column(db.Integer, unique=False)
 
     @property
     def to_json(self):
@@ -27,7 +29,9 @@ class Group(db.Model):
             'create_dt': self.create_dt,
             'create_userid': self.create_userid,
             'update_dt': self.update_dt,
-            'status': self.status
+            'status': self.status,
+            'req_qty': self.req_qty,
+            'confirm_qty': self.confirm_qty
         }
 
     @property

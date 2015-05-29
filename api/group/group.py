@@ -39,6 +39,8 @@ class Groups(Resource):
             g.create_userid = create_userid
             g.status = status
             g.update_dt = update_dt
+            g.req_qty =0
+            g.confirm_qty = 0
             g.save
             init_group_wf(g.id)
             return make_response(jsonify({'id': g.id}), 201)

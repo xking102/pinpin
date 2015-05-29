@@ -33,16 +33,9 @@ import urllib2
 # db.drop_all()
 # db.create_all()
 
-title = ['正在组人，看的中么', '团长在买买买的路上', '团长发货了', '大功告成']
-sort_id = 0
-wf = []
-for t in title:
-	a={}
-	a['text'] = t
-	a['isActive'] = True
-	a['isDone'] =False
-	wf.append(a)
-print wf
+g =Group()
+g.title='123'
+g.save
 
 # u = UserAddress.query.all()
 # for u1 in u:

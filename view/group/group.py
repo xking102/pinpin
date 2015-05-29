@@ -33,7 +33,7 @@ def add_group():
 def group_processing(gid):
 	g = Group.query.get(gid)
 	if g:
-		if g.total_qty==0 and g.status==statusRef.GROUP_PUBLISH:
+		if g.confirm_qty==g.total_qty and g.status==statusRef.GROUP_PUBLISH:
 			g.status=statusRef.GROUP_PROCESSING
 			g.save
-			Push_Steps(1,g.id)
+			Push_Steps(1,gid)

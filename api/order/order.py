@@ -9,7 +9,8 @@ from control.pinpin import statusRef
 from module.group.group import Group as GroupModel
 from module.order.order import Order as OrderModel
 from module.workflow.workflow import Workflow as WorkflowModel
-from view.group import group as GroupView
+from view.group.group import group_processing
+from view.workflow.workflow import init_order_wf, get_init_order
 
 
 class Orders(Resource):
@@ -31,7 +32,7 @@ class Orders(Resource):
                 actual_price = request.json['actual_price']
                 actual_transfer_fee = request.json['actual_transfer_fee']
                 g = GroupModel.query.get(gid)
-                if g and g.total_qty>=req_qty:
+                if g and (g.total_qty - g.req_qty - g.confirm_qty) >= req_qty:
                     o = OrderModel()
                     o.gid = gid
                     o.status = status
@@ -43,9 +44,9 @@ class Orders(Resource):
                     o.actual_price = actual_price
                     o.actual_transfer_fee = actual_transfer_fee
                     o.save
-                    g.total_qty -= o.req_qty
+                    init_order_wf(o.id)
+                    g.req_qty += o.req_qty
                     g.save
-                    GroupView.group_processing(gid)
                     return make_response(jsonify({'oid': o.id, 'status': 'succ'}), 201)
                 return make_response(jsonify({'status': 'oversold'}), 200)
             return make_response('not exist', 404)
@@ -61,7 +62,10 @@ class Order(Resource):
             if order and order.create_userid == uid:
                 wfs = WorkflowModel.query.filter_by(
                     w_type=2, typeid=id).order_by('sort_id').all()
-                return make_response(jsonify({"order": order.to_json,'workflows':[wf.to_json for wf in wfs]}), 200)
+                if wfs:
+                    return make_response(jsonify({"order": order.to_json, 'workflows': [wf.to_json for wf in wfs]}), 200)
+                else:
+                    return make_response(jsonify({"order": order.to_json, 'workflows': get_init_order()}), 200)
             return make_response('not exist', 404)
         return make_response('need login', 401)
 
