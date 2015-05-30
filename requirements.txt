@@ -1,4 +1,5 @@
 sqlalchemy==1.0.3
+flask-sqlalchemy
 flask_bootstrap==3.3.2.1
 flask==0.10.1
 flask_wtf==0.11
