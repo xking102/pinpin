@@ -4,7 +4,8 @@ module.exports = {
     entry : {
         groupsindex: "./groupsindex.js",
         my_order_list:"./my_order_list.js",
-        user:"./user.js"
+        user:"./user.js",
+        mygroup:"./mygroups.js"
     },
     output : {
         path : "./build",
