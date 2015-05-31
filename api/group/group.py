@@ -77,7 +77,7 @@ class MyGroups(Resource):
     def get(self):
         if session.get('logged_in'):
             uid = session.get('logged_id')
-            groups = GroupModel.query.filter_by(create_userid=id).all()
+            groups = GroupModel.query.filter_by(create_userid=uid).all()
             return make_response(jsonify({"groups": [g.to_json for g in groups]}), 200)
         return make_response(jsonify({'messages': 'please login'}), 401)
 
