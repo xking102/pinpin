@@ -37,3 +37,9 @@ def group_processing(gid):
 			g.status=statusRef.GROUP_PROCESSING
 			g.save
 			Push_Steps(1,gid)
+
+
+# list user orders
+@group.route('/u/group')
+def list_u_groups():
+    return render_template("./group/mygroups.html")

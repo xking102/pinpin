@@ -1,22 +1,34 @@
 var React = require('react');
 var Router = require('react-router');
 var { Route, DefaultRoute, RouteHandler, Link } = Router;
-var MyGroupsApp = require('./MyGroup/GroupsApp');
+var GroupsApp = require('./MyGroup/GroupsApp');
+
+
+var injectTapEventPlugin = require("react-tap-event-plugin");
+var mui = require('material-ui');
+var ThemeManager = require('material-ui/lib/styles/theme-manager')();
+var Colors = require('material-ui/lib/styles/colors');
 
 
 
+injectTapEventPlugin();
 var App = React.createClass({
-
+  childContextTypes: {
+      muiTheme: React.PropTypes.object
+    },
+    getChildContext: function() {
+      return {
+        muiTheme: ThemeManager.getCurrentTheme()
+      };
+  },
   contextTypes: {
     router: React.PropTypes.func.isRequired
   },
+
   render: function () {
-    var params = this.context.router.getCurrentParams();
-    console.log(this.context.router.getCurrentRoutes()[1].name);
-    var oid = params.oid;
     return (
       <div>
-          <RouteHandler oid={oid}/>
+          <RouteHandler/>
       </div>
     );
   }
@@ -27,7 +39,7 @@ var App = React.createClass({
 
 var routes = (
   <Route handler={App}>
-    <DefaultRoute handler={MyGroupsApp}/>
+    <DefaultRoute handler={GroupsApp}/>
   </Route>
 );
 

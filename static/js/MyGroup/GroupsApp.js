@@ -1,52 +1,65 @@
 var React = require('react');
 
+var GroupItem = require('./GroupItem');
+
+var mui = require('material-ui');
+var {Paper} = mui;
+
 module.exports = React.createClass({
 	getInitialState:function(){
 		return {
-			orders: []
+			groups: []
 		}
 	},
-	listOrders:function(){
+	listGroups:function(){
 		$.ajax({
             type:'get',
-            url:'/api/v1/u/orders',
-            datetype:'json'
-        }).done(function (resp) {
-        	this.setState({
-            		orders:resp.orders
-            	});
-        }.bind(this));
+            url:'/api/v1/u/groups',
+            datetype:'json',
+        	success:function (resp) {
+        		this.setState({
+            			groups:resp.groups
+            		});
+        	}.bind(this),
+        	error:function(){
+        		console.error(status, err.toString);
+        	}.bind(this)
+    	});
 	},
 	componentDidMount : function(){
-		this.listOrders();
+		this.listGroups();
 	},
 	componentWillReceiveProps  : function(){
-		this.listOrders();
+		this.listGroups();
 	},
 	render:function(){
-		var orders = this.state.orders;
-		var orderComps = orders.map(function(item){
-			return <OrderItem key={item.id}
-							order={item}  />
+		var groups = this.state.groups;
+		var groupComps = groups.map(function(item){
+			return <GroupItem key={item.id}
+							group={item}  />
 		});
 		return (
+			<div> 
+			<Paper zDepth={4}>
 			<div className="row-fluid sortable">
 
 				<div className="box span12">
 					<div className="box-header" data-original-title>
-						<h2><i className="halflings-icon user"></i><span className="break"></span>Orders</h2>	
+						<h2><i className="halflings-icon user"></i><span className="break"></span>MyGroups</h2>	
 					</div>
 
 					<div className="box-content">
 						<div className="row-fluid">
-									<div className="span3"><h3>id</h3></div>
-									<div className="span3"><h3>title</h3></div>
-									<div className="span3"><h3>price</h3></div>
-									<div className="span3"><h3>Actions</h3></div>
+									<div className="span3"><h3>名称</h3></div>
+									<div className="span1"><h3>总数</h3></div>
+									<div className="span1"><h3>下单未付款数</h3></div>
+									<div className="span1"><h3>完成付款数</h3></div>
+									<div className="span1"><h3>状态</h3></div>
+									<div className="span3"><h3>行动</h3></div>
 							</div>
 
 							
-								<div>{orderComps}</div>
+								<div>{groupComps}</div>
 							
 
 					</div>
@@ -55,6 +68,8 @@ module.exports = React.createClass({
 					
 				</div>
 			</div>
+			</Paper>
+    </div> 
 
 		)
 	}
