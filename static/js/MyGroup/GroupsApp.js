@@ -2,8 +2,7 @@ var React = require('react');
 
 var GroupItem = require('./GroupItem');
 
-var mui = require('material-ui');
-var {Paper} = mui;
+
 
 module.exports = React.createClass({
 	getInitialState:function(){
@@ -40,7 +39,6 @@ module.exports = React.createClass({
 		});
 		return (
 			<div> 
-			<Paper zDepth={4}>
 			<div className="row-fluid sortable">
 
 				<div className="box span12">
@@ -50,17 +48,8 @@ module.exports = React.createClass({
 
 					<div className="box-content">
 						<div className="row-fluid">
-									<div className="span3"><h3>名称</h3></div>
-									<div className="span1"><h3>总数</h3></div>
-									<div className="span1"><h3>下单未付款数</h3></div>
-									<div className="span1"><h3>完成付款数</h3></div>
-									<div className="span1"><h3>状态</h3></div>
-									<div className="span3"><h3>行动</h3></div>
-							</div>
-
-							
-								<div>{groupComps}</div>
-							
+							{groupComps}		
+						</div>
 
 					</div>
 
@@ -68,7 +57,7 @@ module.exports = React.createClass({
 					
 				</div>
 			</div>
-			</Paper>
+			
     </div> 
 
 		)
