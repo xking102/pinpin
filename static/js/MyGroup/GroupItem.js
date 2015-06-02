@@ -10,14 +10,14 @@ module.exports = React.createClass({
     
     render:function(){
 		return(
-			<div style={{marginBottom:'10px'}}>
-                <Paper zDepth={4}>
-                    <div className="row-fluid">
+			<div style={{marginBottom:'15px'}}>
+                <Paper zDepth={3}>
+                    <div className="row-fluid" style={{marginLeft:'10px'}}>
                         <p>{this.props.group.title}</p>
                     </div>
 
-                    <div className="row-fluid">
-                        <div className="span5">
+                    <div className="row-fluid" style={{marginLeft:'10px',paddingBottom:'10px'}}>
+                        <div className="span4">
                         <img alt="221x125" src="/static/imgs/groups/221x125.gif" />
                         </div>
                         

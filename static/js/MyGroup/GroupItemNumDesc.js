@@ -6,8 +6,7 @@ module.exports = React.createClass({
     render:function(){
         var status = this.props.group.status;
         var statusDesc;
-        if (status==10){
-            return 
+        if (status==10){ 
             statusDesc = (
                 <div>
                     <p>状态：拼团中</p>
@@ -47,8 +46,10 @@ module.exports = React.createClass({
                     <p>状态：取消</p>
                 </div>
             );
+        }else{
+            statusDesc = (<div/>)
         }
-		return(
+		return (
 			<div>
                 {statusDesc}
             </div>
