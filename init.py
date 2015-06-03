@@ -28,6 +28,7 @@ from module.user.userinfo import UserInfo as UserInfoModel
 from module.workflow.workflow import Workflow
 from module.transport.transport import Transport
 import arrow
+from view.workflow.workflow import init_order_wf
 
 import urllib
 import urllib2
@@ -37,6 +38,8 @@ import urllib2
 # g =Group()
 # g.title='123'
 # g.save
+wf = Workflow.query.all()
+print [w.to_json for w in wf]
 
 
 

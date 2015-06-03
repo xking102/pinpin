@@ -1,7 +1,7 @@
 var React = require("react");
 
 var mui = require('material-ui');
-var {Paper} = mui;
+var {Paper, TextField} = mui;
 
 
 module.exports = React.createClass({
@@ -11,10 +11,13 @@ module.exports = React.createClass({
             code:''
         }
     },
+    saveOrder:function(){
+        console.log('saveit',this.props.order.id);
+    },
     handleBlurTransportOrg:function(){
         console.log('dialog-orderid',this.props.order.id);
         console.log('dialog-ordersave');
-        this.props.saveOrder(this.props.order.id);
+        this.saveOrder();
     },
     handlerTransportOrg:function(e){
         this.setState({
@@ -24,7 +27,7 @@ module.exports = React.createClass({
     handleBlurTransportCode:function(){
         console.log('dialog-orderid',this.props.order.id);
         console.log('dialog-ordersave');
-        this.props.saveOrder(this.props.order.id);
+        this.saveOrder();
     },
     handlerTransportCode:function(e){
         this.setState({
@@ -38,31 +41,38 @@ module.exports = React.createClass({
         });
     },
     render:function(){
+        console.log(this.props);
 		return(
 			<div>
-                <div class="span4">{this.props.order.transport.address_line1}</div>
-                <div class="span1">{this.props.order.transport.reciver}</div>
-                <div class="span2">{this.props.order.transport.tel}</div>
-                <div class="span1">{this.props.order.req_qty}</div>
-                <div class="span1">{this.props.order.total_price}</div>
-                <div class="span1">
-                    <TextField
+                <span className="span2">1{this.props.order.transport.address_line1}</span>
+                <span className="span1">2{this.props.order.transport.reciver}</span>
+                <span className="span1">3{this.props.order.transport.tel}</span>
+                <span className="span2">4{this.props.order.req_qty}</span>
+                <span className="span1">5{this.props.order.total_price}</span>
+                <span className="span2">
+                    <TextField style={{width:'97px'}}
                         hintText="输入快递公司"
                         type='text'
                         value={this.state.org}
                         onBlur={this.handleBlurTransportOrg}
                         onChange={this.handlerTransportOrg} 
                     />
-                </div>
-                <div class="span1">
-                    <TextField
+                </span>
+                <span className="span3">
+                    <TextField style={{width:'97px'}}
                         hintText="输入快递单号"
                         type='text'
                         value={this.state.code}
                         onBlur={this.handleBlurTransportCode}
                         onChange={this.handlerTransportCode} 
                     />
-                </div>
+                </span>
+                
+                
+                
+                
+                
+                
             </div>
 
 		)		

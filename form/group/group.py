@@ -8,6 +8,7 @@ from wtforms import StringField, PasswordField, SubmitField, validators, \
     TextAreaField, DecimalField, IntegerField
 from wtforms.validators import DataRequired, Email, InputRequired, NumberRange
 from module.group.group import Group
+from view.workflow.workflow import init_group_wf
 from control import pinpin
 from control.pinpin import statusRef
 from app import db
@@ -40,6 +41,9 @@ class newGroupForm(Form):
         group.create_userid = session.get('logged_id')
         group.update_dt = pinpin.getCurTimestamp()
         group.status = statusRef.GROUP_PUBLISH
+        group.req_qty = 0
+        group.confirm_qty = 0
         group.save
+        init_group_wf(group.id)
         self.group = group
         return group

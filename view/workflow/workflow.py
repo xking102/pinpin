@@ -11,8 +11,8 @@ from app import db
 
 workflow = Blueprint('workflow', __name__)
 
-group_title = ['正在组人，看的中么', '团长在买买买的路上', '团长发货了', '大功告成']
-order_title = ['下单了，赶紧去支付吧', '还在组队，稍等噢', '团长在买买买的路上', '发货了哦', '大功告成']
+group_title = [u'正在组人，看的中么', u'团长在买买买的路上', u'团长发货了', u'大功告成']
+order_title = [u'下单了，赶紧去支付吧', u'还在组队，稍等噢', u'团长在买买买的路上', u'发货了哦', u'大功告成']
 
 
 def init_group_wf(gid):
@@ -94,12 +94,8 @@ def get_init_order():
 
 
 def Push_Steps(type, id):
-    if type == 'group':
-        i_type = 1
-    elif type == 'order':
-        i_type = 2
     cur = WorkflowModel.query.filter_by(
-        w_type=i_type, typeid=id, isActive=True).first()
+        w_type=type, typeid=id, isActive=True).first()
     cur.isActive = False
     cur.isDone = True
     cur.save

@@ -10,7 +10,7 @@ module.exports = React.createClass({
     },
     getInitialState:function(){
         return {
-            modal:false
+            modal:true,
             orders:[]
         }
     },
@@ -23,7 +23,7 @@ module.exports = React.createClass({
     },
     _handleViewOrder:function(){
         // this.context.router.transitionTo('detail', {gid: this.props.group.id});
-        listGroupOrders();
+        this.listGroupOrders();
         console.log(this.state.orders);
         this.refs.viewOrder.show();
         /*
@@ -35,23 +35,19 @@ module.exports = React.createClass({
     _handlecustomAddressClose:function(){
         this.refs.viewOrder.dismiss();
     },
-    saveOrder:function(oid){
-        console.log('saveit',oid);
-    },
     deliverGroup:function(){
         //requtest the group to delivery
-    }
+    },
     listGroupOrders:function(){
         $.ajax({
             type:'get',
-            url:'/u/group/'+ this.props.group.id,
-            datetype:'json',
+            url:'/u/group/' + this.props.group.id,
             success:function (resp) {
                 this.setState({
-                        orders:resp.orders
-                    });
+                    orders:resp.orders
+                });
             }.bind(this),
-            error:function(){
+            error:function(xhr, status, err){
                 console.error(status, err.toString);
             }.bind(this)
         });
@@ -130,8 +126,7 @@ module.exports = React.createClass({
               title="拼团用户信息"
               actions={viewOrder}
               modal={this.state.modal}>
-               <OrderApp order={this.state.orders}
-                        saveOrder={this.saveOrder} />
+               <OrderApp orders={this.state.orders} />
                
             </Dialog>
                 {actionBtn}

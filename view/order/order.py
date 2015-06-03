@@ -28,9 +28,9 @@ def order_pay(oid):
         uid = session.get('logged_id')
         order = Order.query.get(oid)
         if order and order.create_userid == uid and is_pay(oid):
-            g = Group.query.get(o.gid)
-            g.req_qty -= o.req_qty
-            g.confirm_qty += o.req_qty
+            g = Group.query.get(order.gid)
+            g.req_qty -= order.req_qty
+            g.confirm_qty += order.req_qty
             g.save
             group_processing(g.id)
             order.status = statusRef.ORDER_PAIED

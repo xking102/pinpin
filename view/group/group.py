@@ -11,6 +11,7 @@ from module.transport.transport import Transport
 from form.group.group import newGroupForm
 from app import db
 from view.workflow.workflow import Push_Steps
+from control.pinpin import statusRef
 
 group = Blueprint('group', __name__)
 
@@ -52,7 +53,7 @@ def list_u_groupsOrder(gid):
     if session.get('logged_in'):
         g = Group.query.get(gid)
         if g and g.create_userid == session.get('logged_id'):
-            orders = Order.query.filter_by(status=20, gid=gid).all()
+            orders = Order.query.filter_by(status=statusRef.ORDER_PAIED, gid=gid).all()
             return make_response(jsonify({"orders": [order.to_json for order in orders]}), 200)
         return make_response('not exist', 404)
     return make_response('need login', 401)

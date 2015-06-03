@@ -8,6 +8,7 @@ from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group as GroupModel
 from module.order.order import Order as OrderModel
+from module.transport.transport import Transport as TransModel
 from module.workflow.workflow import Workflow as WorkflowModel
 from view.group.group import group_processing
 from view.workflow.workflow import init_order_wf, get_init_order
@@ -32,6 +33,9 @@ class Orders(Resource):
                 actual_price = request.json['actual_price']
                 actual_transfer_fee = request.json['actual_transfer_fee']
                 g = GroupModel.query.get(gid)
+                print 'total',g.total_qty
+                print 'req', g.req_qty
+                print 'confirm',g.confirm_qty
                 if g and (g.total_qty - g.req_qty - g.confirm_qty) >= req_qty:
                     o = OrderModel()
                     o.gid = gid
@@ -44,9 +48,14 @@ class Orders(Resource):
                     o.actual_price = actual_price
                     o.actual_transfer_fee = actual_transfer_fee
                     o.save
+                    print o.id
                     init_order_wf(o.id)
+                    print o.id
                     g.req_qty += o.req_qty
                     g.save
+                    t = TransModel()
+                    t.oid = o.id
+                    t.save
                     return make_response(jsonify({'oid': o.id, 'status': 'succ'}), 201)
                 return make_response(jsonify({'status': 'oversold'}), 200)
             return make_response('not exist', 404)

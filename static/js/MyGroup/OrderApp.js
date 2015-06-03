@@ -1,6 +1,6 @@
 var React = require("react");
 
-var OrderItem = req_qty('./OrderItem')
+var OrderItem = require('./OrderItem')
 
 var mui = require('material-ui');
 var {Paper} = mui;
@@ -12,22 +12,22 @@ module.exports = React.createClass({
         var orders = this.props.orders;
         var orderComps = orders.map(function(item){
             return <OrderItem key={item.id}
-                            order={item} 
-                            saveOrder={this.props.saveOrder} />
+                            order={item}  />
         });
 		return(
 			<div>
                 <div class="row-fluid">
-                    <div class="span4">地址</div>
-                    <div class="span1">收件人</div>
-                    <div class="span2">电话</div>
-                    <div class="span1">购买数量</div>
-                    <div class="span1">总价</div>
-                    <div class="span1">快递公司</div>
-                    <div class="span1">快递单号</div>
+                    <span className="span2">地址</span>
+                    <span className="span1">收件人</span>
+                    <span className="span1">电话</span>
+                    <span className="span2">购买数量</span>
+                    <span className="span5">总价</span>
+
                 </div>
                 <div class="row-fluid">
                     {orderComps}
+                    <hr/>
+                    
                 </div>
                 
             </div>
