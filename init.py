@@ -26,16 +26,17 @@ from module.user.user import User
 from module.user.useraddress import UserAddress
 from module.user.userinfo import UserInfo as UserInfoModel
 from module.workflow.workflow import Workflow
+from module.transport.transport import Transport
 import arrow
 
 import urllib
 import urllib2
 # db.drop_all()
-# db.create_all()
+db.create_all()
 
-g =Group()
-g.title='123'
-g.save
+# g =Group()
+# g.title='123'
+# g.save
 
 # u = UserAddress.query.all()
 # for u1 in u:
