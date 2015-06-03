@@ -7,6 +7,7 @@ from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group
 from module.order.order import Order
+from module.transport.transport import Transport
 from form.group.group import newGroupForm
 from app import db
 from view.workflow.workflow import Push_Steps
@@ -59,7 +60,20 @@ def list_u_groupsOrder(gid):
 
 
 
-
+# push a group status from PROCESSING(15) to CONFRIM(20)
+@group.route('/u/group/<int:gid>/delivery')
+def deliver_u_group(gid):
+    if session.get('logged_in'):
+        uid = session.get('logged_id')
+        g = Group.query.filter_by(status=statusRef.GROUP_PROCESSING,id=gid,create_userid=uid).first()
+        if g:
+            orders = Order.query.filter_by(gid=gid,status=statusRef.GROUP).all()
+            if orders:
+                for o in orders:
+                    trans = Transport.query.filter_by().all()
+            return make_response('not exist', 404)    
+        return make_response('not exist', 404)
+    return make_response('need login', 401)
 
 
 

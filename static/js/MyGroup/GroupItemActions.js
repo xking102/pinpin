@@ -2,6 +2,8 @@ var React = require("react");
 var mui = require('material-ui');
 var {RaisedButton, FlatButton, Dialog} = mui;
 
+var OrderApp = require('./OrderApp');
+
 module.exports = React.createClass({
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -9,6 +11,7 @@ module.exports = React.createClass({
     getInitialState:function(){
         return {
             modal:false
+            orders:[]
         }
     },
     _handleCancel:function(){
@@ -16,9 +19,12 @@ module.exports = React.createClass({
     },
     _handleDeliver:function(){
         alert('deliver');
+        this.deliverGroup();
     },
     _handleViewOrder:function(){
         // this.context.router.transitionTo('detail', {gid: this.props.group.id});
+        listGroupOrders();
+        console.log(this.state.orders);
         this.refs.viewOrder.show();
         /*
         status==15
@@ -28,6 +34,27 @@ module.exports = React.createClass({
     },
     _handlecustomAddressClose:function(){
         this.refs.viewOrder.dismiss();
+    },
+    saveOrder:function(oid){
+        console.log('saveit',oid);
+    },
+    deliverGroup:function(){
+        //requtest the group to delivery
+    }
+    listGroupOrders:function(){
+        $.ajax({
+            type:'get',
+            url:'/u/group/'+ this.props.group.id,
+            datetype:'json',
+            success:function (resp) {
+                this.setState({
+                        orders:resp.orders
+                    });
+            }.bind(this),
+            error:function(){
+                console.error(status, err.toString);
+            }.bind(this)
+        });
     },
     render:function(){
         var status = this.props.group.status;
@@ -93,9 +120,9 @@ module.exports = React.createClass({
         <FlatButton
             key={1}
             label="关闭"
-            secondary={true}
+            labelStyle={{color:'rgb(170, 170, 170)'}}
             onTouchTap={this._handlecustomAddressClose} />
-       ];
+        ];
 		return(
 			<div>
             <Dialog
@@ -103,7 +130,8 @@ module.exports = React.createClass({
               title="拼团用户信息"
               actions={viewOrder}
               modal={this.state.modal}>
-               <label>收件人</label>
+               <OrderApp order={this.state.orders}
+                        saveOrder={this.saveOrder} />
                
             </Dialog>
                 {actionBtn}
