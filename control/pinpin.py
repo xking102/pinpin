@@ -24,7 +24,8 @@ class statusRef():
     ORDER_APPORVED = 20
     ORDER_REJECT = 15
     ORDER_PAIED = 25
-    ORDER_CONFIRM = 30
+    ORDER_PENDING = 30
+    ORDER_CONFIRM = 35
 
 
 def getmd5(str):
