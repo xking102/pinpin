@@ -1,5 +1,6 @@
 from app import db
 from control import pinpin
+from module.transport.transport import Transport
 
 
 class Order(db.Model):
@@ -17,6 +18,7 @@ class Order(db.Model):
 
     @property
     def to_json(self):
+        t = Transport.query.filter_by(oid=self.id).first()
         return {
             'id': self.id,
             'gid': self.gid,
@@ -27,7 +29,8 @@ class Order(db.Model):
             'unit_price': self.unit_price,
             'total_price': self.total_price,
             'actual_price': self.actual_price,
-            'actual_transfer_fee': self.actual_transfer_fee
+            'actual_transfer_fee': self.actual_transfer_fee,
+            'transport':t.to_json
         }
 
     @property

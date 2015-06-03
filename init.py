@@ -32,11 +32,13 @@ import arrow
 import urllib
 import urllib2
 # db.drop_all()
-db.create_all()
+# db.create_all()
 
 # g =Group()
 # g.title='123'
 # g.save
+
+
 
 # u = UserAddress.query.all()
 # for u1 in u:
