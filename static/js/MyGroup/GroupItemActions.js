@@ -171,7 +171,7 @@ module.exports = React.createClass({
               title="拼团用户信息"
               actions={viewOrderTransport}
               modal={this.state.modal}>
-               <OrderApp orders={this.state.orders} />
+               <OrderApp orders={this.state.orders} viewMode={'Transport'}/>
                
             </Dialog>
             <Dialog
@@ -179,7 +179,7 @@ module.exports = React.createClass({
               title="订单确认状况"
               actions={viewOrderPay}
               modal={this.state.modal}>
-               <OrderApp orders={this.state.orders} />
+               <OrderApp orders={this.state.orders} viewMode={'Pay'} />
                
             </Dialog>
                 {actionBtn}

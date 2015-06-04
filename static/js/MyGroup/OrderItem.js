@@ -1,10 +1,18 @@
 var React = require("react");
 
 var mui = require('material-ui');
-var {Paper, TextField} = mui;
+var {Paper, TextField, Checkbox} = mui;
 
 
 module.exports = React.createClass({
+    propTypes: {
+        viewMode: React.PropTypes.string
+    },
+    getDefaultProps: function() {
+        return {
+          viewMode:'Transport'
+        }
+    },
     getInitialState:function(){
         return {
             org:'',
@@ -56,39 +64,66 @@ module.exports = React.createClass({
             code:this.props.order.transport.transcode
         });
     },
+    var isConfirm = false;
+    if(this.props.order.status==35){
+        isConfirm=true;
+    }else{this.props.order.status==30}{
+        isConfirm=false;
+    }
+    var Transport = (
+         <span className="span2">1{this.props.order.transport.address_line1}</span>
+         <span className="span1">2{this.props.order.transport.reciver}</span>
+         <span className="span1">3{this.props.order.transport.tel}</span>
+         <span className="span2">4{this.props.order.req_qty}</span>
+         <span className="span1">5{this.props.order.total_price}</span>
+         <span className="span2">
+             <TextField style={{width:'97px'}}
+                 hintText="输入快递公司"
+                 type='text'
+                 value={this.state.org}
+                 onBlur={this.handleBlurTransportOrg}
+                 onChange={this.handlerTransportOrg} 
+             />
+         </span>
+         <span className="span3">
+             <TextField style={{width:'97px'}}
+                 hintText="输入快递单号"
+                 type='text'
+                 value={this.state.code}
+                 onBlur={this.handleBlurTransportCode}
+                 onChange={this.handlerTransportCode} 
+             />
+         </span>
+    );
+    var Pay = (
+        <span className="span2">1{this.props.order.transport.address_line1}</span>
+        <span className="span1">2{this.props.order.transport.reciver}</span>
+        <span className="span1">3{this.props.order.transport.tel}</span>
+        <span className="span2">4{this.props.order.req_qty}</span>
+        <span className="span1">5{this.props.order.total_price}</span>
+        <span className="span1">6{this.props.order.transport.code}</span>
+        <span className="span1">7{this.props.order.transport.org}</span>
+        <span className="span1">
+            <Checkbox
+                name="PayConfirmBox"
+                value="isConfirm"
+                defaultChecked={isConfirm}
+                disabled={true}
+            />
+        </span>
+    );
     render:function(){
-        console.log(this.props);
+        var viewMode = (<div/>);
+        if(this.props.viewMode='Transport'){
+            viewMode = Transport;
+        }else if(this.props.viewMode='Pay'){
+            viewMode = Pay;
+        }else{
+            
+        }
 		return(
-			<div>
-                <span className="span2">1{this.props.order.transport.address_line1}</span>
-                <span className="span1">2{this.props.order.transport.reciver}</span>
-                <span className="span1">3{this.props.order.transport.tel}</span>
-                <span className="span2">4{this.props.order.req_qty}</span>
-                <span className="span1">5{this.props.order.total_price}</span>
-                <span className="span2">
-                    <TextField style={{width:'97px'}}
-                        hintText="输入快递公司"
-                        type='text'
-                        value={this.state.org}
-                        onBlur={this.handleBlurTransportOrg}
-                        onChange={this.handlerTransportOrg} 
-                    />
-                </span>
-                <span className="span3">
-                    <TextField style={{width:'97px'}}
-                        hintText="输入快递单号"
-                        type='text'
-                        value={this.state.code}
-                        onBlur={this.handleBlurTransportCode}
-                        onChange={this.handlerTransportCode} 
-                    />
-                </span>
-                
-                
-                
-                
-                
-                
+			<div> 
+                {viewMode} 
             </div>
 
 		)		
