@@ -37,6 +37,7 @@ from api.group.group import Groups, Group, MyGroups, MyGroup
 from api.order.order import Orders, Order, MyOrders
 from api.user.user import MyUserInfo
 from api.user.useraddress import MyAddresses, MyAddress
+from api.transport.transport import MyTransport
 
 
 app.register_blueprint(user)
@@ -70,6 +71,11 @@ api.add_resource(MyUserInfo, '/u', methods=['GET', 'PUT'])
 api.add_resource(MyAddresses, '/u/address', methods=['GET', 'POST'])
 api.add_resource(
     MyAddress, '/u/address/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+
+"""
+api for transport
+"""
+api.add_resource(MyTransport, '/u/transport/<int:id>', methods=['PUT'])
 
 app.register_blueprint(api_bp, url_prefix='/api/v1')
 
