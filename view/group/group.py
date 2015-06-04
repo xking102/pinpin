@@ -60,7 +60,7 @@ def list_u_groupsOrder(gid):
     return make_response('need login', 401)
 
 
-# push a group status from PROCESSING(15) to CONFRIM(20)
+# push a group status from PROCESSING(15) to CONFIRM(20)
 @group.route('/u/group/<int:gid>/delivery',methods=['PUT'])
 def deliver_u_group(gid):
     if session.get('logged_in'):
@@ -115,3 +115,21 @@ def cancel_group(id):
             return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
         return make_response('not exist', 404) 
     return make_response('need login', 401)
+
+
+# push a group status from GROUP_CONFIRM(20) to GROUP_CLOSE(30)
+def isConfirm(gid):
+    """
+    input group id,check this group's children order isConfirm
+    return Bolean True mean all Confirm False mean someone is not Confirm
+    """
+    g = Group.query.get(id)
+    if g and g.status==statusRef.GROUP_CONFIRM:
+        order = Order.query.filter_by(gid=gid,status=statusRef.ORDER_PENDING).all()
+        if order:
+            return False
+        else:
+            g.status = statusRef.GROUP_CLOSE
+            g.save
+            return True
+    return False
