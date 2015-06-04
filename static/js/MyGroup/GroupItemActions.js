@@ -22,14 +22,8 @@ module.exports = React.createClass({
           type     : 'put',
           contentType: "application/json",
           success: function(resp) {
-            status = resp.status;
-            if(status=='succ'){
-                console.log('succ');
-                this.props.listGroups();
-                console.log('renew~')
-            }else{
-                console.log('fail');
-            }
+            console.log('succ');
+            this.props.listGroups();
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
@@ -37,14 +31,18 @@ module.exports = React.createClass({
         });
     },
     _handleDeliver:function(){
-        alert('deliver');
+        console.log('deliver');
         this.deliverGroup();
     },
-    _handleViewOrder:function(){
+    _handleOrderPay:function(){
+        this.listGroupOrders();
+        console.log('handleOrderPay')
+        this.refs.viewOrderPay.show();
+    },
+    _handleOrderTransport:function(){
         // this.context.router.transitionTo('detail', {gid: this.props.group.id});
         this.listGroupOrders();
-        console.log(this.state.orders);
-        this.refs.viewOrder.show();
+        this.refs.viewOrderTransport.show();
         /*
         status==15
         status==20
@@ -52,7 +50,10 @@ module.exports = React.createClass({
         */
     },
     _handlecustomAddressClose:function(){
-        this.refs.viewOrder.dismiss();
+        this.refs.viewOrderTransport.dismiss();
+    },
+    _handlecustomPayClose:function(){
+        this.refs.viewOrderPay.dismiss();
     },
     deliverGroup:function(){
         $.ajax({
@@ -114,7 +115,7 @@ module.exports = React.createClass({
                 <div>
                     <RaisedButton label="查看团员信息" 
                         secondary={true}
-                        onTouchTap={this._handleViewOrder} 
+                        onTouchTap={this._handleOrderTransport} 
                     />
                     <RaisedButton label="发货" 
                         secondary={true}
@@ -127,7 +128,7 @@ module.exports = React.createClass({
                 <div>
                     <RaisedButton label="查看确认订单详情" 
                         secondary={true}
-                        onTouchTap={this._handleViewOrder} 
+                        onTouchTap={this._handleOrderPay} 
                     />
                 </div>
             );
@@ -149,19 +150,34 @@ module.exports = React.createClass({
         else{
             actionBtn = (<div/>)
         }
-        var viewOrder = [
+        var viewOrderTransport = [
         <FlatButton
             key={1}
             label="关闭"
             labelStyle={{color:'rgb(170, 170, 170)'}}
             onTouchTap={this._handlecustomAddressClose} />
         ];
+        var viewOrderPay = [
+        <FlatButton
+            key={1}
+            label="关闭"
+            labelStyle={{color:'rgb(170, 170, 170)'}}
+            onTouchTap={this._handlecustomPayClose} />
+        ];
 		return(
 			<div>
             <Dialog
-              ref="viewOrder"
+              ref="viewOrderTransport"
               title="拼团用户信息"
-              actions={viewOrder}
+              actions={viewOrderTransport}
+              modal={this.state.modal}>
+               <OrderApp orders={this.state.orders} />
+               
+            </Dialog>
+            <Dialog
+              ref="viewOrderPay"
+              title="订单确认状况"
+              actions={viewOrderPay}
               modal={this.state.modal}>
                <OrderApp orders={this.state.orders} />
                
