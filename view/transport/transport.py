@@ -16,7 +16,10 @@ from view.user.user import get_u_addresses
 # post a order set the default address into transport
 def set_default_transport(uid,oid):
     """
-    return True or False
+    param:
+    uid:user id
+    oid:order id
+    return Boolean
     """
 
     order = Order.query.get(oid)
