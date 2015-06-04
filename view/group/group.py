@@ -102,3 +102,16 @@ def isReady_Order_Transport(oid):
     if len(trans.transcode) == 0 or len(trans.transorg) == 0:
         return False
     return True
+
+
+@group.route('/u/group/<int:gid>/cancel',methods=['PUT'])
+def cancel_group(id):
+    if session.get('logged_in'):
+        uid = session.get('logged_id')
+        g = Group.query.get(id)
+        if g and g.create_userid == uid and g.status==statusRef.GROUP_PUBLISH and g.req_qty==0 and g.confirm_qty==0:
+            g.status = statusRef.GROUP_CANCEL
+            g.save
+            return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+        return make_response('not exist', 404) 
+    return make_response('need login', 401)

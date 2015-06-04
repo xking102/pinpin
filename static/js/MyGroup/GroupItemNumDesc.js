@@ -43,7 +43,7 @@ module.exports = React.createClass({
         else if(status==0){
             statusDesc = (
                 <div>
-                    <p>状态：取消</p>
+                    <p>状态：已取消</p>
                 </div>
             );
         }else{

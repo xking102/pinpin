@@ -15,7 +15,26 @@ module.exports = React.createClass({
         }
     },
     _handleCancel:function(){
-        alert('cancel');
+        console.log('cancel');
+        $.ajax({
+          url      : '/u/group/'+this.props.group.id+'/cancel',
+          dataType : 'json',
+          type     : 'put',
+          contentType: "application/json",
+          success: function(resp) {
+            status = resp.status;
+            if(status=='succ'){
+                console.log('succ');
+                this.props.listGroups();
+                console.log('renew~')
+            }else{
+                console.log('fail');
+            }
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(status, err.toString);
+          }.bind(this)
+        });
     },
     _handleDeliver:function(){
         alert('deliver');
