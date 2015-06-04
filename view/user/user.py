@@ -86,3 +86,16 @@ def change_pw():
             return make_response(jsonify({'messages': '密码不一致'}), 201)
         return redirect('/login')
     return redirect('/login')
+
+
+def get_u_addresses(uid,isDefault=False):
+    if isDefault:
+        addr = UserAddress.query.filter_by(uid=uid,isDefault=True).first()
+        if addr:
+            return addr
+        else:
+            return None
+    addr = UserAddress.query.filter_by(uid=uid).all()
+    if addr:
+        return addr
+    return None
