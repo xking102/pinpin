@@ -13,6 +13,22 @@ module.exports = React.createClass({
     },
     saveOrder:function(){
         console.log('saveit',this.props.order.id);
+        $.ajax({
+          url      : '/api/v1/u/transport/'+this.props.order.id,
+          dataType : 'json',
+          type     : 'put',
+          contentType: "application/json",
+          data:JSON.stringify({
+                    'transcode':this.state.code,
+                    'transorg':this.state.org
+                  }),
+          success: function(resp) {
+            console.log('succ');
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(status, err.toString);
+          }.bind(this)
+        });
     },
     handleBlurTransportOrg:function(){
         console.log('dialog-orderid',this.props.order.id);
