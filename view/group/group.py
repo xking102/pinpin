@@ -53,35 +53,52 @@ def list_u_groupsOrder(gid):
     if session.get('logged_in'):
         g = Group.query.get(gid)
         if g and g.create_userid == session.get('logged_id'):
-            orders = Order.query.filter_by(status=statusRef.ORDER_PAIED, gid=gid).all()
+            orders = Order.query.filter_by(
+                status=statusRef.ORDER_PAIED, gid=gid).all()
             return make_response(jsonify({"orders": [order.to_json for order in orders]}), 200)
         return make_response('not exist', 404)
     return make_response('need login', 401)
 
 
 # push a group status from PROCESSING(15) to CONFRIM(20)
-@group.route('/u/group/<int:gid>/delivery')
+@group.route('/u/group/<int:gid>/delivery',methods=['PUT'])
 def deliver_u_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
         g = Group.query.filter_by(
             status=statusRef.GROUP_PROCESSING, id=gid, create_userid=uid).first()
         if g:
-            orders = Order.query.filter_by(
-                gid=gid, status=statusRef.GROUP).all()
-            if orders:
-                pending = []
+            if isReady_Group_Transport(g.id):
+                ## TODO  push group workflow
+                orders = Order.query.filter_by(
+                    gid=gid, status=statusRef.ORDER_PAIED).all()
+                g.status = statusRef.GROUP_CONFIRM
                 for o in orders:
-                    trans = Transport.query.filter_by(oid=o.id).first()
-                    if len(trans.transcode) == 0 or len(trans.transorg) == 0:
-                        pending.append(trans.id)
-                if len(pending)==0:
-                    g.status = statusRef.GROUP_CONFIRM
-                    for o in orders:
-                        o.status = statusRef.ORDER_PENDING
-                    db.session.commit()
-                    return make_response(jsonify({'messages':'ok','status':'succ'}), 200) 
-                return make_response(jsonify({'messages':'todo','status':'fail'}), 200) 
-            return make_response('not exist', 404)
+                    o.status = statusRef.ORDER_PENDING
+                    ## TODO push order workflow
+                db.session.commit()
+                return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 200)
+            return make_response(jsonify({'messages': 'todo', 'status': 'fail'}), 200)
         return make_response('not exist', 404)
     return make_response('need login', 401)
+
+
+def isReady_Group_Transport(gid):
+    orders = Order.query.filter_by(
+        gid=gid, status=statusRef.ORDER_PAIED).all()
+    pending = 0
+    for o in orders:
+        if isReady_Order_Transport(o.id):
+            pass
+        else:
+            pending += 1
+    if pending == 0:
+        return True
+    return False
+
+
+def isReady_Order_Transport(oid):
+    trans = Transport.query.filter_by(oid=oid).first()
+    if len(trans.transcode) == 0 or len(trans.transorg) == 0:
+        return False
+    return True
