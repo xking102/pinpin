@@ -25,13 +25,3 @@ class MyTransport(Resource):
                 return make_response(jsonify({'messages': 'ok'}), 201)
             return jsonify({'messages': 'not exist', "status": 404})
         return jsonify({'messages': 'please login', "status": 401})
-
-    def delete(self, id):
-        if session.get('logged_in'):
-            g = GroupModel.query.get(id)
-            if g and g.create_user == session.get('logged_id'):
-                g.status = statusRef.GROUP_CANCEL
-                g.save
-                return jsonify({'gid': g.id, 'messages': 'ok', "status": 201})
-            return jsonify({'messages': 'not access', "status": 404})
-        return jsonify({'messages': 'please login', "status": 401})
