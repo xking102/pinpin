@@ -26,7 +26,7 @@ module.exports = React.createClass({
                         </div>
 
                         <div className="span4">
-                        <GroupItemActions group={this.props.group} />
+                        <GroupItemActions group={this.props.group} listGroups={this.props.listGroups} />
                         </div>
                     </div>
                 </Paper>

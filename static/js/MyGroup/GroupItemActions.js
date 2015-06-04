@@ -36,7 +36,25 @@ module.exports = React.createClass({
         this.refs.viewOrder.dismiss();
     },
     deliverGroup:function(){
-        //requtest the group to delivery
+        $.ajax({
+          url      : '/u/group/'+this.props.group.id+'/delivery',
+          dataType : 'json',
+          type     : 'put',
+          contentType: "application/json",
+          success: function(resp) {
+            status = resp.status;
+            if(status=='succ'){
+                console.log('succ');
+                this.props.listGroups();
+                console.log('renew~')
+            }else{
+                console.log('fail');
+            }
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(status, err.toString);
+          }.bind(this)
+        });
     },
     listGroupOrders:function(){
         $.ajax({

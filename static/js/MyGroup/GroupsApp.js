@@ -35,7 +35,7 @@ module.exports = React.createClass({
 		var groups = this.state.groups;
 		var groupComps = groups.map(function(item){
 			return <GroupItem key={item.id}
-							group={item}  />
+							group={item} listGroups={this.listGroups} />
 		});
 		return (
 			<div> 
