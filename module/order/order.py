@@ -19,9 +19,10 @@ class Order(db.Model):
     @property
     def to_json(self):
         t = Transport.query.filter_by(oid=self.id).first()
-        returnT = {}
         if t:
-            returnT = t.to_json
+            t = t.to_json
+        else:
+            t = {}
         return {
             'id': self.id,
             'gid': self.gid,
@@ -33,7 +34,7 @@ class Order(db.Model):
             'total_price': self.total_price,
             'actual_price': self.actual_price,
             'actual_transfer_fee': self.actual_transfer_fee,
-            'transport':returnT
+            'transport':t
         }
 
     @property
