@@ -18,8 +18,8 @@ class MyTransport(Resource):
             uid = session.get('logged_id')
             if o and o.create_userid == uid:
                 t = Transport.query.filter_by(oid=o.id).first()
-                t.transcode = desc = request.json['transcode']
-                t.transorg = desc = request.json['transorg']
+                t.transcode = request.json['transcode']
+                t.transorg = request.json['transorg']
                 t.update_dt = pinpin.getCurTimestamp()
                 t.save
                 return make_response(jsonify({'messages': 'ok'}), 201)
