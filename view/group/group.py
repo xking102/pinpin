@@ -77,7 +77,7 @@ def deliver_u_group(gid):
                     o.status = statusRef.ORDER_PENDING
                     ## TODO push order workflow
                 db.session.commit()
-                return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 200)
+                return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
             return make_response(jsonify({'messages': 'todo', 'status': 'fail'}), 200)
         return make_response('not exist', 404)
     return make_response('need login', 401)
