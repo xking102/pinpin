@@ -40,6 +40,18 @@ def order_pay(oid):
         return make_response('no permission', 404)
     return make_response('need login', 401)
 
+# user cancel the order
+@order.route('/order_cancel/<int:oid>', methods=['PUT'])
+def order_cancel(oid):
+    if session.get('logged_in'):
+        uid = session.get('logged_id')
+        order = Order.query.get(oid)
+        if order and order.create_userid == uid:
+            order.status = statusRef.ORDER_CANCEL
+            order.save
+            return make_response('cancel succ', 201)
+        return make_response('no permission', 404)
+    return make_response('need login', 401)
 
 # check order ispay?
 def is_pay(id):
