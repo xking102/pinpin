@@ -73,6 +73,8 @@ def deliver_u_group(gid):
                 orders = Order.query.filter_by(
                     gid=gid, status=statusRef.ORDER_PAIED).all()
                 g.status = statusRef.GROUP_CONFIRM
+                g.req_qty = g.total_qty
+                g.confirm_qty = 0
                 for o in orders:
                     o.status = statusRef.ORDER_PENDING
                     ## TODO push order workflow
@@ -137,3 +139,23 @@ def isConfirm(gid):
             g.save
             return True
     return False
+
+def tellGroupThatOrderisConfirmed(oid):
+    """
+    when order is confirmed 
+    then noity group to change the req_qty and confirm_qty
+    and judge the group confirm_qty and total_qty if equle then push group status
+    """
+    o = Order.query.get(oid)
+    g = Group.query.get(gid)
+    if o and g:
+        g.req_qty -= o.req_qty
+        g.confirm_qty += o.req_qty
+        if g.confirm_qty == g.total_qty:
+            g.status = statusRef.GROUP_CLOSE
+        g.save
+        return True
+    return False
+
+
+
