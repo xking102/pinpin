@@ -7,6 +7,10 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fkid = db.Column(db.Integer, unique=True)
     image_type = db.Column(db.Integer, unique=False)
+    """
+    type 1 Group
+    type 2 User
+    """
     image_path = db.Column(db.String, unique=False)
     create_dt = db.Column(db.Integer, unique=False)
     create_userid = db.Column(db.Integer, unique=False)

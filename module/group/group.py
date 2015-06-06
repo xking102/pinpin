@@ -1,5 +1,6 @@
 from app import db
 from control import pinpin
+from module.image.image import Image
 
 
 class Group(db.Model):
@@ -19,6 +20,11 @@ class Group(db.Model):
 
     @property
     def to_json(self):
+        image = Image.query.filter_by(image_type=1, fkid=self.id).first()
+        if image:
+            image = image.image_path
+        else:
+            image = '/static/imgs/groups/2.png'
         return {
             'id': self.id,
             'title': self.title,
@@ -31,7 +37,8 @@ class Group(db.Model):
             'update_dt': self.update_dt,
             'status': self.status,
             'req_qty': self.req_qty,
-            'confirm_qty': self.confirm_qty
+            'confirm_qty': self.confirm_qty,
+            'image': image
         }
 
     @property
