@@ -7,7 +7,8 @@ from app import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group as GroupModel
-from module.order.order import Order as ORderModel
+from module.order.order import Order as OrderModel
+from module.transport.transport import Transport as TransportModel
 
 
 class MyTransport(Resource):
@@ -17,7 +18,7 @@ class MyTransport(Resource):
             o = OrderModel.query.get(id)
             uid = session.get('logged_id')
             if o and o.create_userid == uid:
-                t = Transport.query.filter_by(oid=o.id).first()
+                t = TransportModel.query.filter_by(oid=o.id).first()
                 t.transcode = request.json['transcode']
                 t.transorg = request.json['transorg']
                 t.update_dt = pinpin.getCurTimestamp()

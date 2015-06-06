@@ -36,7 +36,7 @@ module.exports = React.createClass({
 		var groupComps = groups.map(function(item){
 			return <GroupItem key={item.id}
 							group={item} listGroups={this.listGroups} />
-		});
+		}.bind(this));
 		return (
 			<div> 
 			<div className="row-fluid sortable">
