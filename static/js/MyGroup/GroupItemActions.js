@@ -23,7 +23,7 @@ module.exports = React.createClass({
           contentType: "application/json",
           success: function(resp) {
             console.log('succ');
-            this.props.listGroups();
+            this.props.changeGroupStatus(this.props.group.id,0);
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
@@ -65,7 +65,7 @@ module.exports = React.createClass({
             status = resp.status;
             if(status=='succ'){
                 console.log('succ');
-                this.props.listGroups();
+                this.props.changeGroupStatus(this.props.group.id,20);
                 console.log('renew~')
             }else{
                 console.log('fail');

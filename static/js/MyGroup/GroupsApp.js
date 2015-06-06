@@ -25,6 +25,21 @@ module.exports = React.createClass({
         	}.bind(this)
     	});
 	},
+	changeGroupStatus:function(groupid,status){
+		var groups = this.state.groups;
+		var update = React.addons.update;
+		var group = groups.filter(function(group){
+			return group.id == groupid;
+		})[0];
+		var index = groups.indexOf(group);
+		var updategroup = update(group,{status:{$set:status}});
+		var newgroups = update(groups,{
+			$splice: [[index,1,updategroup]]
+		});
+		this.setState({
+			groups:newgroups
+		})
+	},
 	componentDidMount : function(){
 		this.listGroups();
 	},
@@ -35,7 +50,9 @@ module.exports = React.createClass({
 		var groups = this.state.groups;
 		var groupComps = groups.map(function(item){
 			return <GroupItem key={item.id}
-							group={item} listGroups={this.listGroups} />
+							group={item} 
+							listGroups={this.listGroups}
+							changeGroupStatus={this.changeGroupStatus} />
 		}.bind(this));
 		return (
 			<div> 

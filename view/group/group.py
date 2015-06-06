@@ -99,16 +99,20 @@ def isReady_Group_Transport(gid):
 
 def isReady_Order_Transport(oid):
     trans = Transport.query.filter_by(oid=oid).first()
-    if len(trans.transcode) == 0 or len(trans.transorg) == 0:
+    try:
+        if len(trans.transcode) == 0 or len(trans.transorg) == 0:
+            return False
+    except Exception as e:
+        print e
         return False
     return True
 
 
 @group.route('/u/group/<int:gid>/cancel',methods=['PUT'])
-def cancel_group(id):
+def cancel_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
-        g = Group.query.get(id)
+        g = Group.query.get(gid)
         if g and g.create_userid == uid and g.status==statusRef.GROUP_PUBLISH and g.req_qty==0 and g.confirm_qty==0:
             g.status = statusRef.GROUP_CANCEL
             g.save
