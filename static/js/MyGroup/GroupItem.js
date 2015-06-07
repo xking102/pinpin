@@ -7,13 +7,28 @@ var GroupItemNumDesc = require("./GroupItemNumDesc");
 var GroupItemActions = require('./GroupItemActions');
 
 module.exports = React.createClass({
-    
+    getInitialState:function(){
+        return {
+            depth:3
+        }
+    },
+    MouseIn:function(){
+        this.setState({
+            depth:1
+        });
+    },
+    MouseOut:function(){
+        this.setState({
+            depth:3
+        });
+    },
     render:function(){
 		return(
-			<div style={{marginBottom:'15px'}}>
-                <Paper zDepth={3}>
-                    <div className="row-fluid" style={{marginLeft:'10px'}}>
-                        <p>{this.props.group.title}</p>
+			<div style={{marginBottom:'15px'}} onMouseEnter={this.MouseIn} onMouseLeave={this.MouseOut}>
+                <Paper zDepth={this.state.depth}>
+                    <div className="row-fluid" style={{marginLeft:'10px',paddingTop:'10px'}}>
+                        <span>{this.props.group.title}</span>
+                        <span className="pull-right" style={{marginRight:'2%'}}>{this.props.group.create_dt}</span>
                     </div>
 
                     <div className="row-fluid" style={{marginLeft:'10px',paddingBottom:'10px'}}>

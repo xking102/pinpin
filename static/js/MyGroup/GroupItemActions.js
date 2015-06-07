@@ -117,6 +117,7 @@ module.exports = React.createClass({
                         secondary={true}
                         onTouchTap={this._handleOrderTransport} 
                     />
+                    &nbsp;
                     <RaisedButton label="发货" 
                         secondary={true}
                         onTouchTap={this._handleDeliver} 

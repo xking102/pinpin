@@ -78,7 +78,7 @@ module.exports = React.createClass({
 
 				<div className="box span12">
 					<div className="box-header" data-original-title>
-						<h2><i className="halflings-icon user"></i><span className="break"></span>MyGroups</h2>	
+						<h2><i className="halflings-icon user"></i><span className="break"></span>我的团</h2>	
 					</div>
 
 					<div className="box-content">
