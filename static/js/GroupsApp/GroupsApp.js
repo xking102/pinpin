@@ -1,6 +1,6 @@
 var React = require('react');
 var GroupItem = require('./GroupItem'); 
-var Pager =  require("./Pager");
+var Pager =  require("../Components/Pager");
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
