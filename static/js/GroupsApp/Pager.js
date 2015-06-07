@@ -1,18 +1,24 @@
-var React = require("react/addons");
-
+var React = require('react');
 
 
 module.exports = React.createClass({
-	clickHandler:function(e){
-		e.stopPropagation();
-		this.props.listGroups();
-	},
 	render:function(){
-		var styleObj={
-			display : this.props.pager_display ? 'block':'none',
+		var NextBtn = (<div/>);
+		if(this.props.hasNext){
+			NextBtn = (
+				<button onClick={this.props.onClickNext}>{'下一页'}</button>
+			);
+		}
+		var PrevBtn = (<div/>);
+		if(this.props.hasPrev){
+			PrevBtn = (
+				<button onClick={this.props.onClickPrev}>{'上一页'}</button>
+			);
 		}
 		return(
-			<button style={styleObj} disabled={this.props.query_flag} onClick={this.clickHandler}>{this.props.button_name}</button>
+			<div style={{marginLeft:'45%'}}>
+				{PrevBtn}{NextBtn}
+			</div>
 		)
 	}
 })

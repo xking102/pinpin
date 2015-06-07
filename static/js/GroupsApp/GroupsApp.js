@@ -25,17 +25,15 @@ module.exports = React.createClass({
 	getInitialState:function(){
 		return {
 			groups: [],
+			pager:[],
+			per: 1,
 			page: 1,
-			pages: 1,
 			pager_display: false,
 			query_flag:'',
 			button_name:'这里以后放分页'
 		}
 	},
-	listGroups:function(){
-		var data = {
-			page : 2
-		};
+	listGroups:function(per,page){
 		this.setState({
             		query_flag:'yes',
             		button_name:'加载中'
@@ -43,10 +41,16 @@ module.exports = React.createClass({
 		$.ajax({
             type:'get',
             url:'/api/v1/groups',
-            data:data,
+            contentType: "application/json",
+            data:{
+            	'per':per,
+            	'page':page
+
+            },
             success:function(resp){
             	this.setState({
             		groups:resp.groups,
+            		pager:resp.pager,
             		pager_display:true,
             		query_flag:'',
             		button_name:'这里以后放分页'
@@ -58,8 +62,14 @@ module.exports = React.createClass({
         });
 
 	},
+	onNextPage:function(){
+		this.listGroups(this.state.pager.per,this.state.pager.page+1);
+	},
+	onPrevPage:function(){
+		this.listGroups(this.state.pager.per,this.state.pager.page-1);
+	},
 	componentDidMount : function(){
-		this.listGroups();
+		this.listGroups(8,1);
 	},
 	render:function(){
 		var groups = this.state.groups;
@@ -69,10 +79,10 @@ module.exports = React.createClass({
 
 		});
 		var pager_props = {
-			listGroups : this.listGroups,
-			pager_display : this.state.pager_display,
-			query_flag : this.state.query_flag,
-			button_name : this.state.button_name
+			hasNext: this.state.pager.next,
+			hasPrev: this.state.pager.prev,
+			onClickNext : this.onNextPage,
+			onClickPrev : this.onPrevPage
 		};
 		return (
 			<div>
