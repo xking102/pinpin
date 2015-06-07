@@ -20,31 +20,31 @@ class Groups(Resource):
             per = request.args.get('per')
             page = request.args.get('page')
         except Exception as e:
-            per = 2
+            per = 8
             page = 1
         try:
             per = int(per)
             page = int(page)
         except Exception as e:
-            per = 2
+            per = 8
             page = 1
         p = Pager(per, page)
         if page > 1:
             prev = True
         groups = GroupModel.query.filter_by(
             status=statusRef.GROUP_PUBLISH).order_by(GroupModel.create_dt.desc()).offset(p.offset).limit(p.limit)
-        nextp = Pager(per, page+1)
+        nextp = Pager(per, page + 1)
         nextgroups = GroupModel.query.filter_by(
             status=statusRef.GROUP_PUBLISH).order_by(GroupModel.create_dt.desc()).offset(nextp.offset).limit(nextp.limit).count()
         if nextgroups:
             next = True
         pager = {
-            'prev':prev,
-            'next':next,
-            'per':per,
-            'page':page
+            'prev': prev,
+            'next': next,
+            'per': per,
+            'page': page
         }
-        return make_response(jsonify({"groups": [g.to_json for g in groups],'pager':pager}), 200)
+        return make_response(jsonify({"groups": [g.to_json for g in groups], 'pager': pager}), 200)
 
     def post(self):
         if session.get('logged_in'):
@@ -104,9 +104,38 @@ class MyGroups(Resource):
 
     def get(self):
         if session.get('logged_in'):
+            next = False
+            prev = False
+            try:
+                per = request.args.get('per')
+                page = request.args.get('page')
+            except Exception as e:
+                per = 10
+                page = 1
+            try:
+                per = int(per)
+                page = int(page)
+            except Exception as e:
+                per = 10
+                page = 1
+            p = Pager(per, page)
+            if page > 1:
+                prev = True
             uid = session.get('logged_id')
-            groups = GroupModel.query.filter_by(create_userid=uid).all()
-            return make_response(jsonify({"groups": [g.to_json for g in groups]}), 200)
+            groups = GroupModel.query.filter_by(create_userid=uid).order_by(
+                GroupModel.create_dt.desc()).offset(p.offset).limit(p.limit)
+            nextp = Pager(per, page+1)
+            nextgroups = GroupModel.query.filter_by(create_userid=uid).order_by(
+                GroupModel.create_dt.desc()).offset(nextp.offset).limit(nextp.limit).count()
+            if nextgroups:
+                next = True
+            pager = {
+                'prev':prev,
+                'next':next,
+                'per':per,
+                'page':page
+            }
+            return make_response(jsonify({"groups": [g.to_json for g in groups],'pager':pager}), 200)
         return make_response(jsonify({'messages': 'please login'}), 401)
 
 

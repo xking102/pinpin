@@ -1,23 +1,29 @@
 var React = require('react');
 
 var GroupItem = require('./GroupItem');
-
+var Pager =  require("../Components/Pager");
 
 
 module.exports = React.createClass({
 	getInitialState:function(){
 		return {
-			groups: []
+			groups: [],
+			pager:[]
 		}
 	},
-	listGroups:function(){
+	listGroups:function(per,page){
 		$.ajax({
             type:'get',
             url:'/api/v1/u/groups',
             datetype:'json',
+            data:{
+            	'per':per,
+            	'page':page
+            },
         	success:function (resp) {
         		this.setState({
-            			groups:resp.groups
+            			groups:resp.groups,
+            			pager:resp.pager
             		});
         	}.bind(this),
         	error:function(){
@@ -40,11 +46,17 @@ module.exports = React.createClass({
 			groups:newgroups
 		})
 	},
+	onNextPage:function(){
+		this.listGroups(this.state.pager.per,this.state.pager.page+1);
+	},
+	onPrevPage:function(){
+		this.listGroups(this.state.pager.per,this.state.pager.page-1);
+	},
 	componentDidMount : function(){
-		this.listGroups();
+		this.listGroups(10,1);
 	},
 	componentWillReceiveProps  : function(){
-		this.listGroups();
+		this.listGroups(10,1);
 	},
 	render:function(){
 		var groups = this.state.groups;
@@ -54,6 +66,12 @@ module.exports = React.createClass({
 							listGroups={this.listGroups}
 							changeGroupStatus={this.changeGroupStatus} />
 		}.bind(this));
+		var pager_props = {
+			hasNext: this.state.pager.next,
+			hasPrev: this.state.pager.prev,
+			onClickNext : this.onNextPage,
+			onClickPrev : this.onPrevPage
+		};
 		return (
 			<div> 
 			<div className="row-fluid sortable">
@@ -67,8 +85,9 @@ module.exports = React.createClass({
 						<div className="row-fluid">
 							{groupComps}		
 						</div>
-
 					</div>
+					<Pager {...pager_props}/>
+
 
 
 					
