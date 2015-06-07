@@ -28,6 +28,15 @@ class statusRef():
     ORDER_CONFIRM = 35
 
 
+class Pager():
+    offset = 0
+    limit = 0
+
+    def __init__(self, per, page=1):
+        self.offset = per * (page - 1)
+        self.limit = per
+
+
 def getmd5(str):
     md5 = hashlib.md5(str + salt).hexdigest()
     return md5
