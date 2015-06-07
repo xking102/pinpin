@@ -86,8 +86,10 @@ module.exports = React.createClass({
 							{groupComps}		
 						</div>
 					</div>
-					<Pager {...pager_props}/>
 
+					<div style={{marginBottom:'10px'}}>
+					<Pager {...pager_props}/>
+					</div>
 
 
 					
