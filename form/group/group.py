@@ -36,11 +36,6 @@ class newGroupForm(Form):
         total_qty = self.total_qty.data
         image = self.image.data
         uid = session.get('logged_id')
-        filename = secure_filename(image.filename)
-        pre = 'static/imgs/groups/group-img-' + \
-            str(pinpin.getCurTimestamp()) + \
-            '-'
-        image.save(pre + filename)
         group = Group()
         group.title = title
         group.desc = desc
@@ -54,14 +49,20 @@ class newGroupForm(Form):
         group.req_qty = 0
         group.confirm_qty = 0
         group.save
-        img = Image()
-        img.fkid = group.id
-        img.image_type = 1
-        img.image_path = '/' + pre + filename
-        img.create_dt = pinpin.getCurTimestamp()
-        img.create_userid = uid
-        img.isUsed = True
-        img.save
+        filename = secure_filename(image.filename)
+        pre = 'static/imgs/groups/group-img-' + \
+            str(pinpin.getCurTimestamp()) + \
+            '-'
+        if filename:
+            image.save(pre + filename)
+            img = Image()
+            img.fkid = group.id
+            img.image_type = 1
+            img.image_path = '/' + pre + filename
+            img.create_dt = pinpin.getCurTimestamp()
+            img.create_userid = uid
+            img.isUsed = True
+            img.save
         init_group_wf(group.id)
         self.group = group
         return group
