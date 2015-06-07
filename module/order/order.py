@@ -1,5 +1,5 @@
 from app import db
-from control import pinpin
+from control.pinpin import getMoment
 from module.transport.transport import Transport
 
 
@@ -27,7 +27,7 @@ class Order(db.Model):
             'id': self.id,
             'gid': self.gid,
             'status': self.status,
-            'create_dt': self.create_dt,
+            'create_dt': getMoment(self.create_dt),
             'create_userid': self.create_userid,
             'req_qty': self.req_qty,
             'unit_price': self.unit_price,

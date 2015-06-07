@@ -1,5 +1,5 @@
 from app import db
-from control import pinpin
+from control.pinpin import getMoment
 from module.image.image import Image
 
 
@@ -32,9 +32,9 @@ class Group(db.Model):
             'unit_price': self.unit_price,
             'list_price': self.list_price,
             'total_qty': self.total_qty,
-            'create_dt': self.create_dt,
+            'create_dt': getMoment(self.create_dt),
             'create_userid': self.create_userid,
-            'update_dt': self.update_dt,
+            'update_dt': getMoment(self.update_dt),
             'status': self.status,
             'req_qty': self.req_qty,
             'confirm_qty': self.confirm_qty,

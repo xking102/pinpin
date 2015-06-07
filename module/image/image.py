@@ -1,6 +1,5 @@
 from app import db
-from control import pinpin
-
+from control.pinpin import getMoment
 
 class Image(db.Model):
     __tablename__ = 't_image'
@@ -23,7 +22,7 @@ class Image(db.Model):
             'fkid': self.fkid,
             'image_type': self.image_type,
             'image_path': self.image_path,
-            'create_dt': self.create_dt,
+            'create_dt': getMoment(self.create_dt),
             'create_userid': self.create_userid,
             'isUsed': self.isUsed
         }
