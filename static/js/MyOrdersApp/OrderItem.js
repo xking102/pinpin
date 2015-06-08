@@ -1,11 +1,28 @@
 var React = require("react");
+var mui = require('material-ui');
+var {Paper} = mui;
 
 module.exports = React.createClass({
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
     
     getInitialState:function(){
         return {
             query_flag: false,
+            depth:3
         }
+    },
+    MouseIn:function(){
+        this.setState({
+            depth:1
+        });
+    },
+    MouseOut:function(){
+        this.setState({
+            depth:3
+        });
     },
     handlerCancel: function(){
         if(this.state.query_flag){
@@ -19,14 +36,15 @@ module.exports = React.createClass({
             url:'/order_cancel/'+this.props.order.id,
             contentType: "application/json",
             success:function (resp) {
-                 query_flag: true
-                 this.props.order.status = 0
-                 this.setState({
-                    order:resp.order
-                 });
+                 this.setState(
+                    {query_flag: true}
+                );
+                 this.props.changeOrderStatus(this.props.order.id,0)
             }.bind(this),
             error:function (resp){
-                query_flag: false
+                                 this.setState(
+                    {query_flag: false}
+                );
             }.bind(this)
 
         });             
@@ -44,14 +62,15 @@ module.exports = React.createClass({
             url:'/order_confirm/'+this.props.order.id,
             contentType: "application/json",
             success:function (resp) {
-                 query_flag: true
-                 this.props.order.status = 35
-                 this.setState({
-                    order:resp.order
-                 });
+                 this.setState(
+                    {query_flag: true}
+                );
+                 this.props.changeOrderStatus(this.props.order.id,35)
             }.bind(this),
             error:function (resp){
-                query_flag: false
+                                 this.setState(
+                    {query_flag: false}
+                );
             }.bind(this)
 
         });             
@@ -103,7 +122,7 @@ module.exports = React.createClass({
         }
 		return(
 
-			<div>
+			<div style={{marginBottom:'15px'}} onMouseEnter={this.MouseIn} onMouseLeave={this.MouseOut}>
                 <div className="row-fluid">{this.props.order.id}</div>
                 <div className="row-fluid">
                     

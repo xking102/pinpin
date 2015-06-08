@@ -48,6 +48,10 @@ def order_cancel(oid):
         uid = session.get('logged_id')
         order = Order.query.get(oid)
         if order and order.create_userid == uid:
+            g = Group.query.get(order.gid)
+            g.total_qty -= order.req_qty
+            g.req_qty-= order.req_qty
+            g.save
             order.status = statusRef.ORDER_CANCEL
             order.save
             return make_response('cancel succ', 201)
