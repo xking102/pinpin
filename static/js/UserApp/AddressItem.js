@@ -20,13 +20,23 @@ module.exports = React.createClass({
     _MouseIn:function(){
       if(this.props.address.isDefault){
 
-      }else{
-        this.setState({
-          setflag:true
-        });
+      }else{  
+        var self = this
+        if(this._timeout){
+          clearTimeout(this._timeout);
+        }
+        this._timeout = setTimeout(function(){
+          self.setState({
+            setflag:true
+          });
+        },1000);
       }
     },
     _MouseOut:function(){
+      var self = this
+      if(this._timeout){
+        clearTimeout(this._timeout);
+      };
       this.setState({
         setflag:false
       });
@@ -46,6 +56,9 @@ module.exports = React.createClass({
                   }),
           success: function(resp) {
             console.log('succ');
+            this.setState({
+              setflag:false
+            })
             this.props.listAddress();
           }.bind(this),
           error: function(xhr, status, err) {
@@ -165,7 +178,7 @@ module.exports = React.createClass({
        var setDefaultLink = this.state.setflag?
        <div>
        <span style={spandefault}>
-        <a style={{color:'#f30'}} href="#" onClick={this.handleDefault}>设为默认</a>
+        <a style={{color:'#f30'}} href="javascript:void(0)" onClick={this.handleDefault}>设为默认</a>
        </span>
        </div>:
        <div/>;
@@ -175,9 +188,9 @@ module.exports = React.createClass({
   <div className="span2">
             <p>address title {this.props.address.id}</p>
             <div>{DefaultLink}</div>
+            <p><a href="javascript:void(0)" onClick={this.handleModify}>修改</a>/
+            <a href="javascript:void(0)" onClick={this.handleDelete}>删除</a></p>
             <div>{setDefaultLink}</div>
-            <p><a href="#" onClick={this.handleModify}>修改</a>/
-            <a href="#" onClick={this.handleDelete}>删除</a></p>
             <div><Dialog
               ref="customDialog"
               title="修改收货地址"
