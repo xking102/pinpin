@@ -22,7 +22,7 @@ module.exports = React.createClass({
                  query_flag: true
                  this.props.order.status = 0
                  this.setState({
-                    orders:resp.orders
+                    order:resp.order
                  });
             }.bind(this),
             error:function (resp){
@@ -47,7 +47,7 @@ module.exports = React.createClass({
                  query_flag: true
                  this.props.order.status = 35
                  this.setState({
-                    orders:resp.orders
+                    order:resp.order
                  });
             }.bind(this),
             error:function (resp){
@@ -90,12 +90,12 @@ module.exports = React.createClass({
             break
             case 25:
             statusName = '待发货'
-            displayBtn = <a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>投诉</a>
+            displayBtn = <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a>
             break
             case 30:
             statusName = '待收货'
             displayBtn = <div><a className="btn btn-link" href="#" onClick={this.handlerConfirm}>确认收货</a><br></br>
-            <a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>投诉</a></div>
+            <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a></div>
             break
             case 35:
             statusName = '完成'
@@ -104,7 +104,7 @@ module.exports = React.createClass({
 		return(
 
 			<div>
-                <div className="row-fluid">{this.props.order.create_dt}{this.props.order.id}</div>
+                <div className="row-fluid">{this.props.order.id}</div>
                 <div className="row-fluid">
                     
                     <div className="span2 center"><img alt="香水" src="/static/imgs/orders/OrderItems.png"/></div>
