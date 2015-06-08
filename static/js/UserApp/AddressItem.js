@@ -1,6 +1,6 @@
 var React = require('react');
 var mui = require('material-ui');
-var {RaisedButton, FlatButton, Dialog, Paper} = mui;
+var {RaisedButton, FlatButton, Dialog, Paper, Snackbar} = mui;
 
 
 module.exports = React.createClass({
@@ -14,7 +14,25 @@ module.exports = React.createClass({
             tel:'',
             reciver:'',
             depth:5,
-            setflag:false
+            setflag:false,
+            snackbar_msg:'',
+            msg_pool:{
+              setDefault:{
+                beg:'正在修改默认地址',
+                succ:'修改成功',
+                fail:'修改失败'
+              },
+              delete:{
+                beg:'正在删除地址',
+                succ:'修改成功',
+                fail:'修改失败'
+              },
+              update:{
+                beg:'正在修改指定地址',
+                succ:'修改成功',
+                fail:'修改失败'
+              }
+            }
         }
     },
     _MouseIn:function(){
@@ -42,6 +60,7 @@ module.exports = React.createClass({
       });
     },
     handleDefault:function(){
+      this._sendmsg(this.state.msg_pool.setDefault.beg);
       $.ajax({
           url      : '/api/v1/u/address/'+this.props.address.id,
           dataType : 'json',
@@ -60,13 +79,16 @@ module.exports = React.createClass({
               setflag:false
             })
             this.props.listAddress();
+            this._sendmsg(this.state.msg_pool.setDefault.succ);
           }.bind(this),
           error: function(xhr, status, err) {
+            this._sendmsg(this.state.msg_pool.setDefault.fail);
             console.error(status, err.toString);
           }.bind(this)
         });
     },
     PutAddress:function(){
+      this._sendmsg(this.state.msg_pool.update.beg);
         $.ajax({
           url      : '/api/v1/u/address/'+this.state.id,
           dataType : 'json',
@@ -82,22 +104,27 @@ module.exports = React.createClass({
           success: function(resp) {
             console.log('succ');
             this.props.listAddress();
+            this._sendmsg(this.state.msg_pool.update.succ);
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
+            this._sendmsg(this.state.msg_pool.update.fail);
           }.bind(this)
         });
     },
     DelAddress:function(){
+      this._sendmsg(this.state.msg_pool.delete.beg);
         $.ajax({
           url      : '/api/v1/u/address/'+this.props.address.id,
           dataType : 'json',
           type     : 'delete',
           success: function(resp) {
             console.log('delete');
+            this._sendmsg(this.state.msg_pool.delete.succ);
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
+            this._sendmsg(this.state.msg_pool.delete.fail);
           }.bind(this)
         });
     },
@@ -138,9 +165,6 @@ module.exports = React.createClass({
        this.setState({
             address_line1:e.target.value
        })
-    },
-    componentWillReceiveProps:function(nextProps) {
-      console.log(nextProps);
     },
 	render:function(){
         var customActions = [
@@ -226,10 +250,20 @@ module.exports = React.createClass({
             </p>
         </div>    
    </Paper>
+   <Snackbar
+          ref="snackbar"
+          message={this.state.snackbar_msg}
+    />
 </div>
 
 		)
-	}
+	},
+  _sendmsg:function(msg){
+    this.setState({
+      snackbar_msg:msg
+    });
+    this.refs.snackbar.show();
+  }
 })
 
 
