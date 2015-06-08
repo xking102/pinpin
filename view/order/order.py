@@ -10,6 +10,7 @@ from module.group.group import Group
 from app import db
 from view.workflow.workflow import Push_Steps
 from view.group.group import group_processing
+from view.group.group import tellGroupThatOrderisConfirmed
 
 
 order = Blueprint('order', __name__)
@@ -62,6 +63,7 @@ def order_confirm(oid):
         if order and order.create_userid == uid:
             order.status = statusRef.ORDER_CONFIRM
             order.save
+            tellGroupThatOrderisConfirmed(oid)
             return make_response('cancel succ', 201)
         return make_response('no permission', 404)
     return make_response('need login', 401)
