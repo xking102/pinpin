@@ -1,19 +1,56 @@
 var React = require('react');
 var mui = require('material-ui');
-var {RaisedButton, FlatButton, Dialog} = mui;
+var {RaisedButton, FlatButton, Dialog, Paper} = mui;
 
 
 module.exports = React.createClass({
     getInitialState:function(){
         return{
-            modal:false,
+            modal:true,
             id:0,
             isDefault:false,
             address_line1:'',
             address_line2:'',
             tel:'',
-            reciver:''
+            reciver:'',
+            depth:5,
+            setflag:false
         }
+    },
+    _MouseIn:function(){
+      if(this.props.address.isDefault){
+
+      }else{
+        this.setState({
+          setflag:true
+        });
+      }
+    },
+    _MouseOut:function(){
+      this.setState({
+        setflag:false
+      });
+    },
+    handleDefault:function(){
+      $.ajax({
+          url      : '/api/v1/u/address/'+this.props.address.id,
+          dataType : 'json',
+          type     : 'put',
+          contentType: "application/json",
+          data:JSON.stringify({
+                    'isDefault':true,
+                    'address_line1':this.props.address.address_line1,
+                    'address_line2':this.props.address.address_line2,
+                    'tel':this.props.address.tel,
+                    'reciver':this.props.address.reciver,
+                  }),
+          success: function(resp) {
+            console.log('succ');
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(status, err.toString);
+          }.bind(this)
+        });
     },
     PutAddress:function(){
         $.ajax({
@@ -30,6 +67,7 @@ module.exports = React.createClass({
                   }),
           success: function(resp) {
             console.log('succ');
+            this.props.listAddress();
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
@@ -119,12 +157,20 @@ module.exports = React.createClass({
        var DefaultLink = this.props.address.isDefault?
        <span style={spandefault}>默认地址</span>:
        <div/>;
+       var setDefaultLink = this.state.setflag?
+       <div>
+       <span style={spandefault}>
+        <a style={{color:'#f30'}} href="#" onClick={this.handleDefault}>设为默认</a>
+       </span>
+       </div>:
+       <div/>;
 	   return (
-            <div style={{marginBottom:'10px'}} className="row-fluid">
-        
+            <div style={{marginBottom:'10px'}} className="row-fluid" onMouseEnter={this._MouseIn} onMouseLeave={this._MouseOut}>
+        <Paper zDepth={this.state.depth}>
   <div className="span2">
             <p>address title {this.props.address.id}</p>
             <p>{DefaultLink}</p>
+            <p>{setDefaultLink}</p>
             <p><a href="#" onClick={this.handleModify}>修改</a>/
             <a href="#" onClick={this.handleDelete}>删除</a></p>
             <div><Dialog
@@ -140,6 +186,8 @@ module.exports = React.createClass({
 
                <label>地址</label>
                <input  type="text" value={this.state.address_line1} onChange={this._handlerAddress} />
+
+
             </Dialog></div>
        </div>
       <div className="span8">
@@ -159,7 +207,7 @@ module.exports = React.createClass({
                 <span>{this.props.address.address_line1}</span>
             </p>
         </div>    
-   
+   </Paper>
 </div>
 
 		)
