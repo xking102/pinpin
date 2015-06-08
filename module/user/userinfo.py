@@ -1,5 +1,4 @@
 from app import db
-from control import pinpin
 
 
 class UserInfo(db.Model):

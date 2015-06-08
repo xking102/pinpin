@@ -1,5 +1,5 @@
 from app import db
-from control import pinpin
+from control.pinpin import getMoment
 
 
 class Transport(db.Model):
@@ -22,8 +22,8 @@ class Transport(db.Model):
             'id': self.id,
             'oid': self.oid,
             'status': self.status,
-            'create_dt': self.create_dt,
-            'update_dt': self.update_dt,
+            'create_dt': getMoment(self.create_dt),
+            'update_dt': getMoment(self.update_dt),
             'address_line1': self.address_line1,
             'address_line2': self.address_line2,
             'tel': self.tel,

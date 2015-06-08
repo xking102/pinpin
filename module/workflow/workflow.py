@@ -1,5 +1,5 @@
 from app import db
-from control import pinpin
+from control.pinpin import getMoment
 
 
 class Workflow(db.Model):

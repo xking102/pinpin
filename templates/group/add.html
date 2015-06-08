@@ -12,7 +12,7 @@
                     <div class="row-fluid">
     <div class="row-fluid">
         
-        {{ wtf.quick_form(form, form_type="basic", button_map={'submit': 'primary'}) }}
+        {{ wtf.quick_form(form, enctype="multipart/form-data", form_type="basic", button_map={'submit': 'primary'}) }}
      </div>    
     {% endblock %}
     {% block scripts %}

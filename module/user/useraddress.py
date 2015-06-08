@@ -1,5 +1,5 @@
 from app import db
-from control import pinpin
+from control.pinpin import getMoment
 
 
 class UserAddress(db.Model):
@@ -23,8 +23,8 @@ class UserAddress(db.Model):
             'address_line2': self.address_line2,
             'tel': self.tel,
             'reciver': self.reciver,
-            'create_dt': self.create_dt,
-            'update_dt': self.update_dt,
+            'create_dt': getMoment(self.create_dt),
+            'update_dt': getMoment(self.update_dt),
             'isDefault': self.isDefault
         }
 

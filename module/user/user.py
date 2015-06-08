@@ -1,5 +1,5 @@
 from app import db
-from control import pinpin
+from control.pinpin import getMoment
 
 
 class User(db.Model):
@@ -18,8 +18,8 @@ class User(db.Model):
             'nickname': self.nickname,
             'email': self.email,
             'password': self.password,
-            'reg_dt': self.reg_dt,
-            'update_dt': self.update_dt
+            'reg_dt': getMoment(self.reg_dt),
+            'update_dt': getMoment(self.update_dt)
         }
 
     @property
