@@ -36,15 +36,17 @@ module.exports = React.createClass({
 
 				<div className="box span12">
 					<div className="box-header" data-original-title>
-						<h2><i className="halflings-icon user"></i><span className="break"></span>Orders</h2>	
+						<h2><i className="halflings-icon user"></i><span className="break"></span>全部订单</h2>	
 					</div>
 
 					<div className="box-content">
 						<div className="row-fluid">
-									<div className="span3"><h3>id</h3></div>
-									<div className="span3"><h3>title</h3></div>
-									<div className="span3"><h3>price</h3></div>
-									<div className="span3"><h3>Actions</h3></div>
+									<div className="span2"><h3>订单编号</h3></div>
+									<div className="span2"><h3>收货人</h3></div>
+									<div className="span2"><h3>订单金额</h3></div>
+									<div className="span2"><h3>订单时间</h3></div>
+									<div className="span2"><h3>订单状态</h3></div>
+									<div className="span2"><h3>操作</h3></div>
 							</div>
 
 							

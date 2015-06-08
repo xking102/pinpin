@@ -34,7 +34,7 @@ module.exports = React.createClass({
 						<h2>
 							<i className="halflings-icon user"></i>
 							<span className="break"></span>
-							订单编号:{this.props.oid}
+							订单编号:{this.props.oid}投诉
 						</h2>	
 					</div>
 
@@ -42,7 +42,7 @@ module.exports = React.createClass({
 						
 						<div className="row-fluid">
 								<div>￥ {this.state.order.total_price}</div>
-								<div>放些有的没的~~~~~</div>
+								<div>有毛好投诉的</div>
 						</div>
 						
 
