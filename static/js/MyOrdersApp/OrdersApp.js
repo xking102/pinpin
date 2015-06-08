@@ -8,6 +8,21 @@ module.exports = React.createClass({
 			orders: []
 		}
 	},
+    changeOrderStatus:function(oid,status){
+        var orders = this.state.orders;
+        var update = React.addons.update;
+        var order = orders.filter(function(order){
+            return order.id == oid;
+        })[0];
+        var index = orders.indexOf(order);
+        var updateorder = update(order,{status:{$set:status}});
+        var neworders = update(orders,{
+            $splice: [[index,1,updateorder]]
+        });
+        this.setState({
+            orders:neworders
+        })
+    },
 	listOrders:function(){
 		$.ajax({
             type:'get',
@@ -29,8 +44,9 @@ module.exports = React.createClass({
 		var orders = this.state.orders;
 		var orderComps = orders.map(function(item){
 			return <OrderItem key={item.id}
-							order={item}  />
-		});
+							order={item}
+							changeOrderStatus={this.changeOrderStatus} />
+		}.bind(this));
 		return (
 			<div className="row-fluid sortable">
 
