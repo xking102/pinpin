@@ -73,6 +73,8 @@ def deliver_u_group(gid):
                 orders = Order.query.filter_by(
                     gid=gid, status=statusRef.ORDER_PAIED).all()
                 g.status = statusRef.GROUP_CONFIRM
+                g.req_qty = g.total_qty
+                g.confirm_qty = 0
                 for o in orders:
                     o.status = statusRef.ORDER_PENDING
                     ## TODO push order workflow
@@ -99,16 +101,20 @@ def isReady_Group_Transport(gid):
 
 def isReady_Order_Transport(oid):
     trans = Transport.query.filter_by(oid=oid).first()
-    if len(trans.transcode) == 0 or len(trans.transorg) == 0:
+    try:
+        if len(trans.transcode) == 0 or len(trans.transorg) == 0:
+            return False
+    except Exception as e:
+        print e
         return False
     return True
 
 
 @group.route('/u/group/<int:gid>/cancel',methods=['PUT'])
-def cancel_group(id):
+def cancel_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
-        g = Group.query.get(id)
+        g = Group.query.get(gid)
         if g and g.create_userid == uid and g.status==statusRef.GROUP_PUBLISH and g.req_qty==0 and g.confirm_qty==0:
             g.status = statusRef.GROUP_CANCEL
             g.save
@@ -133,3 +139,23 @@ def isConfirm(gid):
             g.save
             return True
     return False
+
+def tellGroupThatOrderisConfirmed(oid):
+    """
+    when order is confirmed 
+    then noity group to change the req_qty and confirm_qty
+    and judge the group confirm_qty and total_qty if equle then push group status
+    """
+    o = Order.query.get(oid)
+    g = Group.query.get(gid)
+    if o and g:
+        g.req_qty -= o.req_qty
+        g.confirm_qty += o.req_qty
+        if g.confirm_qty == g.total_qty:
+            g.status = statusRef.GROUP_CLOSE
+        g.save
+        return True
+    return False
+
+
+

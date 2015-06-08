@@ -18,7 +18,7 @@ class LoginForm(Form):
     submit = SubmitField('submit')
 
     def validate_password(self, field):
-        email = self.email.data
+        email = self.email.data.lower()
         password = self.password.data
         user = User.query.filter_by(email=email).first()
         if not user:
@@ -40,7 +40,7 @@ class RegisterForm(Form):
     submit = SubmitField('submit')
 
     def validate_password(self, field):
-        email = self.email.data
+        email = self.email.data.lower()
         password = self.password.data
         nickname = self.nickname.data
         user = User.query.filter_by(email=email).first()
