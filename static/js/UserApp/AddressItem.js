@@ -46,6 +46,7 @@ module.exports = React.createClass({
                   }),
           success: function(resp) {
             console.log('succ');
+            this.props.listAddress();
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
@@ -125,6 +126,9 @@ module.exports = React.createClass({
             address_line1:e.target.value
        })
     },
+    componentWillReceiveProps:function(nextProps) {
+      console.log(nextProps);
+    },
 	render:function(){
         var customActions = [
         <FlatButton
@@ -155,7 +159,8 @@ module.exports = React.createClass({
             width: '100px',
        };
        var DefaultLink = this.props.address.isDefault?
-       <span style={spandefault}>默认地址</span>:
+       <div>
+       <span style={spandefault}>默认地址</span></div>:
        <div/>;
        var setDefaultLink = this.state.setflag?
        <div>
@@ -169,8 +174,8 @@ module.exports = React.createClass({
         <Paper zDepth={this.state.depth}>
   <div className="span2">
             <p>address title {this.props.address.id}</p>
-            <p>{DefaultLink}</p>
-            <p>{setDefaultLink}</p>
+            <div>{DefaultLink}</div>
+            <div>{setDefaultLink}</div>
             <p><a href="#" onClick={this.handleModify}>修改</a>/
             <a href="#" onClick={this.handleDelete}>删除</a></p>
             <div><Dialog
