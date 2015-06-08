@@ -7,13 +7,11 @@ module.exports = React.createClass({
             query_flag: false,
         }
     },
-
     handlerCancel: function(){
         if(this.state.query_flag){
             console.log('waiting');
         }else{
         this.setState({
-            btn_name:'取消订单',
             query_flag: true
         });
         $.ajax({
@@ -22,12 +20,41 @@ module.exports = React.createClass({
             contentType: "application/json",
             success:function (resp) {
                  query_flag: true
-                 listOrders()
+                 this.props.order.status = 0
+                 this.setState({
+                    orders:resp.orders
+                 });
             }.bind(this),
             error:function (resp){
                 query_flag: false
             }.bind(this)
-        });              
+
+        });             
+    }
+    },
+    handlerConfirm: function(){
+        if(this.state.query_flag){
+            console.log('waiting');
+        }else{
+        this.setState({
+            query_flag: true
+        });
+        $.ajax({
+            type:'put',
+            url:'/order_confirm/'+this.props.order.id,
+            contentType: "application/json",
+            success:function (resp) {
+                 query_flag: true
+                 this.props.order.status = 35
+                 this.setState({
+                    orders:resp.orders
+                 });
+            }.bind(this),
+            error:function (resp){
+                query_flag: false
+            }.bind(this)
+
+        });             
     }
     },
     render:function(){
@@ -67,7 +94,7 @@ module.exports = React.createClass({
             break
             case 30:
             statusName = '待收货'
-            displayBtn = <div><a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>确认收货</a><br></br>
+            displayBtn = <div><a className="btn btn-link" href="#" onClick={this.handlerConfirm}>确认收货</a><br></br>
             <a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>投诉</a></div>
             break
             case 35:
