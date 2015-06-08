@@ -70,6 +70,18 @@ module.exports = React.createClass({
 	},
 	componentDidMount : function(){
 		this.listGroups(8,1);
+      	window.addEventListener('scroll', this.handleScroll);
+	},
+	componentWillUnmount: function() {
+		window.removeEventListener('scroll', this.handleScroll);
+	},
+	handleScroll: function(event) {
+    	var scrollTop = event.srcElement.body.scrollTop,
+    	    itemTranslate = Math.min(0, scrollTop/3 - 60);
+	
+    	if(itemTranslate===0){
+    		console.log('gotoBottom');
+    	}
 	},
 	render:function(){
 		var groups = this.state.groups;
@@ -85,7 +97,7 @@ module.exports = React.createClass({
 			onClickPrev : this.onPrevPage
 		};
 		return (
-			<div>
+			<div ref="nav">
 				<div className="row-fluid hideInIE8 circleStats">{groupComps}</div>
 				<div className='row-fluid'>
 					<div><Pager {...pager_props}/></div>
