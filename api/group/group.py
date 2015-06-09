@@ -20,13 +20,13 @@ class Groups(Resource):
             per = request.args.get('per')
             page = request.args.get('page')
         except Exception as e:
-            per = 8
+            per = 16
             page = 1
         try:
             per = int(per)
             page = int(page)
         except Exception as e:
-            per = 8
+            per = 16
             page = 1
         p = Pager(per, page)
         if page > 1:
