@@ -9,11 +9,12 @@ from control.pinpin import statusRef, Pager
 from module.group.group import Group as GroupModel
 from module.workflow.workflow import Workflow as WorkflowModel
 from view.workflow.workflow import init_group_wf, get_init_group
-
+import time
 
 class Groups(Resource):
 
     def get(self):
+        time.sleep(3)
         next = False
         prev = False
         try:
