@@ -34,6 +34,10 @@ module.exports = React.createClass({
         console.log('deliver');
         this.deliverGroup();
     },
+    _handleCheckFile:function(){
+        console.log('checkfile');
+        window.open('/groups/check/'+this.props.group.id,'newwindow');
+    },
     _handleOrderPay:function(){
         this.listGroupOrders();
         console.log('handleOrderPay')
@@ -67,8 +71,10 @@ module.exports = React.createClass({
                 console.log('succ');
                 this.props.changeGroupStatus(this.props.group.id,20);
                 console.log('renew~')
-            }else{
-                console.log('fail');
+            }else if(status=='failfile'){
+                console.log('failfile');
+            }else if(status=='failtrans'){
+                console.log('failtrans');
             }
           }.bind(this),
           error: function(xhr, status, err) {
@@ -121,6 +127,11 @@ module.exports = React.createClass({
                     <RaisedButton label="发货" 
                         secondary={true}
                         onTouchTap={this._handleDeliver} 
+                    />
+                    &nbsp;
+                    <RaisedButton label="上传购买验证图片" 
+                        secondary={true}
+                        onTouchTap={this._handleCheckFile} 
                     />
                 </div>
             );

@@ -106,19 +106,22 @@ def deliver_u_group(gid):
         g = Group.query.filter_by(
             status=statusRef.GROUP_PROCESSING, id=gid, create_userid=uid).first()
         if g:
-            if isReady_Group_Transport(g.id):
-                # TODO  push group workflow
-                orders = Order.query.filter_by(
-                    gid=gid, status=statusRef.ORDER_PAIED).all()
-                g.status = statusRef.GROUP_CONFIRM
-                g.req_qty = g.total_qty
-                g.confirm_qty = 0
-                for o in orders:
-                    o.status = statusRef.ORDER_PENDING
-                    # TODO push order workflow
-                db.session.commit()
-                return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
-            return make_response(jsonify({'messages': 'todo', 'status': 'fail'}), 200)
+            file = Image.query.filter_by(fkid=gid, image_type=3).count()
+            if file:
+                if isReady_Group_Transport(g.id):
+                    # TODO  push group workflow
+                    orders = Order.query.filter_by(
+                        gid=gid, status=statusRef.ORDER_PAIED).all()
+                    g.status = statusRef.GROUP_CONFIRM
+                    g.req_qty = g.total_qty
+                    g.confirm_qty = 0
+                    for o in orders:
+                        o.status = statusRef.ORDER_PENDING
+                        # TODO push order workflow
+                    db.session.commit()
+                    return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+                return make_response(jsonify({'messages': 'todo', 'status': 'failtrans'}), 200)
+            return make_response(jsonify({'messages': 'todo', 'status': 'failfile'}), 200)
         return make_response('not exist', 404)
     return make_response('need login', 401)
 
