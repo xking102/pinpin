@@ -1,5 +1,6 @@
 var React = require("react");
-
+var AMUIReact = require('amazeui-react');
+var {ScrollSpy,Grid,Col,Panel} = AMUIReact
 
 module.exports = React.createClass({
 	render:function(){
@@ -17,6 +18,7 @@ module.exports = React.createClass({
         stylecolor = "circleStatsItemBox " + stylecolor;
 		return(
 			<div className="span3">
+            <ScrollSpy norepeat animation="slide-bottom" delay={this.props.delay}>
                 <div className={stylecolor}>
                     <div className="header">{group.title}</div>
                     <div className="circleStat">
@@ -36,6 +38,7 @@ module.exports = React.createClass({
                         </span>
                     </div>
                 </div>
+            </ScrollSpy>
 			</div>
 		)		
 	}
