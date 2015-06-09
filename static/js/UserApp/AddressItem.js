@@ -1,21 +1,94 @@
 var React = require('react');
 var mui = require('material-ui');
-var {RaisedButton, FlatButton, Dialog} = mui;
+var {RaisedButton, FlatButton, Dialog, Paper, Snackbar} = mui;
 
 
 module.exports = React.createClass({
     getInitialState:function(){
         return{
-            modal:false,
+            modal:true,
             id:0,
             isDefault:false,
             address_line1:'',
             address_line2:'',
             tel:'',
-            reciver:''
+            reciver:'',
+            depth:5,
+            setflag:false,
+            snackbar_msg:'',
+            msg_pool:{
+              setDefault:{
+                beg:'正在修改默认地址',
+                succ:'修改成功',
+                fail:'修改失败'
+              },
+              delete:{
+                beg:'正在删除地址',
+                succ:'修改成功',
+                fail:'修改失败'
+              },
+              update:{
+                beg:'正在修改指定地址',
+                succ:'修改成功',
+                fail:'修改失败'
+              }
+            }
         }
     },
+    _MouseIn:function(){
+      if(this.props.address.isDefault){
+
+      }else{  
+        var self = this
+        if(this._timeout){
+          clearTimeout(this._timeout);
+        }
+        this._timeout = setTimeout(function(){
+          self.setState({
+            setflag:true
+          });
+        },1000);
+      }
+    },
+    _MouseOut:function(){
+      var self = this
+      if(this._timeout){
+        clearTimeout(this._timeout);
+      };
+      this.setState({
+        setflag:false
+      });
+    },
+    handleDefault:function(){
+      this._sendmsg(this.state.msg_pool.setDefault.beg);
+      $.ajax({
+          url      : '/api/v1/u/address/'+this.props.address.id,
+          dataType : 'json',
+          type     : 'put',
+          contentType: "application/json",
+          data:JSON.stringify({
+                    'isDefault':true,
+                    'address_line1':this.props.address.address_line1,
+                    'address_line2':this.props.address.address_line2,
+                    'tel':this.props.address.tel,
+                    'reciver':this.props.address.reciver,
+                  }),
+          success: function(resp) {
+            console.log('succ');
+            this.setState({
+              setflag:false
+            })
+            this.props.listAddress();
+            this._sendmsg(this.state.msg_pool.setDefault.succ);
+          }.bind(this),
+          error: function(xhr, status, err) {
+            this._sendmsg(this.state.msg_pool.setDefault.fail);
+            console.error(status, err.toString);
+          }.bind(this)
+        });
+    },
     PutAddress:function(){
+      this._sendmsg(this.state.msg_pool.update.beg);
         $.ajax({
           url      : '/api/v1/u/address/'+this.state.id,
           dataType : 'json',
@@ -30,22 +103,28 @@ module.exports = React.createClass({
                   }),
           success: function(resp) {
             console.log('succ');
+            this.props.listAddress();
+            this._sendmsg(this.state.msg_pool.update.succ);
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
+            this._sendmsg(this.state.msg_pool.update.fail);
           }.bind(this)
         });
     },
     DelAddress:function(){
+      this._sendmsg(this.state.msg_pool.delete.beg);
         $.ajax({
           url      : '/api/v1/u/address/'+this.props.address.id,
           dataType : 'json',
           type     : 'delete',
           success: function(resp) {
             console.log('delete');
+            this._sendmsg(this.state.msg_pool.delete.succ);
           }.bind(this),
           error: function(xhr, status, err) {
             console.error(status, err.toString);
+            this._sendmsg(this.state.msg_pool.delete.fail);
           }.bind(this)
         });
     },
@@ -117,16 +196,25 @@ module.exports = React.createClass({
             width: '100px',
        };
        var DefaultLink = this.props.address.isDefault?
-       <span style={spandefault}>默认地址</span>:
+       <div>
+       <span style={spandefault}>默认地址</span></div>:
+       <div/>;
+       var setDefaultLink = this.state.setflag?
+       <div>
+       <span style={spandefault}>
+        <a style={{color:'#f30'}} href="javascript:void(0)" onClick={this.handleDefault}>设为默认</a>
+       </span>
+       </div>:
        <div/>;
 	   return (
-            <div style={{marginBottom:'10px'}} className="row-fluid">
-        
+            <div style={{marginBottom:'10px'}} className="row-fluid" onMouseEnter={this._MouseIn} onMouseLeave={this._MouseOut}>
+        <Paper zDepth={this.state.depth}>
   <div className="span2">
             <p>address title {this.props.address.id}</p>
-            <p>{DefaultLink}</p>
-            <p><a href="#" onClick={this.handleModify}>修改</a>/
-            <a href="#" onClick={this.handleDelete}>删除</a></p>
+            <div>{DefaultLink}</div>
+            <p><a href="javascript:void(0)" onClick={this.handleModify}>修改</a>/
+            <a href="javascript:void(0)" onClick={this.handleDelete}>删除</a></p>
+            <div>{setDefaultLink}</div>
             <div><Dialog
               ref="customDialog"
               title="修改收货地址"
@@ -140,6 +228,8 @@ module.exports = React.createClass({
 
                <label>地址</label>
                <input  type="text" value={this.state.address_line1} onChange={this._handlerAddress} />
+
+
             </Dialog></div>
        </div>
       <div className="span8">
@@ -159,11 +249,21 @@ module.exports = React.createClass({
                 <span>{this.props.address.address_line1}</span>
             </p>
         </div>    
-   
+   </Paper>
+   <Snackbar
+          ref="snackbar"
+          message={this.state.snackbar_msg}
+    />
 </div>
 
 		)
-	}
+	},
+  _sendmsg:function(msg){
+    this.setState({
+      snackbar_msg:msg
+    });
+    this.refs.snackbar.show();
+  }
 })
 
 

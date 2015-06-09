@@ -68,10 +68,10 @@ module.exports = React.createClass({
           tel:resp.address.tel,
           reciver:resp.address.reciver,
           address_line1:resp.address.address_line1,
-          address_line2:resp.addresss.address_line2,
+          address_line2:resp.address.address_line2,
           create_dt:resp.address.create_dt,
-          uid:resp.addresss.uid,
-          update_dt:resp.addresss.update_dt
+          uid:resp.address.uid,
+          update_dt:resp.address.update_dt
         });
       }.bind(this),
 
