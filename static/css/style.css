@@ -3559,3 +3559,10 @@ label, input, button, select, textarea {
         transform: translateX(20%)
     }
 }
+
+/* sub-divider block-second
+=================================================================== */
+#block-second .sub-divider {
+  height: 8px;
+  border-bottom: 1px dashed #ddd;
+}
