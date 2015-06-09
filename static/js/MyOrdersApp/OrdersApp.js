@@ -1,11 +1,13 @@
 var React = require('react');
-var OrderItem = require('./OrderItem');
 
+var OrderItem = require('./OrderItem');
+var Pager =  require("../Components/Pager");
 
 module.exports = React.createClass({
 	getInitialState:function(){
 		return {
-			orders: []
+			orders: [],
+			pager:[]
 		}
 	},
     changeOrderStatus:function(oid,status){
@@ -23,22 +25,37 @@ module.exports = React.createClass({
             orders:neworders
         })
     },
-	listOrders:function(){
+	listOrders:function(per,page){
 		$.ajax({
             type:'get',
             url:'/api/v1/u/orders',
-            datetype:'json'
-        }).done(function (resp) {
-        	this.setState({
-            		orders:resp.orders
-            	});
-        }.bind(this));
+            datetype:'json',
+            data:{
+            	'per':per,
+            	'page':page
+            },
+        	success:function (resp) {
+        		this.setState({
+            			orders:resp.orders,
+            			pager:resp.pager
+            		});
+        	}.bind(this),
+        	error:function(){
+        		console.error(status, this.state.pager.e);
+        	}.bind(this)
+    	});   
 	},
 	componentDidMount : function(){
-		this.listOrders();
+		this.listOrders(10,1);
 	},
 	componentWillReceiveProps  : function(){
-		this.listOrders();
+		this.listOrders(10,1);
+	},
+	onNextPage:function(){
+		this.listOrders(this.state.pager.per,this.state.pager.page+1);
+	},
+	onPrevPage:function(){
+		this.listOrders(this.state.pager.per,this.state.pager.page-1);
 	},
 	render:function(){
 		var orders = this.state.orders;
@@ -47,6 +64,12 @@ module.exports = React.createClass({
 							order={item}
 							changeOrderStatus={this.changeOrderStatus} />
 		}.bind(this));
+		var pager_props = {
+			hasNext: this.state.pager.next,
+			hasPrev: this.state.pager.prev,
+			onClickNext : this.onNextPage,
+			onClickPrev : this.onPrevPage
+		};
 		return (
 			<div className="row-fluid sortable">
 
@@ -74,6 +97,9 @@ module.exports = React.createClass({
 
 					
 				</div>
+				    <div style={{marginBottom:'10px'}}>
+                    <Pager {...pager_props}/>
+                    </div>
 			</div>
 
 		)

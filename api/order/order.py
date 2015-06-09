@@ -5,7 +5,7 @@ from flask import jsonify, session, make_response, request
 from flask.ext.restful import Resource
 from app import db, api
 from control import pinpin
-from control.pinpin import statusRef
+from control.pinpin import statusRef, Pager
 from module.group.group import Group as GroupModel
 from module.order.order import Order as OrderModel
 from module.transport.transport import Transport as TransModel
@@ -17,7 +17,34 @@ from view.workflow.workflow import init_order_wf, get_init_order
 class Orders(Resource):
 
     def get(self):
-        orders = OrderModel.query.all()
+        next = False
+        prev = False
+        try:
+            per = request.args.get('per')
+            page = request.args.get('page')
+        except Exception as e:
+            per = 8
+            page = 1
+        try:
+            per = int(per)
+            page = int(page)
+        except Exception as e:
+            per = 8
+            page = 1
+        p = Pager(per, page)
+        if page > 1:
+            prev = True
+        orders = OrderModel.query.offset(p.offset).limit(p.limit)
+        nextp = Pager(per, page + 1)
+        nextorders = OrderModel.query.offset(nextp.offset).limit(nextp.limit).count()
+        if nextorders:
+            next = True
+        pager = {
+            'prev': prev,
+            'next': next,
+            'per': per,
+            'page': page
+        }
         return make_response(jsonify({"orders": [o.to_json for o in orders], "status": 200}), 200)
 
     def post(self):
@@ -100,7 +127,7 @@ class Order(Resource):
         return jsonify({'messages': 'please login', "status": 401})
 
 
-class MyOrders(Resource):
+class MyOrder(Resource):
 
     def get(self):
         if session.get('logged_in'):
@@ -110,3 +137,43 @@ class MyOrders(Resource):
                 return make_response(jsonify({"orders": [o.to_json for o in orders]}), 200)
             return make_response('not exist', 404)
         return make_response('need login', 401)
+
+
+class MyOrders(Resource):
+
+    def get(self):
+        if session.get('logged_in'):
+            next = False
+            prev = False
+            try:
+                per = request.args.get('per')
+                page = request.args.get('page')
+            except Exception as e:
+                per = 10
+                page = 1
+            try:
+                per = int(per)
+                page = int(page)
+            except Exception as e:
+                per = 10
+                page = 1
+            p = Pager(per, page)
+            if page > 1:
+                prev = True
+            uid = session.get('logged_id')
+            orders = OrderModel.query.filter_by(create_userid=uid).offset(p.offset).limit(p.limit)
+            nextp = Pager(per, page+1)
+            nextorders = OrderModel.query.filter_by(create_userid=uid).offset(nextp.offset).limit(nextp.limit).count()
+            if nextorders:
+                next = True
+            pager = {
+                'prev':prev,
+                'next':next,
+                'per':per,
+                'page':page
+            }
+            return make_response(jsonify({"orders": [g.to_json for g in orders],'pager':pager}), 200)
+        return make_response(jsonify({'messages': 'please login'}), 401)
+
+
+
