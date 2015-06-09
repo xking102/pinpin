@@ -88,6 +88,7 @@ module.exports = React.createClass({
 		var scrollTop = this._getScrollTop();
 		var clientHeight = this._getClientHeight();
 		var scrollHeight = this._getScrollHeight();
+		console.log('st',scrollTop);
     	if(scrollTop+clientHeight===scrollHeight){
     		if(this.state.query_flag){
     			console.log('querying');
@@ -123,30 +124,40 @@ module.exports = React.createClass({
 		return Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
 	},
 	render:function(){
+		var spandefault = {
+            padding: '2px 5px',
+            borderColor: '#ff3800',
+            borderRadius: '3px',
+            background: '#ffd6cc',
+            color: '#f30',
+            border: '1px solid #f60',
+            textDecoration: 'none',
+            marginTop: '10px',
+  			marginBottom: '10px',
+  			marginLeft: '44%'
+        };
 		var groups = this.state.groups;
-		var	times = 1;
+		var	times = 0;
 		var groupComps = groups.map(function(item){
-			if(times>16){
-				times = 1;
+			if(times>this.state.per-1){
+				times = 0;
 			}else{
 				times +=1;
 			}
-			var delay = 200 + times*50;
+			var delay = times*50;
 			return <GroupItem key={item.id} 
 							group={item}
 							delay={delay} />
 
 		}.bind(this));
-		var pager_props = {
-			hasNext: this.state.pager.next,
-			hasPrev: this.state.pager.prev,
-			onClickNext : this.onNextPage,
-			onClickPrev : this.onPrevPage
-		};
+
+		var renew = this.state.query_flag?
+		<div><span style={spandefault}>{'加载中………………'}</span></div>:
+		<div/>
 		return (
 			<div>
-			
 				<div className="row-fluid hideInIE8 circleStats">{groupComps}</div>
+				{renew}
 			
 			</div>
 
