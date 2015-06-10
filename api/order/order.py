@@ -45,7 +45,7 @@ class Orders(Resource):
             'per': per,
             'page': page
         }
-        return make_response(jsonify({"orders": [o.to_json for o in orders], "status": 200}), 200)
+        return make_response(jsonify({"orders": [o.to_json for o in orders], "pager": pager}), 200)
 
     def post(self):
         if session.get('logged_in'):

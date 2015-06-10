@@ -105,7 +105,7 @@ module.exports = React.createClass({
             statusName = '待付款'
             displayBtn = 
             <div><a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>支付</a><br></br>
-            <a className="btn btn-link" onClick={this.handlerCancel}>取消订单</a></div>
+            <a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerCancel}>取消订单</a></div>
             break
             case 25:
             statusName = '待发货'
@@ -113,7 +113,7 @@ module.exports = React.createClass({
             break
             case 30:
             statusName = '待收货'
-            displayBtn = <div><a className="btn btn-link" onClick={this.handlerConfirm}>确认收货</a><br></br>
+            displayBtn = <div><a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerConfirm}>确认收货</a><br></br>
             <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a></div>
             break
             case 35:
