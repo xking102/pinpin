@@ -1,6 +1,6 @@
 var React = require('react');
+
 var GroupItem = require('./GroupItem'); 
-var Pager =  require("../Components/Pager");
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
@@ -26,16 +26,16 @@ module.exports = React.createClass({
 		return {
 			groups: [],
 			pager:[],
-			per: 1,
+			per: 16,
 			page: 1,
 			pager_display: false,
-			query_flag:'',
+			query_flag:false,
 			button_name:'这里以后放分页'
 		}
 	},
 	listGroups:function(per,page){
 		this.setState({
-            		query_flag:'yes',
+            		query_flag:true,
             		button_name:'加载中'
             	});
 		$.ajax({
@@ -48,11 +48,14 @@ module.exports = React.createClass({
 
             },
             success:function(resp){
+            	var finalGroups = resp.groups.map(function(group){
+            		this.appendGroup( group );
+            	}.bind(this));
             	this.setState({
-            		groups:resp.groups,
+            		//groups:resp.groups,
             		pager:resp.pager,
             		pager_display:true,
-            		query_flag:'',
+            		query_flag:false,
             		button_name:'这里以后放分页'
             	})
             }.bind(this),
@@ -62,6 +65,12 @@ module.exports = React.createClass({
         });
 
 	},
+	appendGroup:function( newGroup ){
+		var newGroups =  this.state.groups.concat( newGroup );
+		this.setState({
+			groups:newGroups
+		})
+	},
 	onNextPage:function(){
 		this.listGroups(this.state.pager.per,this.state.pager.page+1);
 	},
@@ -69,39 +78,87 @@ module.exports = React.createClass({
 		this.listGroups(this.state.pager.per,this.state.pager.page-1);
 	},
 	componentDidMount : function(){
-		this.listGroups(8,1);
+		this.listGroups(this.state.per,this.state.page);
       	window.addEventListener('scroll', this.handleScroll);
 	},
 	componentWillUnmount: function() {
 		window.removeEventListener('scroll', this.handleScroll);
 	},
 	handleScroll: function(event) {
-    	var scrollTop = event.srcElement.body.scrollTop,
-    	    itemTranslate = Math.min(0, scrollTop/3 - 60);
-	
-    	if(itemTranslate===0){
-    		console.log('gotoBottom');
+		var scrollTop = this._getScrollTop();
+		var clientHeight = this._getClientHeight();
+		var scrollHeight = this._getScrollHeight();
+		console.log('st',scrollTop);
+    	if(scrollTop+clientHeight===scrollHeight){
+    		if(this.state.query_flag){
+    			console.log('querying');
+    		}else{
+    			if(this.state.pager.next){
+    				console.log('renew');
+    				this.listGroups(this.state.pager.per,this.state.pager.page+1);
+    			}
+    			
+    		}
+    		
     	}
 	},
+	_getScrollTop:function(){
+		var scrollTop = 0;
+		if(document.documentElement && document.documentElement.scrollTop){
+			scrollTop = document.documentElement.scrollTop;
+		}else if(document.body){
+			scrollTop = document.body.scrollTop;
+		}
+		return scrollTop;
+	},
+	_getClientHeight:function(){
+		var clientHeight = 0;
+		if(document.body.clientHeight && document.documentElement.clientHeight){
+			clientHeight = Math.min(document.body.clientHeight,document.documentElement.clientHeight);
+		}else{
+			clientHeight = Math.max(document.body.clientHeight,document.documentElement.clientHeight);
+		}
+		return clientHeight;
+	},
+	_getScrollHeight:function(){
+		return Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
+	},
 	render:function(){
+		var spandefault = {
+            padding: '2px 5px',
+            borderColor: '#ff3800',
+            borderRadius: '3px',
+            background: '#ffd6cc',
+            color: '#f30',
+            border: '1px solid #f60',
+            textDecoration: 'none',
+            marginTop: '10px',
+  			marginBottom: '10px',
+  			marginLeft: '44%'
+        };
 		var groups = this.state.groups;
+		var	times = 0;
 		var groupComps = groups.map(function(item){
+			if(times>this.state.per-1){
+				times = 0;
+			}else{
+				times +=1;
+			}
+			var delay = times*50;
 			return <GroupItem key={item.id} 
-							group={item}/>
+							group={item}
+							delay={delay} />
 
-		});
-		var pager_props = {
-			hasNext: this.state.pager.next,
-			hasPrev: this.state.pager.prev,
-			onClickNext : this.onNextPage,
-			onClickPrev : this.onPrevPage
-		};
+		}.bind(this));
+
+		var renew = this.state.query_flag?
+		<div><span style={spandefault}>{'加载中………………'}</span></div>:
+		<div/>
 		return (
-			<div ref="nav">
+			<div>
 				<div className="row-fluid hideInIE8 circleStats">{groupComps}</div>
-				<div className='row-fluid'>
-					<div><Pager {...pager_props}/></div>
-				</div>
+				{renew}
+			
 			</div>
 
 		)

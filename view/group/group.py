@@ -7,8 +7,9 @@ from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group
 from module.order.order import Order
+from module.image.image import Image
 from module.transport.transport import Transport
-from form.group.group import newGroupForm
+from form.group.group import newGroupForm, newGroupCheckForm
 from app import db
 from view.workflow.workflow import Push_Steps
 from control.pinpin import statusRef
@@ -30,6 +31,43 @@ def add_group():
     if request.method == 'POST' and form.validate_on_submit():
         return redirect(url_for('group.list_groups'))
     return render_template('./group/add.html', error=error, form=form)
+
+
+# add group check files
+@group.route('/groups/check/<int:gid>', methods=['GET', 'POST'])
+def add_group_checkfile(gid):
+    if session.get('logged_in'):
+        error = None
+        form = newGroupCheckForm()
+        uid = session.get('logged_id')
+        if request.method == 'POST' and form.validate_on_submit():
+            pre = 'static/imgs/groupfiles/group-file-' + \
+                str(pinpin.getCurTimestamp()) + \
+                '-'
+
+            buy = form.buy.data
+            transport = form.transport.data
+            ems = form.ems.data
+            files = form.files
+            group = Group.query.get(gid)
+            if group and uid == group.create_userid:
+                for f in files:
+                    print f
+                    image = f[0]
+                    filename = f[1]
+                    image.save(pre + filename)
+                    img = Image()
+                    img.fkid = gid
+                    img.image_type = 3
+                    img.image_path = '/' + pre + filename
+                    img.create_dt = pinpin.getCurTimestamp()
+                    img.create_userid = uid
+                    img.isUsed = True
+                    img.save
+                return redirect('/')
+            return render_template('./group/add.html', error=error, form=form)
+        return render_template('./group/add.html', error=error, form=form)
+    return redirect(url_for('/login'))
 
 
 def group_processing(gid):
@@ -61,26 +99,29 @@ def list_u_groupsOrder(gid):
 
 
 # push a group status from PROCESSING(15) to CONFIRM(20)
-@group.route('/u/group/<int:gid>/delivery',methods=['PUT'])
+@group.route('/u/group/<int:gid>/delivery', methods=['PUT'])
 def deliver_u_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
         g = Group.query.filter_by(
             status=statusRef.GROUP_PROCESSING, id=gid, create_userid=uid).first()
         if g:
-            if isReady_Group_Transport(g.id):
-                ## TODO  push group workflow
-                orders = Order.query.filter_by(
-                    gid=gid, status=statusRef.ORDER_PAIED).all()
-                g.status = statusRef.GROUP_CONFIRM
-                g.req_qty = g.total_qty
-                g.confirm_qty = 0
-                for o in orders:
-                    o.status = statusRef.ORDER_PENDING
-                    ## TODO push order workflow
-                db.session.commit()
-                return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
-            return make_response(jsonify({'messages': 'todo', 'status': 'fail'}), 200)
+            file = Image.query.filter_by(fkid=gid, image_type=3).count()
+            if file:
+                if isReady_Group_Transport(g.id):
+                    # TODO  push group workflow
+                    orders = Order.query.filter_by(
+                        gid=gid, status=statusRef.ORDER_PAIED).all()
+                    g.status = statusRef.GROUP_CONFIRM
+                    g.req_qty = g.total_qty
+                    g.confirm_qty = 0
+                    for o in orders:
+                        o.status = statusRef.ORDER_PENDING
+                        # TODO push order workflow
+                    db.session.commit()
+                    return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+                return make_response(jsonify({'messages': 'todo', 'status': 'failtrans'}), 200)
+            return make_response(jsonify({'messages': 'todo', 'status': 'failfile'}), 200)
         return make_response('not exist', 404)
     return make_response('need login', 401)
 
@@ -110,16 +151,16 @@ def isReady_Order_Transport(oid):
     return True
 
 
-@group.route('/u/group/<int:gid>/cancel',methods=['PUT'])
+@group.route('/u/group/<int:gid>/cancel', methods=['PUT'])
 def cancel_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
         g = Group.query.get(gid)
-        if g and g.create_userid == uid and g.status==statusRef.GROUP_PUBLISH and g.req_qty==0 and g.confirm_qty==0:
+        if g and g.create_userid == uid and g.status == statusRef.GROUP_PUBLISH and g.req_qty == 0 and g.confirm_qty == 0:
             g.status = statusRef.GROUP_CANCEL
             g.save
             return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
-        return make_response('not exist', 404) 
+        return make_response('not exist', 404)
     return make_response('need login', 401)
 
 
@@ -130,8 +171,9 @@ def isConfirm(gid):
     return Bolean True mean all Confirm False mean someone is not Confirm
     """
     g = Group.query.get(id)
-    if g and g.status==statusRef.GROUP_CONFIRM:
-        order = Order.query.filter_by(gid=gid,status=statusRef.ORDER_PENDING).all()
+    if g and g.status == statusRef.GROUP_CONFIRM:
+        order = Order.query.filter_by(
+            gid=gid, status=statusRef.ORDER_PENDING).all()
         if order:
             return False
         else:
@@ -139,6 +181,7 @@ def isConfirm(gid):
             g.save
             return True
     return False
+
 
 def tellGroupThatOrderisConfirmed(oid):
     """
@@ -156,6 +199,3 @@ def tellGroupThatOrderisConfirmed(oid):
         g.save
         return True
     return False
-
-
-

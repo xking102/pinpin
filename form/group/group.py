@@ -5,7 +5,8 @@ from flask import session
 from flask_wtf import Form
 from flask_wtf.html5 import EmailField
 from wtforms import StringField, PasswordField, SubmitField, validators, \
-    TextAreaField, DecimalField, IntegerField, FileField
+    TextAreaField, DecimalField, IntegerField
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.validators import DataRequired, Email, InputRequired, NumberRange
 from werkzeug import secure_filename
 from module.group.group import Group
@@ -17,7 +18,10 @@ from app import db
 
 
 class newGroupForm(Form):
-    image = FileField(u'商品照片')
+    image = FileField(u'商品照片', validators=[
+        FileRequired(),
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
     title = StringField(u'标题', [InputRequired()])
     desc = TextAreaField(u'描述', [InputRequired()])
     unit_price = DecimalField(
@@ -66,3 +70,33 @@ class newGroupForm(Form):
         init_group_wf(group.id)
         self.group = group
         return group
+
+
+class newGroupCheckForm(Form):
+    buy = FileField(u'购买确认邮件截图', validators=[
+        FileRequired(),
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
+    transport = FileField(u'转运公司确认邮件截图', validators=[
+        FileRequired(),
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
+    ems = FileField(u'EMS单据截图', validators=[
+        FileRequired(),
+        FileAllowed(['jpg', 'png'], 'Images only!')
+    ])
+    submit = SubmitField(u'上传')
+
+    def validate_buy(self, field):
+        buy = self.buy.data
+        transport = self.transport.data
+        ems = self.ems.data
+        buyfile = secure_filename(buy.filename)
+        transportfile = secure_filename(transport.filename)
+        emsfile = secure_filename(ems.filename)
+        if buyfile and transportfile and emsfile:
+            files = [
+                [buy, buyfile], [transport, transportfile], [ems, emsfile]]
+            self.files = files
+            return files
+        raise ValueError(('上传不完整啊'))

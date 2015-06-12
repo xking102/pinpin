@@ -9,6 +9,7 @@ class Image(db.Model):
     """
     type 1 Group
     type 2 User
+    type 3 GroupCheckImg
     """
     image_path = db.Column(db.String, unique=False)
     create_dt = db.Column(db.Integer, unique=False)

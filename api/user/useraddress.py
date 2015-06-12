@@ -13,8 +13,11 @@ from view.user import user
 class MyAddresses(Resource):
 
     def get(self):
-        addresses = UserAddressModel.query.all()
-        return make_response(jsonify({"addresses": [a.to_json for a in addresses]}), 200)
+        if session.get('logged_in'):
+            uid = session.get('logged_id')
+            addresses = UserAddressModel.query.filter_by(uid=uid).all()
+            return make_response(jsonify({"addresses": [a.to_json for a in addresses]}), 200)
+        return make_response(jsonify({'messages': 'please login'}), 401)
 
     def post(self):
         if session.get('logged_in'):

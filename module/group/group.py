@@ -25,6 +25,11 @@ class Group(db.Model):
             image = image.image_path
         else:
             image = '/static/imgs/groups/2.png'
+        file = Image.query.filter_by(image_type=3,fkid=self.id).count()
+        if file:
+            file = True
+        else:
+            file = False
         return {
             'id': self.id,
             'title': self.title,
@@ -38,7 +43,8 @@ class Group(db.Model):
             'status': self.status,
             'req_qty': self.req_qty,
             'confirm_qty': self.confirm_qty,
-            'image': image
+            'image': image,
+            'isCheckUpload':file
         }
 
     @property
