@@ -9,17 +9,17 @@ var GroupItemActions = require('./GroupItemActions');
 module.exports = React.createClass({
     getInitialState:function(){
         return {
-            depth:3
+            depth:1
         }
     },
     MouseIn:function(){
         this.setState({
-            depth:1
+            depth:3
         });
     },
     MouseOut:function(){
         this.setState({
-            depth:3
+            depth:1
         });
     },
     render:function(){
@@ -35,13 +35,13 @@ module.exports = React.createClass({
                         <div className="span4">
                         <img alt="221x125" src="/static/imgs/groups/221x125.gif" />
                         </div>
-                        
+
                         <div className="span4">
                         <GroupItemNumDesc group={this.props.group} />
                         </div>
 
                         <div className="span4">
-                        <GroupItemActions group={this.props.group} 
+                        <GroupItemActions group={this.props.group}
                             listGroups={this.props.listGroups}
                             changeGroupStatus={this.props.changeGroupStatus} />
                         </div>
@@ -49,6 +49,6 @@ module.exports = React.createClass({
                 </Paper>
             </div>
 
-		)		
+		)
 	}
 })

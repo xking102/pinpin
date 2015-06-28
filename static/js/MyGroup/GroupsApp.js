@@ -62,7 +62,7 @@ module.exports = React.createClass({
 		var groups = this.state.groups;
 		var groupComps = groups.map(function(item){
 			return <GroupItem key={item.id}
-							group={item} 
+							group={item}
 							listGroups={this.listGroups}
 							changeGroupStatus={this.changeGroupStatus} />
 		}.bind(this));
@@ -73,30 +73,18 @@ module.exports = React.createClass({
 			onClickPrev : this.onPrevPage
 		};
 		return (
-			<div> 
-			<div className="row-fluid sortable">
+			<div>
 
-				<div className="box span12">
-					<div className="box-header" data-original-title>
-						<h2><i className="halflings-icon user"></i><span className="break"></span>我的团</h2>	
-					</div>
-
-					<div className="box-content">
-						<div className="row-fluid">
-							{groupComps}		
-						</div>
-					</div>
-
-					<div style={{marginBottom:'10px'}}>
-					<Pager {...pager_props}/>
-					</div>
-
-
-					
+				<div>
+					{groupComps}
 				</div>
+
+				<div style={{marginBottom:'10px'}}>
+				<Pager {...pager_props}/>
+				</div>
+
+
 			</div>
-			
-    </div> 
 
 		)
 	}
