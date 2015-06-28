@@ -1,6 +1,6 @@
 var React = require('react');
 
-var GroupItem = require('./GroupItem'); 
+var GroupItem = require('./GroupItem');
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
@@ -88,18 +88,15 @@ module.exports = React.createClass({
 		var scrollTop = this._getScrollTop();
 		var clientHeight = this._getClientHeight();
 		var scrollHeight = this._getScrollHeight();
-		console.log('st',scrollTop);
     	if(scrollTop+clientHeight===scrollHeight){
     		if(this.state.query_flag){
-    			console.log('querying');
     		}else{
     			if(this.state.pager.next){
-    				console.log('renew');
     				this.listGroups(this.state.pager.per,this.state.pager.page+1);
     			}
-    			
+
     		}
-    		
+
     	}
 	},
 	_getScrollTop:function(){
@@ -145,7 +142,7 @@ module.exports = React.createClass({
 				times +=1;
 			}
 			var delay = times*50;
-			return <GroupItem key={item.id} 
+			return <GroupItem key={item.id}
 							group={item}
 							delay={delay} />
 
@@ -158,7 +155,7 @@ module.exports = React.createClass({
 			<div>
 				<div className="row-fluid hideInIE8 circleStats">{groupComps}</div>
 				{renew}
-			
+
 			</div>
 
 		)
