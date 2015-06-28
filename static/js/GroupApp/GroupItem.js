@@ -93,7 +93,7 @@ module.exports = React.createClass({
 </Grid>
 <Grid className="doc-g">
   <Col sm={12} md={5} lg={5}>
-   <img className="grayscale" src="/static/imgs/groups/2.png" />
+   <img className="grayscale" src="/static/imgs/groups/700x500.png" />
   </Col>
   <Col sm={12} md={7} lg={7}>
     <p>到手价：{group.unit_price}</p>
