@@ -90,12 +90,8 @@ module.exports = React.createClass({
 
 							
 								<div>{orderComps}</div>
-							
-
-					</div>
-
-
-					
+		
+					</div>		
 				</div>
 				    <div style={{marginBottom:'10px'}}>
                     <Pager {...pager_props}/>

@@ -5,6 +5,7 @@ var MyOrdersApp = require('./MyOrdersApp/OrdersApp');
 var OrderDetailApp = require('./MyOrdersApp/OrderDetailApp');
 var PayApp = require('./PayApp/PayApp');
 var OrderComplain = require('./MyOrdersApp/OrderComplainApp');
+var payConfirm = require('./PayApp/payConfirm');
 
 
 var App = React.createClass({
@@ -33,6 +34,7 @@ var routes = (
     <Route name="order" path=":oid" handler={OrderDetailApp} />
     <Route name="pay" path=":oid/pay" handler={PayApp} />
     <Route name="complain" path=":oid/complain" handler={OrderComplain} />
+    <Route name="payConfirm" path=":oid/payConfirm" handler={payConfirm} />
   </Route>
 );
 
