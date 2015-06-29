@@ -7,7 +7,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(100), unique=True)
     email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100), unique=False)
     reg_dt = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)
 
