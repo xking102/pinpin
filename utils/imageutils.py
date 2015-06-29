@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+from PIL import Image
 
 def resizeImage(image_location, des_w, des_h, save_location):
     try:
         infile = image_location
-        im = Image.open(image_location)
+        im = Image.open(infile)
         src_w, src_h = im.size
         if src_w > src_h:
             ratio = des_h / src_h
