@@ -1,45 +1,62 @@
 var React = require("react");
 var AMUIReact = require('amazeui-react');
-var {ScrollSpy,Grid,Col,Panel} = AMUIReact
+var {ScrollSpy,Grid,Col,Panel} = AMUIReact;
+
+var mui = require('material-ui');
+var {Card, CardMedia, CardTitle, CardText, Paper} = mui;
 
 module.exports = React.createClass({
+    getInitialState:function(){
+        return {
+            depth:1
+        }
+    },
+    MouseIn:function(){
+        this.setState({
+            depth:3
+        });
+    },
+    MouseOut:function(){
+        this.setState({
+            depth:1
+        });
+    },
 	render:function(){
 		var group = this.props.group;
 		var detail_link = '#/group/'+group.id;
-        var mod = group.id%3;
-        var stylecolor = "greenDark";
-        if(mod == 0){
-            stylecolor = "greenDark";
-        }else if(mod == 1){
-            stylecolor = "green";
-        }else{
-            stylecolor = "greenLight";
-        };
-        stylecolor = "circleStatsItemBox " + stylecolor;
+
 		return(
-			<div className="span3">
+            <div>
+            <a href={detail_link}>
+			<div className="span3"
+                style={{marginBottom:'20px',marginRight:'20px'}}
+                onMouseEnter={this.MouseIn} onMouseLeave={this.MouseOut}>
+
+            <Paper zDepth={this.state.depth}>
             <ScrollSpy norepeat animation="slide-bottom" delay={this.props.delay}>
-                <div className={stylecolor}>
-                    <div className="header">{group.title}</div>
-                    <div className="circleStat">
-                        <a href={detail_link}>
-                            <img alt="221x125" src="/static/imgs/groups/221x125.gif" />
-                        </a>
-                    </div>
-                    <div className="footer">
-                        <span className="count">
-                            <span class="unit">到手价：￥</span>
-                            <span className="number">{group.unit_price}</span>
-                        </span>
-                        <span className="sep"> | </span>
-                        <span className="count">
-                            <span class="unit">剩余数量：</span>
-                            <span className="number">{group.total_qty}</span>
-                        </span>
-                    </div>
-                </div>
+
+                <Card>
+                    <CardMedia overlay={
+                        <CardTitle title={group.title} />
+                    }>
+                        <img  src="/static/imgs/groups/350x400.png"/>
+                    </CardMedia>
+
+                    <CardText>
+                        <p>到手价：￥ {group.unit_price}</p>
+                        <p>剩余数量：{group.total_qty-group.req_qty-group.confirm_qty}</p>
+                        <p>发布时间：{group.create_dt}</p>
+                    </CardText>
+                </Card>
+
+
             </ScrollSpy>
+            </Paper>
 			</div>
-		)		
-	}
+            </a>
+            </div>
+
+		)
+	},
+
 })

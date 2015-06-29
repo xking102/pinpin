@@ -1,6 +1,6 @@
 var React = require('react');
 
-var GroupItem = require('./GroupItem'); 
+var GroupItem = require('./GroupItem');
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
@@ -8,7 +8,7 @@ var RaisedButton = mui.RaisedButton;
 var AppBar = mui.AppBar;
 var ThemeManager = require('material-ui/lib/styles/theme-manager')();
 var Colors = require('material-ui/lib/styles/colors');
-var {Tabs, Tab} = mui;
+var {Tabs, Tab, CircularProgress} = mui;
 var Typography = mui.Styles.Typography;
 
 
@@ -88,18 +88,15 @@ module.exports = React.createClass({
 		var scrollTop = this._getScrollTop();
 		var clientHeight = this._getClientHeight();
 		var scrollHeight = this._getScrollHeight();
-		console.log('st',scrollTop);
     	if(scrollTop+clientHeight===scrollHeight){
     		if(this.state.query_flag){
-    			console.log('querying');
     		}else{
     			if(this.state.pager.next){
-    				console.log('renew');
     				this.listGroups(this.state.pager.per,this.state.pager.page+1);
     			}
-    			
+
     		}
-    		
+
     	}
 	},
 	_getScrollTop:function(){
@@ -124,18 +121,6 @@ module.exports = React.createClass({
 		return Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
 	},
 	render:function(){
-		var spandefault = {
-            padding: '2px 5px',
-            borderColor: '#ff3800',
-            borderRadius: '3px',
-            background: '#ffd6cc',
-            color: '#f30',
-            border: '1px solid #f60',
-            textDecoration: 'none',
-            marginTop: '10px',
-  			marginBottom: '10px',
-  			marginLeft: '44%'
-        };
 		var groups = this.state.groups;
 		var	times = 0;
 		var groupComps = groups.map(function(item){
@@ -145,20 +130,20 @@ module.exports = React.createClass({
 				times +=1;
 			}
 			var delay = times*50;
-			return <GroupItem key={item.id} 
+			return <GroupItem key={item.id}
 							group={item}
 							delay={delay} />
 
 		}.bind(this));
 
 		var renew = this.state.query_flag?
-		<div><span style={spandefault}>{'加载中………………'}</span></div>:
+		<div style={{marginLeft:'44%'}}><CircularProgress mode="indeterminate" /></div>:
 		<div/>
 		return (
 			<div>
-				<div className="row-fluid hideInIE8 circleStats">{groupComps}</div>
+				<div>{groupComps}</div>
 				{renew}
-			
+
 			</div>
 
 		)

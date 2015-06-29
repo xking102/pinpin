@@ -15,6 +15,13 @@ from view.workflow.workflow import init_group_wf
 from control import pinpin
 from control.pinpin import statusRef
 from app import db
+from utils.imageutils import resizeImage
+import os
+
+
+path = os.getcwd()
+parent_path = os.path.dirname(path)
+parent_path = os.path.dirname(parent_path)
 
 
 class newGroupForm(Form):
@@ -63,6 +70,11 @@ class newGroupForm(Form):
             img.fkid = group.id
             img.image_type = 1
             img.image_path = '/' + pre + filename
+            infile = os.path.join(parent_path, pre + filename)
+            outfile_small = infile + ".small.png"
+            outfile_big = infile + ".big.png"
+            resizeImage(infile, 350, 400, outfile_small)
+            resizeImage(infile, 700, 500, outfile_big)
             img.create_dt = pinpin.getCurTimestamp()
             img.create_userid = uid
             img.isUsed = True
