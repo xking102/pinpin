@@ -15,6 +15,7 @@ class Order(db.Model):
     total_price = db.Column(db.Float, unique=False)
     actual_price = db.Column(db.Float, unique=False)
     actual_transfer_fee = db.Column(db.Float, unique=False)
+    memo = db.Column(db.String(100), unique=False)
 
     @property
     def to_json(self):
@@ -34,7 +35,8 @@ class Order(db.Model):
             'total_price': self.total_price,
             'actual_price': self.actual_price,
             'actual_transfer_fee': self.actual_transfer_fee,
-            'transport':t
+            'transport':t,
+            'memo':self.memo
         }
 
     @property
