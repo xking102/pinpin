@@ -20,15 +20,31 @@ class Group(db.Model):
     confirm_qty = db.Column(db.Integer, unique=False)
     color = db.Column(db.String(100), unique=False)
     size = db.Column(db.String(100), unique=False)
+    other = db.Column(db.String(100), unique=False)
 
     @property
     def to_json(self):
+        try:
+            color = listSkuProperties(self.color)
+        except Exception as e:
+            print e
+            color = None
+        try:
+            size = listSkuProperties(self.size)
+        except Exception as e:
+            print e
+            size = None
+        try:
+            other = listSkuProperties(self.other)
+        except Exception as e:
+            print e
+            other = None
         image = Image.query.filter_by(image_type=1, fkid=self.id).first()
         if image:
             image = image.image_path
         else:
             image = '/static/imgs/groups/2.png'
-        file = Image.query.filter_by(image_type=3,fkid=self.id).count()
+        file = Image.query.filter_by(image_type=3, fkid=self.id).count()
         if file:
             file = True
         else:
@@ -47,9 +63,10 @@ class Group(db.Model):
             'req_qty': self.req_qty,
             'confirm_qty': self.confirm_qty,
             'image': image,
-            'isCheckUpload':file,
-            'color': listSkuProperties(self.color),
-            'size':  listSkuProperties(self.size),
+            'isCheckUpload': file,
+            'color': color,
+            'size':  size,
+            'other': other
         }
 
     @property
