@@ -10,6 +10,7 @@ from module.group.group import Group as GroupModel
 from module.workflow.workflow import Workflow as WorkflowModel
 from view.workflow.workflow import init_group_wf, get_init_group
 import time
+from werkzeug import secure_filename
 
 
 class Groups(Resource):
@@ -50,15 +51,22 @@ class Groups(Resource):
 
     def post(self):
         if session.get('logged_in'):
-            title = request.json['title']
-            desc = request.json['desc']
-            unit_price = request.json['unit_price']
-            list_price = request.json['list_price']
-            total_qty = request.json['total_qty']
+            print request.form
+
+            title = request.form['title']
+            desc = request.form['desc']
+            unit_price = request.form['unit_price']
+            list_price = request.form['list_price']
+            total_qty = request.form['total_qty']
+            print title,desc,unit_price,list_price,total_qty
+            images = request.form['images']
+            print images
             create_dt = pinpin.getCurTimestamp()
             create_userid = session.get('logged_id')
             update_dt = pinpin.getCurTimestamp()
-            status = status.GROUP_PUBLISH
+            status = statusRef.GROUP_PUBLISH
+
+            print images[0]
             g = GroupModel()
             g.title = title
             g.desc = desc

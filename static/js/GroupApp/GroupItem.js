@@ -103,7 +103,7 @@ module.exports = React.createClass({
       {group.desc}
 
 
-    
+
   </Col>
 </Grid>
 </Paper>
