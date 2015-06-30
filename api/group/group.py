@@ -11,6 +11,7 @@ from module.workflow.workflow import Workflow as WorkflowModel
 from view.workflow.workflow import init_group_wf, get_init_group
 import time
 
+
 class Groups(Resource):
 
     def get(self):
@@ -125,18 +126,18 @@ class MyGroups(Resource):
             uid = session.get('logged_id')
             groups = GroupModel.query.filter_by(create_userid=uid).order_by(
                 GroupModel.create_dt.desc()).offset(p.offset).limit(p.limit)
-            nextp = Pager(per, page+1)
+            nextp = Pager(per, page + 1)
             nextgroups = GroupModel.query.filter_by(create_userid=uid).order_by(
                 GroupModel.create_dt.desc()).offset(nextp.offset).limit(nextp.limit).count()
             if nextgroups:
                 next = True
             pager = {
-                'prev':prev,
-                'next':next,
-                'per':per,
-                'page':page
+                'prev': prev,
+                'next': next,
+                'per': per,
+                'page': page
             }
-            return make_response(jsonify({"groups": [g.to_json for g in groups],'pager':pager}), 200)
+            return make_response(jsonify({"groups": [g.to_json for g in groups], 'pager': pager}), 200)
         return make_response(jsonify({'messages': 'please login'}), 401)
 
 
