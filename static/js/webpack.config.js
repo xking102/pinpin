@@ -5,7 +5,8 @@ module.exports = {
         groupsindex: "./groupsindex.js",
         my_order_list:"./my_order_list.js",
         user:"./user.js",
-        mygroup:"./mygroups.js"
+        mygroup:"./mygroups.js",
+        newgroup:"./newgroup.js"
     },
     output : {
         path : "./build",
