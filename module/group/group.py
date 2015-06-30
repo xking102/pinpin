@@ -1,6 +1,7 @@
 from app import db
 from control.pinpin import getMoment
 from module.image.image import Image
+from module.sku.sku import listSkuProperties
 
 
 class Group(db.Model):
@@ -46,7 +47,9 @@ class Group(db.Model):
             'req_qty': self.req_qty,
             'confirm_qty': self.confirm_qty,
             'image': image,
-            'isCheckUpload':file
+            'isCheckUpload':file,
+            'color': listSkuProperties(self.color),
+            'size':  listSkuProperties(self.size),
         }
 
     @property
