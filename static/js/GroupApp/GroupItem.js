@@ -7,7 +7,6 @@ var {Paper} = mui;
 var AMUIReact = require('amazeui-react');
 var {Grid, Col, ScrollSpy} = AMUIReact;
 
-var ReactQuill = require('react-quill');
 
 module.exports = React.createClass({
     contextTypes: {
@@ -32,59 +31,48 @@ module.exports = React.createClass({
         }
     },
     handlerOrder:function(e){
-        if(this.state.query_flag){
-            console.log('waiting');
-        }else{
-          this.setState({
-              btn_buy_name:'稍等',
-              query_flag: true
-          });
-          $.ajax({
-            type:'post',
-            url:'/api/v1/orders',
-            contentType: "application/json",
-            data:JSON.stringify({
-              'gid':this.props.group.id,
-              'req_qty':this.state.reqnum,
-              'unit_price':this.props.group.unit_price,
-              'total_price':this.props.group.unit_price*this.state.reqnum,
-              'actual_price':this.props.group.unit_price*this.state.reqnum,
-              'actual_transfer_fee':0
-            }),
-            success:function (resp) {
-                if(resp.status=='succ'){
-                  this.setState({
-                        btn_buy_name:'成功',
-                        query_flag: false,
-                  });
-                  window.location.href='/u/order#/'+resp.oid+'/pay';
-                }else{
-                  this.setState({
-                        btn_buy_name:'卖光了',
-                        query_flag: false,
-                  });
-                }
-            }.bind(this),
-            error: function(xhr, status, err) {
-              console.error(status, err.toString);
-              this.setState({
-                        btn_buy_name:'失败',
-                        query_flag: false
-              });
-            }.bind(this)
-          });
-        }
-      },
-  componentDidMount: function() {
-    // var result = '<a>adfadf</a>';
-    // console.log('did',this.props);
-    // document.getElementById("desc").innerHTML = result;
-    //in this case,did will do once begin,
-    //willreciveprops will do twice and the last will get the props
-  },
-  componentWillReceiveProps:function(nextProps){
-    var result = nextProps.group.desc;
-    document.getElementById("desc").innerHTML = result;
+      if(this.state.query_flag){
+          console.log('waiting');
+      }else{
+        this.setState({
+            btn_buy_name:'稍等',
+            query_flag: true
+        });
+        $.ajax({
+          type:'post',
+          url:'/api/v1/orders',
+          contentType: "application/json",
+          data:JSON.stringify({
+            'gid':this.props.group.id,
+            'req_qty':this.state.reqnum,
+            'unit_price':this.props.group.unit_price,
+            'total_price':this.props.group.unit_price*this.state.reqnum,
+            'actual_price':this.props.group.unit_price*this.state.reqnum,
+            'actual_transfer_fee':0
+          }),
+          success:function (resp) {
+              if(resp.status=='succ'){
+                this.setState({
+                      btn_buy_name:'成功',
+                      query_flag: false,
+                });
+                window.location.href='/u/order#/'+resp.oid+'/pay';
+              }else{
+                this.setState({
+                      btn_buy_name:'卖光了',
+                      query_flag: false,
+                });
+              }
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(status, err.toString);
+            this.setState({
+                      btn_buy_name:'失败',
+                      query_flag: false
+            });
+          }.bind(this)
+        });
+      }
   },
   render:function(){
     var group = this.props.group;
@@ -112,10 +100,10 @@ module.exports = React.createClass({
 
 <Grid className="doc-g" style={{marginTop:'10px'}}>
   <Col sm={12} md={12} lg={12}>
-      <div id='desc'/>
+      {group.desc}
 
 
-      <ReactQuill onChange={this._onTextChange} theme={'snow'} value={this.state.desc} />
+    
   </Col>
 </Grid>
 </Paper>
@@ -123,11 +111,6 @@ module.exports = React.createClass({
 </div>
 
     )
-  },
-
-  _onTextChange:function(value){
-    this.setState({ desc:value });
-    document.getElementById("desc").innerHTML = this.state.desc;
   }
 
 
