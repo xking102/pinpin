@@ -24,13 +24,9 @@ def list_groups():
 
 
 # add group
-@group.route('/groups', methods=['GET', 'POST'])
+@group.route('/groups')
 def add_group():
-    error = None
-    form = newGroupForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        return redirect(url_for('group.list_groups'))
-    return render_template('./group/add.html', error=error, form=form)
+    return render_template('./group/add.html')
 
 
 # add group check files
