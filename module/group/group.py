@@ -17,6 +17,8 @@ class Group(db.Model):
     status = db.Column(db.Integer, unique=False)
     req_qty = db.Column(db.Integer, unique=False)
     confirm_qty = db.Column(db.Integer, unique=False)
+    color = db.Column(db.String(100), unique=False)
+    size = db.Column(db.String(100), unique=False)
 
     @property
     def to_json(self):

@@ -7,12 +7,18 @@ var {Paper} = mui;
 var AMUIReact = require('amazeui-react');
 var {Grid, Col, ScrollSpy} = AMUIReact;
 
+var ReactQuill = require('react-quill');
+
 module.exports = React.createClass({
+    contextTypes: {
+      router: React.PropTypes.func.isRequired
+    },
     getInitialState : function(){
         return{
             reqnum : 1,
             btn_buy_name: '购买',
-            query_flag: false
+            query_flag: false,
+            desc:null
         }
     },
     handlerReqnum:function(e){
@@ -70,17 +76,15 @@ module.exports = React.createClass({
         }
       },
   componentDidMount: function() {
-    if($('.timeline')) {
-
-        $('.timeslot').each(function(){
-
-          var timeslotHeight = $(this).find('.task').outerHeight();
-
-          $(this).css('height',timeslotHeight);
-
-        });
-
-    }
+    // var result = '<a>adfadf</a>';
+    // console.log('did',this.props);
+    // document.getElementById("desc").innerHTML = result;
+    //in this case,did will do once begin,
+    //willreciveprops will do twice and the last will get the props
+  },
+  componentWillReceiveProps:function(nextProps){
+    var result = nextProps.group.desc;
+    document.getElementById("desc").innerHTML = result;
   },
   render:function(){
     var group = this.props.group;
@@ -108,7 +112,10 @@ module.exports = React.createClass({
 
 <Grid className="doc-g" style={{marginTop:'10px'}}>
   <Col sm={12} md={12} lg={12}>
-      {group.desc}
+      <div id='desc'/>
+
+
+      <ReactQuill onChange={this._onTextChange} theme={'snow'} value={this.state.desc} />
   </Col>
 </Grid>
 </Paper>
@@ -116,5 +123,12 @@ module.exports = React.createClass({
 </div>
 
     )
+  },
+
+  _onTextChange:function(value){
+    this.setState({ desc:value });
+    document.getElementById("desc").innerHTML = this.state.desc;
   }
+
+
 })
