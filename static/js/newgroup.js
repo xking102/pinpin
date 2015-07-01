@@ -30,16 +30,16 @@ var App = React.createClass({
       this.setState({
         errorSubmit:'请填写完整'
       });
-      return 1;
+      return true;
     }else{
       this.setState({
         errorSubmit:''
       });
-      return 0;
+      return false;
     }
   },
   PostGroup:function(num){
-    if(num>0){
+    if(num){
       return ''
     }
     var formData = new FormData();
@@ -89,7 +89,7 @@ var App = React.createClass({
   },
   render: function () {
     var showSubmitError = this.state.errorSubmit.length==0?'':
-    <div style={{marginTop:'50px'}} className="alert alert-error">{this.state.errorSubmit}</div>
+    <div style={{marginTop:'50px'}} className="alert alert-error">{this.state.errorSubmit}</div>;
     return (
       <div style={{marginLeft:'20%',marginRight:'20%'}}  >
           <Paper zDepth={3}>
@@ -155,7 +155,7 @@ var App = React.createClass({
             &nbsp;
             <RaisedButton
             label="添加"
-                secondary={true}
+            secondary={true}
             />
             </div>
 
