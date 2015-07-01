@@ -80,7 +80,7 @@ var App = React.createClass({
           <form onSubmit={this._handleForm} ref="addGroupForm" name="addGroup" encType="multipart/form-data" method="POST">
             <TextField
               ref="title"
-              style={{width:'550px'}}
+              style={{width:'100%'}}
               hintText="商品名称"
               type='text'
               multiLine={true}
@@ -91,7 +91,7 @@ var App = React.createClass({
 
             <TextField
               ref="desc"
-              style={{width:'550px'}}
+              style={{width:'100%'}}
               hintText="商品详情介绍"
               type='text'
               multiLine={true}
@@ -157,7 +157,9 @@ var App = React.createClass({
         images:imgs
       });
     }else{
-      console.log('too many');
+      this.setState({
+        images:''
+      });
     }
   },
 
