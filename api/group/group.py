@@ -11,6 +11,14 @@ from module.workflow.workflow import Workflow as WorkflowModel
 from view.workflow.workflow import init_group_wf, get_init_group
 import time
 from werkzeug import secure_filename
+from module.image.image import Image
+import os
+from utils.imageutils import resizeImage
+
+
+path = os.getcwd()
+
+
 
 
 class Groups(Resource):
@@ -51,22 +59,16 @@ class Groups(Resource):
 
     def post(self):
         if session.get('logged_in'):
-            print request.form
-
             title = request.form['title']
             desc = request.form['desc']
             unit_price = request.form['unit_price']
             list_price = request.form['list_price']
             total_qty = request.form['total_qty']
-            print title,desc,unit_price,list_price,total_qty
-            images = request.form['images']
-            print images
+            images = request.files.getlist("photos")
             create_dt = pinpin.getCurTimestamp()
             create_userid = session.get('logged_id')
             update_dt = pinpin.getCurTimestamp()
             status = statusRef.GROUP_PUBLISH
-
-            print images[0]
             g = GroupModel()
             g.title = title
             g.desc = desc
@@ -80,6 +82,26 @@ class Groups(Resource):
             g.req_qty = 0
             g.confirm_qty = 0
             g.save
+            for image in images:
+                filename = secure_filename(image.filename)
+                pre = 'static/imgs/groups/group-img-' + \
+                    str(pinpin.getCurTimestamp()) + \
+                    '-'
+                if filename:
+                    image.save(pre + filename)
+                    img = Image()
+                    img.fkid = g.id
+                    img.image_type = 1
+                    img.image_path = '/' + pre + filename
+                    infile = os.path.join(path, pre + filename)
+                    outfile_small = infile + ".small.png"
+                    outfile_big = infile + ".big.png"
+                    resizeImage(infile, 350, 400, outfile_small)
+                    resizeImage(infile, 700, 500, outfile_big)
+                    img.create_dt = pinpin.getCurTimestamp()
+                    img.create_userid = create_userid
+                    img.isUsed = True
+                    img.save
             init_group_wf(g.id)
             return make_response(jsonify({'id': g.id}), 201)
         return jsonify({'messages': 'fail', "status": 401})

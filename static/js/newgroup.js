@@ -23,7 +23,6 @@ var App = React.createClass({
     var formData = new FormData();
     for (var i=0;i<this.state.images.length;i++){
       var file = this.state.images[i];
-      console.log(file);
       formData.append('photos',file);
     }
     formData.append('images',this.state.images);
@@ -153,9 +152,13 @@ var App = React.createClass({
   },
 
   _onDrop:function(imgs){
-    this.setState({
-      images:imgs
-    });
+    if(imgs.length<6){
+      this.setState({
+        images:imgs
+      });
+    }else{
+      console.log('too many');
+    }
   },
 
   showFiles: function () {
@@ -216,4 +219,3 @@ var mainCom = React.render(
   <App />,
   document.getElementById('app')
 )
-
