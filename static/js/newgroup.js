@@ -19,7 +19,29 @@ var App = React.createClass({
       muiTheme: ThemeManager.getCurrentTheme()
     };
   },
-  PostGroup:function(){
+  _checkField:function(){
+    var title = this.refs.title.getValue();
+    var desc = this.refs.desc.getValue();
+    var errorImages = this.state.errorImages;
+    var errorPrice = this.state.errorPrice;
+    var errorQty = this.state.errorQty;
+
+    if(title.length==0||desc.length==0||errorImages.length>0||errorPrice.length>0||errorQty.length>0){
+      this.setState({
+        errorSubmit:'请填写完整'
+      });
+      return 1;
+    }else{
+      this.setState({
+        errorSubmit:''
+      });
+      return 0;
+    }
+  },
+  PostGroup:function(num){
+    if(num>0){
+      return ''
+    }
     var formData = new FormData();
     for (var i=0;i<this.state.images.length;i++){
       var file = this.state.images[i];
@@ -54,24 +76,22 @@ var App = React.createClass({
       color:[],
       size:[],
       other:[],
-      flag:true
+      flag:true,
+      errorImages:'别忘了上传图片',
+      errorSubmit:''
     }
-  },
-  onNewAddress:function( newAddress ){
-
-    var newAddress = this.state.address.concat( newAddress );
-
-    this.setState({
-      address: newAddress,
-    })
   },
   _handleForm:function(e){
     e.preventDefault();
-    this.PostGroup();
+    var num = this._checkField();
+    this.PostGroup(num);
+    
   },
   render: function () {
+    var showSubmitError = this.state.errorSubmit.length==0?'':
+    <div style={{marginTop:'50px'}} className="alert alert-error">{this.state.errorSubmit}</div>
     return (
-      <div style={{marginLeft:'24%',marginRight:'27%'}}  >
+      <div style={{marginLeft:'20%',marginRight:'20%'}}  >
           <Paper zDepth={3}>
           <div style={{marginLeft:'10px',marginRight:'10px',paddingBottom:'20px'}}>
 
@@ -108,7 +128,7 @@ var App = React.createClass({
               onChange={this._handleErrorPrice}
             />
 
-
+            &nbsp;
 
             <TextField
               ref="qty"
@@ -139,6 +159,7 @@ var App = React.createClass({
             />
             </div>
 
+            {showSubmitError}
 
 
           </form>
@@ -154,18 +175,20 @@ var App = React.createClass({
   _onDrop:function(imgs){
     if(imgs.length<6){
       this.setState({
-        images:imgs
+        images:imgs,
+        errorImages:''
       });
     }else{
       this.setState({
-        images:''
+        images:'',
+        errorImages:'至多可以上传5张图片'
       });
     }
   },
 
   showFiles: function () {
     if (this.state.images.length <= 0) {
-      return '';
+      return <div style={{marginTop:'10px'}} className="alert alert-error">{this.state.errorImages}</div>;
     }
 
     var images = this.state.images;
@@ -174,7 +197,7 @@ var App = React.createClass({
       <div>
         <h3>预览</h3>
           {[].map.call(images, function (f, i) {
-            return <img style={{marginRight:'5px'}}width={100} height={100} key={i} src={f.preview} />;
+            return <img style={{marginRight:'3px',marginBottom:'3px'}}width={100} height={100} key={i} src={f.preview} />;
           })}
       </div>
     );
