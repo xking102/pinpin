@@ -7,7 +7,7 @@ var ThemeManager = require('material-ui/lib/styles/theme-manager')();
 var Colors = require('material-ui/lib/styles/colors');
 var {TextField, Paper, RaisedButton} = mui;
 var Dropzone = require('react-dropzone');
-
+var LoadingMask = require("./Components/LoadingMask");
 
 injectTapEventPlugin();
 var App = React.createClass({
@@ -40,8 +40,12 @@ var App = React.createClass({
   },
   PostGroup:function(num){
     if(num){
-      return ''
+      return '';
     }
+    this.setState({
+      submitflag:true
+    });
+    this.refs.loading.show();
     var formData = new FormData();
     for (var i=0;i<this.state.images.length;i++){
       var file = this.state.images[i];
@@ -63,10 +67,15 @@ var App = React.createClass({
       data:formData,
       success: function(resp) {
         console.log('succ');
+        this.refs.loading.dismiss();
+        this.setState({
+          submitflag:false
+        });
       }.bind(this),
 
       error: function(xhr, status, err) {
         console.error(status, err.toString);
+        this.refs.loading.dismiss();
       }.bind(this)
     });
   },
@@ -78,14 +87,16 @@ var App = React.createClass({
       other:[],
       flag:true,
       errorImages:'别忘了上传图片',
-      errorSubmit:''
+      errorSubmit:'',
+      submitflag:false
     }
   },
   _handleForm:function(e){
     e.preventDefault();
     var num = this._checkField();
     this.PostGroup(num);
-    
+
+
   },
   render: function () {
     var showSubmitError = this.state.errorSubmit.length==0?'':
@@ -156,6 +167,7 @@ var App = React.createClass({
             <RaisedButton
             label="添加"
             secondary={true}
+            disabled={this.state.submitflag}
             />
             </div>
 
@@ -167,10 +179,11 @@ var App = React.createClass({
 
           </div>
           </Paper>
-
+          <LoadingMask ref="loading"/>
       </div>
     );
   },
+
 
   _onDrop:function(imgs){
     if(imgs.length<6){
