@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import division
 from PIL import Image
+
 
 def resizeImage(image_location, des_w, des_h, save_location):
     try:
