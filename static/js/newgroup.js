@@ -8,6 +8,7 @@ var Colors = require('material-ui/lib/styles/colors');
 var {TextField, Paper, RaisedButton} = mui;
 var Dropzone = require('react-dropzone');
 var LoadingMask = require("./Components/LoadingMask");
+var NewPropery = require("./NewGroup/NewProperty");
 
 injectTapEventPlugin();
 var App = React.createClass({
@@ -95,9 +96,18 @@ var App = React.createClass({
     e.preventDefault();
     var num = this._checkField();
     this.PostGroup(num);
-
-
   },
+
+  handleAddColor:function(){
+    console.log('add color');
+  },
+  handleAddSize:function(){
+    console.log('add size');
+  },
+  handleAddOther:function(){
+    console.log('add other');
+  },
+
   render: function () {
     var showSubmitError = this.state.errorSubmit.length==0?'':
     <div style={{marginTop:'50px'}} className="alert alert-error">{this.state.errorSubmit}</div>;
@@ -151,6 +161,12 @@ var App = React.createClass({
 
             <br/>
             <br/>
+            <NewPropery label={'颜色'} onAdd={this.handleAddColor}/>
+            <br/>
+            <NewPropery label={'尺码'} onAdd={this.handleAddSize}/>
+            <br/>
+            <NewPropery label={'其他'} onAdd={this.handleAddOther}/>
+            <br/>
             <br/>
 
             <Dropzone ref="dropzone" onDrop={this._onDrop} size={150} >
@@ -169,6 +185,9 @@ var App = React.createClass({
             secondary={true}
             disabled={this.state.submitflag}
             />
+
+
+            <a className="btn btn-link" onClick={this._handleColor}>color</a>
             </div>
 
             {showSubmitError}
@@ -184,6 +203,9 @@ var App = React.createClass({
     );
   },
 
+  _handleColor:function(){
+    console.log('color');
+  },
 
   _onDrop:function(imgs){
     if(imgs.length<6){
@@ -220,6 +242,16 @@ var App = React.createClass({
 
   _onHandleCancel:function(){
     this.refs.addGroupForm.getDOMNode().reset();
+    this.setState({
+      images:[],
+      color:[],
+      size:[],
+      other:[],
+      errorImages:'别忘了上传图片',
+      errorSubmit:'',
+      errorPrice:'',
+      errorQty:''
+    })
   },
 
   _handleErrorPrice:function(){
