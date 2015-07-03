@@ -5,7 +5,7 @@ var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
 var ThemeManager = require('material-ui/lib/styles/theme-manager')();
 var Colors = require('material-ui/lib/styles/colors');
-var {TextField, Paper, RaisedButton} = mui;
+var {TextField, Paper, RaisedButton, Snackbar} = mui;
 var Dropzone = require('react-dropzone');
 var LoadingMask = require("./Components/LoadingMask");
 var NewPropery = require("./NewGroup/NewProperty");
@@ -108,7 +108,7 @@ var App = React.createClass({
       flag:true,
       errorImages:'别忘了上传图片',
       errorSubmit:'',
-      submitflag:false
+      submitflag:false,
     }
   },
   _handleForm:function(e){
@@ -119,6 +119,10 @@ var App = React.createClass({
 
   handleAddColor:function( newColor ){
     newColor.key = this.state.color.length + 1;
+    if(newColor.key>5){
+      this.refs.snackbar.show();
+      return '';
+    }
     var newColors = this.state.color.concat( newColor );
       this.setState({
         color:newColors
@@ -126,6 +130,10 @@ var App = React.createClass({
   },
   handleAddSize:function( newSize ){
     newSize.key = this.state.size.length + 1;
+    if(newSize.key>5){
+      this.refs.snackbar.show();
+      return '';
+    }
     var newSizes = this.state.size.concat( newSize );
       this.setState({
         size:newSizes
@@ -133,6 +141,10 @@ var App = React.createClass({
   },
   handleAddOther:function( newOther ){
     newOther.key = this.state.other.length + 1;
+    if(newOther.key>5){
+      this.refs.snackbar.show();
+      return '';
+    }
     var newOthers = this.state.other.concat( newOther );
       this.setState({
         other:newOthers
@@ -166,6 +178,7 @@ var App = React.createClass({
               style={{width:'100%'}}
               hintText="商品详情介绍"
               type='text'
+              row={3}
               multiLine={true}
               floatingLabelText="输入商品详情介绍"
             />
@@ -228,6 +241,11 @@ var App = React.createClass({
             secondary={true}
             disabled={this.state.submitflag}
             />
+
+            <Snackbar
+                ref="snackbar"
+                message={'至多添加5条属性'}
+              />
           
             </div>
 
