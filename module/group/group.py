@@ -1,6 +1,7 @@
 from app import db
 from control.pinpin import getMoment
 from module.image.image import Image
+from module.sku.sku import listSkuProperties
 
 
 class Group(db.Model):
@@ -19,15 +20,38 @@ class Group(db.Model):
     confirm_qty = db.Column(db.Integer, unique=False)
     color = db.Column(db.String(100), unique=False)
     size = db.Column(db.String(100), unique=False)
+    other = db.Column(db.String(100), unique=False)
 
     @property
     def to_json(self):
-        image = Image.query.filter_by(image_type=1, fkid=self.id).first()
-        if image:
-            image = image.image_path
+        try:
+            color = listSkuProperties(self.color)
+        except Exception as e:
+            print e
+            color = None
+        try:
+            size = listSkuProperties(self.size)
+        except Exception as e:
+            print e
+            size = None
+        try:
+            other = listSkuProperties(self.other)
+        except Exception as e:
+            print e
+            other = None
+        imgs = []
+        images = Image.query.filter_by(image_type=1, fkid=self.id).all()
+        if images and len(images)>0:
+            image = images[0].image_path
+            for img in images:
+                imgs.append(img.image_path)
+        elif images and len(images)==0:
+            image = images[0]
+            imgs.append(image)
         else:
             image = '/static/imgs/groups/2.png'
-        file = Image.query.filter_by(image_type=3,fkid=self.id).count()
+            imgs.append(image)
+        file = Image.query.filter_by(image_type=3, fkid=self.id).count()
         if file:
             file = True
         else:
@@ -46,7 +70,11 @@ class Group(db.Model):
             'req_qty': self.req_qty,
             'confirm_qty': self.confirm_qty,
             'image': image,
-            'isCheckUpload':file
+            'images': imgs,
+            'isCheckUpload': file,
+            'color': color,
+            'size':  size,
+            'other': other
         }
 
     @property
