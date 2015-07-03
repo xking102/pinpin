@@ -1,7 +1,8 @@
 var React = require('react');
 var mui = require('material-ui');
 var {RaisedButton} = mui;
-
+var PropertyApp = require('./PropertyApp');
+var PropertyList = require('./PropertyList');
 
 module.exports = React.createClass({
 	getInitialState:function(){
@@ -10,39 +11,41 @@ module.exports = React.createClass({
 		}
 	},
 	render:function(){
-		console.log(this.state.add);
 		var Btn = this.state.add?
             	<RaisedButton
-            		label={'保存'+this.props.label}
+            		label={'就这些'+this.props.label+'吧'}
             		secondary={true}
-            		onTouchTap={this.SaveAdd}
+            		onTouchTap={this.dismiss}
             	/>:
+            	<div>
             	<RaisedButton
             		label={'添加'+this.props.label}
             		primary={true}
-            		onTouchTap={this.ShowAdd}
-            	/>;
+            		onTouchTap={this.show}
+            	/>
+            	<PropertyList label={this.props.label} list={this.props.list}/>
+            	</div>;
+        var PropList = this.state.add?<PropertyApp  list={this.props.list} label={this.props.label} onAdd={this.props.onAdd} />:'';
 		return(
-			<div>
-				{Btn}
+			<div className="row-fluid">
+				<div className="row-fluid">{Btn}</div>
+
+				<div className="row-fluid">{PropList}</div>
+
 			</div>
 		)
 	},
 
-	ShowAdd:function(){
+	show:function(){
 		this.setState({
 			add:true
 		})
 	},
 
-	SaveAdd:function(){
+	dismiss:function(){
 		this.setState({
 			add:false
 		})
-	},
-
-	SaveProperty:function(){
-		
 	}
 
 
