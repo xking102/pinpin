@@ -7,17 +7,20 @@ var {Paper} = mui;
 var AMUIReact = require('amazeui-react');
 var {Grid, Col, ScrollSpy} = AMUIReact;
 
+var ImageList = require('./GroupImageList');
+var PropertyList =require('./GroupPropertyList');
 
 module.exports = React.createClass({
-    contextTypes: {
-      router: React.PropTypes.func.isRequired
-    },
     getInitialState : function(){
         return{
             reqnum : 1,
             btn_buy_name: '购买',
             query_flag: false,
-            desc:null
+            desc:null,
+            clickimage:'',
+            clickcolor:'',
+            clicksize:'',
+            clickother:''
         }
     },
     handlerReqnum:function(e){
@@ -34,6 +37,31 @@ module.exports = React.createClass({
       if(this.state.query_flag){
           console.log('waiting');
       }else{
+        var colorcheck = '';
+        var sizecheck = '';
+        var othercheck = '';
+        if(this.props.group.color.length){
+          if(this.state.clickcolor){
+            var colorcheck = '颜色:'+this.state.clickcolor+' ';
+          }else{
+            var colorcheck = '颜色:'+this.props.group.color[0]+' ';
+          }
+        }
+        if(this.props.group.size.length){
+          if(this.state.clicksize){
+            var sizecheck = '尺码:'+this.state.clicksize+' ';
+          }else{
+            var sizecheck = '尺码:'+this.props.group.size[0]+' ';
+          }
+        }
+        if(this.props.group.other.length){
+          if(this.state.clickother){
+            var othercheck = '其他:'+this.state.clickother+' ';
+          }else{
+            var othercheck = '其他:'+this.props.group.other[0]+' ';
+          }
+        }
+        var memo = colorcheck + sizecheck + othercheck;
         this.setState({
             btn_buy_name:'稍等',
             query_flag: true
@@ -48,7 +76,8 @@ module.exports = React.createClass({
             'unit_price':this.props.group.unit_price,
             'total_price':this.props.group.unit_price*this.state.reqnum,
             'actual_price':this.props.group.unit_price*this.state.reqnum,
-            'actual_transfer_fee':0
+            'actual_transfer_fee':0,
+            'memo':memo
           }),
           success:function (resp) {
               if(resp.status=='succ'){
@@ -76,6 +105,7 @@ module.exports = React.createClass({
   },
   render:function(){
     var group = this.props.group;
+    var clickimage = this.state.clickimage.length?this.state.clickimage:group.image+'.big.png';
     return(
       <div>
 <ScrollSpy norepeat animation="slide-bottom" delay={1000}>
@@ -83,27 +113,45 @@ module.exports = React.createClass({
 <Grid className="doc-g" style={{marginLeft:'20px',paddingTop:'15px'}}>
 {group.title}
 </Grid>
-<Grid className="doc-g">
+<Grid className="doc-g" style={{marginTop:'10px'}}>
   <Col sm={12} md={5} lg={5}>
-   <img className="grayscale" src="/static/imgs/groups/700x500.png" />
+   <img className="grayscale" src={clickimage} />
   </Col>
+
+  
   <Col sm={12} md={7} lg={7}>
     <p>到手价：{group.unit_price}</p>
-    <p>原价：{group.list_price}</p>
-    <p>剩余数：{group.total_qty}</p>
+    <p>剩余数：{group.total_qty-group.req_qty-group.confirm_qty}</p>
+    <Col sm={12} md={7} lg={7}>
+    <PropertyList properties={group.color} label={'颜色'} onCheck={this._handleColorCheck} />
+    </Col>
+
+    <Col sm={12} md={7} lg={7}>
+    <PropertyList properties={group.size} label={'尺码'} onCheck={this._handleSizeCheck} />
+    </Col>
+
+    <Col sm={12} md={7} lg={7}>
+    <PropertyList properties={group.other} label={'其他'} onCheck={this._handleOtherCheck} />
+    </Col>
+
+    <Col style={{marginTop:'10px'}} sm={12} md={7} lg={7}>
     <input style={{width:'45px',height:'30px'}} type="number" value={this.state.reqnum} onChange={this.handlerReqnum} />
     <br/>
     <a href="javascript:void(0)" onClick={this.handlerOrder} className="btn btn-danger">{this.state.btn_buy_name}</a>
+    </Col>
+    
   </Col>
 
 </Grid>
 
 <Grid className="doc-g" style={{marginTop:'10px'}}>
   <Col sm={12} md={12} lg={12}>
+  <ImageList imgs={group.images} ImageChange={this._handleImageChange} />
+  </Col>
+</Grid>
+<Grid className="doc-g" style={{marginTop:'10px'}}>
+  <Col sm={12} md={12} lg={12}>
       {group.desc}
-
-
-
   </Col>
 </Grid>
 </Paper>
@@ -111,7 +159,34 @@ module.exports = React.createClass({
 </div>
 
     )
-  }
+  },
 
+  _handleImageChange:function(img){
+    this.setState({
+      clickimage:img
+    })
+   
+  },
+
+  _handleColorCheck:function(color){
+    this.setState({
+      clickcolor:color
+    })
+   
+  },
+
+  _handleSizeCheck:function(size){
+    this.setState({
+      clicksize:size
+    })
+   
+  },
+
+  _handleOtherCheck:function(other){
+    this.setState({
+      clickother:other
+    })
+   
+  },
 
 })
