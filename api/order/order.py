@@ -32,6 +32,7 @@ class Orders(Resource):
                 total_price = request.json['total_price']
                 actual_price = request.json['actual_price']
                 actual_transfer_fee = request.json['actual_transfer_fee']
+                memo = request.json['memo']
                 g = GroupModel.query.get(gid)
                 print 'total',g.total_qty
                 print 'req', g.req_qty
@@ -47,6 +48,7 @@ class Orders(Resource):
                     o.total_price = total_price
                     o.actual_price = actual_price
                     o.actual_transfer_fee = actual_transfer_fee
+                    o.memo = memo
                     o.save
                     print o.id
                     init_order_wf(o.id)
