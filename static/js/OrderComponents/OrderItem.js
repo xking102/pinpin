@@ -28,7 +28,7 @@ module.exports = React.createClass({
 
                 <div className="row-fluid">
                     
-                    <div className="span2 center"><img alt="香水" src="/static/imgs/orders/OrderItems.png"/></div>
+                    <div className="span2 center"><img alt="香水" src={this.props.order.image+".big.png"} /></div>
                     <div className="span2 center">{this.props.order.create_userid}</div>
                     <div className="span1 center">{this.props.order.unit_price}</div>
                     <div className="span1 center">{this.props.order.req_qty}</div>
