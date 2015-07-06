@@ -84,10 +84,12 @@ var App = React.createClass({
       data:formData,
       success: function(resp) {
         console.log('succ');
+        this._onHandleCancel();
         this.refs.loading.dismiss();
         this.setState({
           submitflag:false
         });
+        this.refs.snackbar_succ.show();
       }.bind(this),
 
       error: function(xhr, status, err) {
@@ -245,7 +247,12 @@ var App = React.createClass({
             <Snackbar
                 ref="snackbar"
                 message={'至多添加5条属性'}
-              />
+            />
+
+             <Snackbar
+                ref="snackbar_succ"
+                message={'发布成功'}
+            />
           
             </div>
 
