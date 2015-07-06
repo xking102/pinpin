@@ -41,15 +41,15 @@ class Group(db.Model):
             other = None
         imgs = []
         images = Image.query.filter_by(image_type=1, fkid=self.id).all()
-        if images and len(images)>0:
+        if images and len(images) > 0:
             image = images[0].image_path
             for img in images:
                 imgs.append(img.image_path)
-        elif images and len(images)==0:
+        elif images and len(images) == 0:
             image = images[0]
             imgs.append(image)
         else:
-            image = '/static/imgs/groups/2.png'
+            image = '/static/imgs/groups/350x400.png'
             imgs.append(image)
         file = Image.query.filter_by(image_type=3, fkid=self.id).count()
         if file:

@@ -5,10 +5,11 @@ var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
 var ThemeManager = require('material-ui/lib/styles/theme-manager')();
 var Colors = require('material-ui/lib/styles/colors');
-var {TextField, Paper, RaisedButton} = mui;
+var {TextField, Paper, RaisedButton, Snackbar} = mui;
 var Dropzone = require('react-dropzone');
 var LoadingMask = require("./Components/LoadingMask");
 var NewPropery = require("./NewGroup/NewProperty");
+
 
 injectTapEventPlugin();
 var App = React.createClass({
@@ -52,12 +53,27 @@ var App = React.createClass({
       var file = this.state.images[i];
       formData.append('photos',file);
     }
+    var color=';';
+    var size=';';
+    var other=';';
+    for (var i=0;i<this.state.color.length;i++){
+      color += this.state.color[i].name+';';
+    }
+    for (var i=0;i<this.state.size.length;i++){
+      size += this.state.size[i].name+';';
+    }
+    for (var i=0;i<this.state.other.length;i++){
+      other += this.state.other[i].name+';';
+    }
     formData.append('images',this.state.images);
     formData.append('title',this.refs.title.getValue());
     formData.append('desc',this.refs.desc.getValue());
     formData.append('unit_price',this.refs.price.getValue());
     formData.append('list_price',0);
     formData.append('total_qty',this.refs.qty.getValue());
+    formData.append('color',color);
+    formData.append('size',size);
+    formData.append('other',other);
     $.ajax({
       url      : '/api/v1/groups',
       type     : 'POST',
@@ -68,14 +84,19 @@ var App = React.createClass({
       data:formData,
       success: function(resp) {
         console.log('succ');
+        this._onHandleCancel();
         this.refs.loading.dismiss();
         this.setState({
           submitflag:false
         });
+        this.refs.snackbar_succ.show();
       }.bind(this),
 
       error: function(xhr, status, err) {
         console.error(status, err.toString);
+        this.setState({
+          submitflag:false
+        });
         this.refs.loading.dismiss();
       }.bind(this)
     });
@@ -89,7 +110,7 @@ var App = React.createClass({
       flag:true,
       errorImages:'别忘了上传图片',
       errorSubmit:'',
-      submitflag:false
+      submitflag:false,
     }
   },
   _handleForm:function(e){
@@ -98,14 +119,38 @@ var App = React.createClass({
     this.PostGroup(num);
   },
 
-  handleAddColor:function(){
-    console.log('add color');
+  handleAddColor:function( newColor ){
+    newColor.key = this.state.color.length + 1;
+    if(newColor.key>5){
+      this.refs.snackbar.show();
+      return '';
+    }
+    var newColors = this.state.color.concat( newColor );
+      this.setState({
+        color:newColors
+      });
   },
-  handleAddSize:function(){
-    console.log('add size');
+  handleAddSize:function( newSize ){
+    newSize.key = this.state.size.length + 1;
+    if(newSize.key>5){
+      this.refs.snackbar.show();
+      return '';
+    }
+    var newSizes = this.state.size.concat( newSize );
+      this.setState({
+        size:newSizes
+      });
   },
-  handleAddOther:function(){
-    console.log('add other');
+  handleAddOther:function( newOther ){
+    newOther.key = this.state.other.length + 1;
+    if(newOther.key>5){
+      this.refs.snackbar.show();
+      return '';
+    }
+    var newOthers = this.state.other.concat( newOther );
+      this.setState({
+        other:newOthers
+      });
   },
 
   render: function () {
@@ -118,7 +163,7 @@ var App = React.createClass({
 
 
 
-          <form onSubmit={this._handleForm} ref="addGroupForm" name="addGroup" encType="multipart/form-data" method="POST">
+          <form  onSubmit={this._handleForm} ref="addGroupForm" name="addGroup" encType="multipart/form-data" method="POST">
             <TextField
               ref="title"
               style={{width:'100%'}}
@@ -135,6 +180,7 @@ var App = React.createClass({
               style={{width:'100%'}}
               hintText="商品详情介绍"
               type='text'
+              row={3}
               multiLine={true}
               floatingLabelText="输入商品详情介绍"
             />
@@ -145,6 +191,7 @@ var App = React.createClass({
               ref="price"
               hintText="到手单价"
               floatingLabelText="输入到手单价"
+              multiLine={true}
               errorText={this.state.errorPrice}
               onChange={this._handleErrorPrice}
             />
@@ -155,17 +202,28 @@ var App = React.createClass({
               ref="qty"
               hintText="团购数量"
               floatingLabelText="输入本次团购数量"
+              multiLine={true}
               errorText={this.state.errorQty}
               onChange={this._handleErrorQty}
             />
 
             <br/>
             <br/>
-            <NewPropery label={'颜色'} onAdd={this.handleAddColor}/>
-            <br/>
-            <NewPropery label={'尺码'} onAdd={this.handleAddSize}/>
-            <br/>
-            <NewPropery label={'其他'} onAdd={this.handleAddOther}/>
+            <div className="row-fluid">
+              <div className='span3'>
+                <NewPropery label={'颜色'} list={this.state.color} onAdd={this.handleAddColor}/>
+              </div>
+
+              <div className='span3'>
+                 <NewPropery label={'尺码'} list={this.state.size} onAdd={this.handleAddSize}/>
+              </div>
+
+              <div className='span3'>
+                <NewPropery label={'其他'} list={this.state.other} onAdd={this.handleAddOther}/>
+              </div>
+
+            </div>
+
             <br/>
             <br/>
 
@@ -186,8 +244,16 @@ var App = React.createClass({
             disabled={this.state.submitflag}
             />
 
+            <Snackbar
+                ref="snackbar"
+                message={'至多添加5条属性'}
+            />
 
-            <a className="btn btn-link" onClick={this._handleColor}>color</a>
+             <Snackbar
+                ref="snackbar_succ"
+                message={'发布成功'}
+            />
+          
             </div>
 
             {showSubmitError}
@@ -203,9 +269,6 @@ var App = React.createClass({
     );
   },
 
-  _handleColor:function(){
-    console.log('color');
-  },
 
   _onDrop:function(imgs){
     if(imgs.length<6){
@@ -279,6 +342,8 @@ var App = React.createClass({
       })
     }
   },
+
+
 
 });
 

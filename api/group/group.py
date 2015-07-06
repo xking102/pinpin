@@ -14,7 +14,7 @@ from werkzeug import secure_filename
 from module.image.image import Image
 import os
 from utils.imageutils import resizeImage
-
+from module.sku.sku import mergeSkuProperties
 
 path = os.getcwd()
 
@@ -64,6 +64,9 @@ class Groups(Resource):
             unit_price = request.form['unit_price']
             list_price = request.form['list_price']
             total_qty = request.form['total_qty']
+            color = request.form['color']
+            size = request.form['size']
+            other = request.form['other']
             images = request.files.getlist("photos")
             create_dt = pinpin.getCurTimestamp()
             create_userid = session.get('logged_id')
@@ -81,6 +84,9 @@ class Groups(Resource):
             g.update_dt = update_dt
             g.req_qty = 0
             g.confirm_qty = 0
+            g.color = mergeSkuProperties('',color) 
+            g.size = mergeSkuProperties('',size) 
+            g.other = mergeSkuProperties('',other) 
             g.save
             for image in images:
                 filename = secure_filename(image.filename)
