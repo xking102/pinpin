@@ -1,7 +1,7 @@
 from app import db
 from control.pinpin import getMoment
 from module.transport.transport import Transport
-
+from module.image.image import Image
 
 class Order(db.Model):
     __tablename__ = 't_order'
@@ -24,6 +24,18 @@ class Order(db.Model):
             t = t.to_json
         else:
             t = {}
+        imgs = []
+        images = Image.query.filter_by(image_type=1, fkid=self.gid).all()
+        if images and len(images) > 0:
+            image = images[0].image_path
+            for img in images:
+                imgs.append(img.image_path)
+        elif images and len(images) == 0:
+            image = images[0]
+            imgs.append(image)
+        else:
+            image = '/static/imgs/groups/350x400.png'
+            imgs.append(image)
         return {
             'id': self.id,
             'gid': self.gid,
@@ -36,7 +48,9 @@ class Order(db.Model):
             'actual_price': self.actual_price,
             'actual_transfer_fee': self.actual_transfer_fee,
             'transport':t,
-            'memo':self.memo
+            'memo':self.memo,
+            'image': image,
+            'images': imgs
         }
 
     @property

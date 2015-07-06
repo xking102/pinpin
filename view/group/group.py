@@ -30,27 +30,19 @@ def add_group():
 
 
 # add group check files
-@group.route('/groups/check/<int:gid>', methods=['GET', 'POST'])
+@group.route('/groups/check/<int:gid>', methods=['POST'])
 def add_group_checkfile(gid):
     if session.get('logged_in'):
-        error = None
-        form = newGroupCheckForm()
         uid = session.get('logged_id')
-        if request.method == 'POST' and form.validate_on_submit():
-            pre = 'static/imgs/groupfiles/group-file-' + \
-                str(pinpin.getCurTimestamp()) + \
-                '-'
-
-            buy = form.buy.data
-            transport = form.transport.data
-            ems = form.ems.data
-            files = form.files
-            group = Group.query.get(gid)
-            if group and uid == group.create_userid:
-                for f in files:
-                    print f
-                    image = f[0]
-                    filename = f[1]
+        group = Group.query.get(gid)
+        if group and uid == group.create_userid:
+            images = request.files.getlist("photos")
+            for image in images:
+                filename = secure_filename(image.filename)
+                pre = 'static/imgs/groupfiles/group-file-' + \
+                    str(pinpin.getCurTimestamp()) + \
+                    '-'
+                if filename:
                     image.save(pre + filename)
                     img = Image()
                     img.fkid = gid
@@ -60,10 +52,9 @@ def add_group_checkfile(gid):
                     img.create_userid = uid
                     img.isUsed = True
                     img.save
-                return redirect('/')
-            return render_template('./group/add.html', error=error, form=form)
-        return render_template('./group/add.html', error=error, form=form)
-    return redirect(url_for('/login'))
+                return make_response(jsonify({'id': g.id}), 201)
+        return jsonify({'messages': 'fail', "status": 401})
+    return jsonify({'messages': 'fail', "status": 401})
 
 
 def group_processing(gid):

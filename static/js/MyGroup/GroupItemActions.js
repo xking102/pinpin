@@ -36,7 +36,7 @@ module.exports = React.createClass({
     },
     _handleCheckFile:function(){
         console.log('checkfile');
-        window.open('/groups/check/'+this.props.group.id,'newwindow');
+        this.context.router.transitionTo('Upload', {gid: this.props.group.id});
     },
     _handleOrderPay:function(){
         this.listGroupOrders();
