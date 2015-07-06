@@ -2,7 +2,7 @@ var React = require('react');
 var Router = require('react-router');
 var { Route, DefaultRoute, RouteHandler, Link } = Router;
 var GroupsApp = require('./MyGroup/GroupsApp');
-var GroupDetail = require('./MyGroup/GroupDetailApp');
+var UploadCheckFiles = require('./Mygroup/UploadCheckFiles');
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var mui = require('material-ui');
@@ -40,7 +40,7 @@ var App = React.createClass({
 var routes = (
   <Route handler={App}>
     <DefaultRoute handler={GroupsApp}/>
-    <Route name="detail" path=":gid/detail" handler={GroupDetail} />
+    <Route name="Upload" path=":gid/check" handler={UploadCheckFiles} />
   </Route>
 );
 
