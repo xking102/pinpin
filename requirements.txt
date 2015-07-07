@@ -7,3 +7,4 @@ wtforms==2.0.2
 arrow==0.5.4
 flask-restful
 flask-paginate
+Pillow
