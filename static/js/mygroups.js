@@ -39,7 +39,7 @@ var App = React.createClass({
 
 var routes = (
   <Route handler={App}>
-    <DefaultRoute handler={GroupsApp}/>
+    <DefaultRoute name="main" handler={GroupsApp}/>
     <Route name="Upload" path=":gid/check" handler={UploadCheckFiles} />
   </Route>
 );
