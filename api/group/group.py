@@ -24,7 +24,7 @@ path = os.getcwd()
 class Groups(Resource):
 
     def get(self):
-        time.sleep(3)
+        time.sleep(1)
         next = False
         prev = False
         try:
