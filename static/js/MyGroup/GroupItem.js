@@ -33,7 +33,7 @@ module.exports = React.createClass({
 
                     <div className="row-fluid" style={{marginLeft:'10px',paddingBottom:'10px'}}>
                         <div className="span4">
-                        <img alt="221x125" src="/static/imgs/groups/221x125.gif" />
+                        <img style={{width:'250px',height:'150px'}} src={this.props.group.image+".big.png"} />
                         </div>
 
                         <div className="span4">
