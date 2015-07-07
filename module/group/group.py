@@ -1,4 +1,4 @@
-from app import db
+from myapp import db
 from control.pinpin import getMoment
 from module.image.image import Image
 from module.sku.sku import listSkuProperties

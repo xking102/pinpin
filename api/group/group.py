@@ -3,7 +3,7 @@
 
 from flask import jsonify, session, make_response, request
 from flask.ext.restful import Resource
-from app import db, api
+from myapp import db, api
 from control import pinpin
 from control.pinpin import statusRef, Pager
 from module.group.group import Group as GroupModel
@@ -84,9 +84,9 @@ class Groups(Resource):
             g.update_dt = update_dt
             g.req_qty = 0
             g.confirm_qty = 0
-            g.color = mergeSkuProperties('',color) 
-            g.size = mergeSkuProperties('',size) 
-            g.other = mergeSkuProperties('',other) 
+            g.color = mergeSkuProperties('',color)
+            g.size = mergeSkuProperties('',size)
+            g.other = mergeSkuProperties('',other)
             g.save
             for image in images:
                 filename = secure_filename(image.filename)

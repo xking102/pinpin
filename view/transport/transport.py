@@ -9,7 +9,7 @@ from module.order.order import Order
 from module.group.group import Group
 from module.user.useraddress import UserAddress
 from module.transport.transport import Transport
-from app import db
+from myapp import db
 from view.user.user import get_u_addresses
 
 

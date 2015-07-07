@@ -9,7 +9,7 @@ from wtforms.validators import DataRequired, Email, InputRequired, EqualTo
 from module.user.user import User
 from module.user.userinfo import UserInfo
 from control import pinpin
-from app import db
+from myapp import db
 
 
 class LoginForm(Form):

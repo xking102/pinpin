@@ -3,7 +3,7 @@
 
 from flask import jsonify, session, make_response, request
 from flask.ext.restful import Resource
-from app import db, api
+from myapp import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group as GroupModel

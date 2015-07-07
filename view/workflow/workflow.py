@@ -6,7 +6,7 @@ from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
 from module.workflow.workflow import Workflow as WorkflowModel
-from app import db
+from myapp import db
 
 
 workflow = Blueprint('workflow', __name__)

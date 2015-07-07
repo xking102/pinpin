@@ -7,7 +7,7 @@ from control import pinpin
 from control.pinpin import statusRef
 from module.order.order import Order
 from module.group.group import Group
-from app import db
+from myapp import db
 from view.workflow.workflow import Push_Steps
 from view.group.group import group_processing
 from view.group.group import tellGroupThatOrderisConfirmed

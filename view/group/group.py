@@ -10,7 +10,7 @@ from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
 from form.group.group import newGroupForm, newGroupCheckForm
-from app import db
+from myapp import db
 from view.workflow.workflow import Push_Steps
 from control.pinpin import statusRef
 from werkzeug import secure_filename

@@ -8,7 +8,7 @@ from control.pinpin import statusRef
 from module.user.user import User
 from module.user.useraddress import UserAddress
 from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
-from app import db
+from myapp import db
 
 
 user = Blueprint('user', __name__)

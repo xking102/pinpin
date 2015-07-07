@@ -6,7 +6,7 @@ from flask import Flask, render_template, Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask.ext.restful import Api, Resource
-import app
+import myapp
 
 
 DEBUG = True
@@ -91,4 +91,4 @@ def no_permission(error):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run()
