@@ -13,7 +13,7 @@ module.exports = React.createClass({
     _checkField:function(){
 
         var errorImages = this.state.errorImages;
-    
+
         if(errorImages.length>0){
           this.setState({
             errorSubmit:'请填写完整'
@@ -42,7 +42,7 @@ module.exports = React.createClass({
           formData.append('photos',file);
         }
         formData.append('images',this.state.images);
-    
+
         $.ajax({
           url      : '/groups/check/' + gid,
           type     : 'POST',
@@ -59,9 +59,9 @@ module.exports = React.createClass({
               submitflag:false
             });
             this.refs.snackbar_succ.show();
-            this.context.router.goBack();
+            this.context.router.transitionTo('main');
           }.bind(this),
-    
+
           error: function(xhr, status, err) {
             console.error(status, err.toString);
             this.setState({
@@ -83,36 +83,33 @@ module.exports = React.createClass({
     _handleForm:function(e){
       e.preventDefault();
       var num = this._checkField();
-      this.PostGroup(num);
+      this.PostFiles(num);
     },
 
-  
+
 
     render: function () {
-      var params = this.context.router.getCurrentParams();
-      var gid = params.gid;
       var showSubmitError = this.state.errorSubmit.length==0?'':
       <div style={{marginTop:'50px'}} className="alert alert-error">{this.state.errorSubmit}</div>;
       return (
         <div style={{marginLeft:'20%',marginRight:'20%'}}  >
             <Paper zDepth={3}>
             <div style={{marginLeft:'10px',marginRight:'10px',paddingBottom:'20px'}}>
-            {gid}
-    
-    
+
+
             <form  onSubmit={this._handleForm} ref="addGroupForm" name="addGroup" encType="multipart/form-data" method="POST">
-              
-    
+
+
               <br/>
-    
+
               <Dropzone ref="dropzone" onDrop={this._onDrop} size={150} >
                 <div>你可以拖拽多张图片到此处或者双击选择多张图片</div>
               </Dropzone>
               {this.showFiles()}
-    
+
               <br/>
-    
-    
+
+
               <div className="pull-right">
               <a className="btn btn-link" onClick={this._onHandleCancel}>重新填写</a>
               &nbsp;
@@ -121,22 +118,22 @@ module.exports = React.createClass({
               secondary={true}
               disabled={this.state.submitflag}
               />
-    
-             
-    
+
+
+
                <Snackbar
                   ref="snackbar_succ"
                   message={'发布成功'}
               />
-            
+
               </div>
-    
+
               {showSubmitError}
-    
-    
+
+
             </form>
-    
-    
+
+
             </div>
             </Paper>
             <LoadingMask ref="loading"/>
@@ -158,14 +155,14 @@ module.exports = React.createClass({
         });
       }
     },
-    
+
     showFiles: function () {
       if (this.state.images.length <= 0) {
         return <div style={{marginTop:'10px'}} className="alert alert-error">{this.state.errorImages}</div>;
       }
-    
+
       var images = this.state.images;
-    
+
       return (
         <div>
           <h3>预览</h3>
@@ -187,7 +184,7 @@ module.exports = React.createClass({
     })
   },
 
- 
+
 
 
 })
