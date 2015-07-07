@@ -5,7 +5,7 @@ from flask import Blueprint, request, session, redirect, url_for, \
 from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
-from app import db
+from myapp import db
 
 
 other = Blueprint('other', __name__)

@@ -10,9 +10,10 @@ from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
 from form.group.group import newGroupForm, newGroupCheckForm
-from app import db
+from myapp import db
 from view.workflow.workflow import Push_Steps
 from control.pinpin import statusRef
+from werkzeug import secure_filename
 
 group = Blueprint('group', __name__)
 
@@ -52,7 +53,7 @@ def add_group_checkfile(gid):
                     img.create_userid = uid
                     img.isUsed = True
                     img.save
-                return make_response(jsonify({'id': g.id}), 201)
+                return make_response(jsonify({'id': gid}), 201)
         return jsonify({'messages': 'fail', "status": 401})
     return jsonify({'messages': 'fail', "status": 401})
 
@@ -172,7 +173,7 @@ def isConfirm(gid):
 
 def tellGroupThatOrderisConfirmed(oid):
     """
-    when order is confirmed 
+    when order is confirmed
     then noity group to change the req_qty and confirm_qty
     and judge the group confirm_qty and total_qty if equle then push group status
     """

@@ -14,7 +14,7 @@ from module.image.image import Image
 from view.workflow.workflow import init_group_wf
 from control import pinpin
 from control.pinpin import statusRef
-from app import db
+from myapp import db
 from utils.imageutils import resizeImage
 import os
 

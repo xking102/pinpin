@@ -6,7 +6,8 @@ from flask import Flask, render_template, Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask.ext.restful import Api, Resource
-import app
+from werkzeug.contrib.fixers import ProxyFix
+import myapp
 
 
 DEBUG = True
@@ -19,6 +20,7 @@ app.config.from_object(__name__)
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 db = SQLAlchemy(app)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
 
 

@@ -1,6 +1,6 @@
 var React = require("react");
 var mui = require('material-ui');
-var {RaisedButton, FlatButton, Dialog} = mui;
+var {RaisedButton, FlatButton, Dialog, Snackbar} = mui;
 
 var OrderApp = require('./OrderApp');
 
@@ -72,9 +72,9 @@ module.exports = React.createClass({
                 this.props.changeGroupStatus(this.props.group.id,20);
                 console.log('renew~')
             }else if(status=='failfile'){
-                console.log('failfile');
+                this.refs.sb_checkfile.show();
             }else if(status=='failtrans'){
-                console.log('failtrans');
+                this.refs.sb_trans.show();
             }
           }.bind(this),
           error: function(xhr, status, err) {
@@ -97,50 +97,66 @@ module.exports = React.createClass({
         });
     },
     render:function(){
-        var status = this.props.group.status;
-        var req_qty = this.props.group.req_qty;
-        var confirm_qty = this.props.group.confirm_qty;
+        var group = this.props.group;
+        var status = group.status;
+        var req_qty = group.req_qty;
+        var confirm_qty = group.confirm_qty;
+        var isChecked = group.isCheckUpload;
         var actionBtn;
-        if (status==10&&req_qty==0&&confirm_qty==0){ 
+        if (status==10&&req_qty==0&&confirm_qty==0){
             actionBtn = (
                 <div>
-                    <RaisedButton label="取消" 
+                    <RaisedButton label="取消"
                         secondary={true}
-                        onTouchTap={this._handleCancel} 
+                        onTouchTap={this._handleCancel}
                     />
                 </div>
             );
         }else if(status==10){
             actionBtn = (
                 <div>
-                  
+
+                </div>
+            );
+        }else if(status==15&&isChecked){
+            actionBtn = (
+                <div>
+                    <RaisedButton label="查看团员信息"
+                        secondary={true}
+                        onTouchTap={this._handleOrderTransport}
+                    />
+                    &nbsp;
+                    <RaisedButton label="发货"
+                        secondary={true}
+                        onTouchTap={this._handleDeliver}
+                    />
                 </div>
             );
         }else if(status==15){
             actionBtn = (
                 <div>
-                    <RaisedButton label="查看团员信息" 
+                    <RaisedButton label="查看团员信息"
                         secondary={true}
-                        onTouchTap={this._handleOrderTransport} 
+                        onTouchTap={this._handleOrderTransport}
                     />
                     &nbsp;
-                    <RaisedButton label="发货" 
+                    <RaisedButton label="发货"
                         secondary={true}
-                        onTouchTap={this._handleDeliver} 
+                        onTouchTap={this._handleDeliver}
                     />
                     &nbsp;
-                    <RaisedButton label="上传购买验证图片" 
+                    <RaisedButton label="上传购买验证图片"
                         secondary={true}
-                        onTouchTap={this._handleCheckFile} 
+                        onTouchTap={this._handleCheckFile}
                     />
                 </div>
             );
         }else if(status==20){
             actionBtn = (
                 <div>
-                    <RaisedButton label="查看确认订单详情" 
+                    <RaisedButton label="查看确认订单详情"
                         secondary={true}
-                        onTouchTap={this._handleOrderPay} 
+                        onTouchTap={this._handleOrderPay}
                     />
                 </div>
             );
@@ -148,14 +164,14 @@ module.exports = React.createClass({
         else if(status==30){
             actionBtn = (
                 <div>
-                  
+
                 </div>
             );
         }
         else if(status==0){
             actionBtn = (
                 <div>
-                  
+
                 </div>
             );
         }
@@ -184,7 +200,7 @@ module.exports = React.createClass({
               actions={viewOrderTransport}
               modal={this.state.modal}>
                <OrderApp orders={this.state.orders} viewMode={'Transport'}/>
-               
+
             </Dialog>
             <Dialog
               ref="viewOrderPay"
@@ -192,11 +208,20 @@ module.exports = React.createClass({
               actions={viewOrderPay}
               modal={this.state.modal}>
                <OrderApp orders={this.state.orders} viewMode={'Pay'} />
-               
+
             </Dialog>
+
+            <Snackbar
+                  ref="sb_checkfile"
+                  message={'还没有上传购买验证图片噢'}
+            />
+            <Snackbar
+                  ref="sb_trans"
+                  message={'还没有填写发货运单信息'}
+            />
                 {actionBtn}
             </div>
 
-		)		
+		)
 	}
 })

@@ -1,4 +1,4 @@
-from app import db
+from myapp import db
 from control.pinpin import getMoment
 
 
@@ -31,4 +31,4 @@ class Workflow(db.Model):
         else:
             db.session.commit()
             return 'update'
-            
+

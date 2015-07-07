@@ -13,7 +13,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 from control import pinpin
-from app import db
+from myapp import db
 # from pinpin.user.module import User
 # from pinpin.order.module import Order, Group, Line
 # from pinpin.shopcart.module import Shopcart
