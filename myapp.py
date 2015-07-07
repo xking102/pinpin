@@ -6,6 +6,7 @@ from flask import Flask, render_template, Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask.ext.restful import Api, Resource
+from werkzeug.contrib.fixers import ProxyFix
 import myapp
 
 
@@ -19,6 +20,7 @@ app.config.from_object(__name__)
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 db = SQLAlchemy(app)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
 
 
@@ -91,4 +93,4 @@ def no_permission(error):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
