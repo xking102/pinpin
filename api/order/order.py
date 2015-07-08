@@ -151,7 +151,7 @@ class MyOrders(Resource):
             if page > 1:
                 prev = True
             uid = session.get('logged_id')
-            orders = OrderModel.query.filter_by(create_userid=uid).offset(p.offset).limit(p.limit)
+            orders = OrderModel.query.filter_by(create_userid=uid).order_by(OrderModel.create_dt.desc()).offset(p.offset).limit(p.limit)
             nextp = Pager(per, page+1)
             nextorders = OrderModel.query.filter_by(create_userid=uid).offset(nextp.offset).limit(nextp.limit).count()
             if nextorders:
