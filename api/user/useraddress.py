@@ -85,13 +85,3 @@ class MyAddress(Resource):
                 return make_response(jsonify({'messages': 'ok'}), 201)
             return make_response(jsonify({'messages': 'not access'}), 404)
         return make_response(jsonify({'messages': 'please login'}), 401)
-
-class MyDefaultAddress(Resource):
-
-    def get(self):
-        if session.get('logged_in'):
-            uid = session.get('logged_id')
-            addresses = UserAddressModel.query.filter_by(uid=uid, isDefault=True).all()
-        if addresses:
-            return make_response(jsonify({"address": [a.to_json for a in addresses]}), 200)
-        return make_response(jsonify({'messages': 'not exist'}), 401)

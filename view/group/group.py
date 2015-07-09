@@ -178,7 +178,7 @@ def tellGroupThatOrderisConfirmed(oid):
     and judge the group confirm_qty and total_qty if equle then push group status
     """
     o = Order.query.get(oid)
-    g = Group.query.get(gid)
+    g = Group.query.get(o.gid)
     if o and g:
         g.req_qty -= o.req_qty
         g.confirm_qty += o.req_qty
