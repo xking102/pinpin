@@ -10,6 +10,7 @@ from module.user.user import User
 from module.user.userinfo import UserInfo
 from control import pinpin
 from myapp import db
+from view.user.user import isValidInviteCode,UseInviteCode
 
 
 class LoginForm(Form):
@@ -37,15 +38,19 @@ class RegisterForm(Form):
                              [InputRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password',  [InputRequired()])
     nickname = StringField('nickname', [InputRequired()])
+    invitecode = StringField('nickname', [InputRequired()])
     submit = SubmitField('submit')
 
     def validate_password(self, field):
         email = self.email.data.lower()
         password = self.password.data
         nickname = self.nickname.data
+        code = self.invitecode.data
         user = User.query.filter_by(email=email).first()
         if user:
             raise ValueError('账号已被人注册，请更换')
+        else if isValidInviteCode(code):
+            raise ValueError('邀请码不正确')
         else:
             u = User()
             u.nickname = nickname
@@ -54,6 +59,7 @@ class RegisterForm(Form):
             u.reg_dt = pinpin.getCurTimestamp()
             u.update_dt = pinpin.getCurTimestamp()
             u.save
+            UseInviteCode(code,u.id)
             self.user = u
             info = UserInfo()
             info.uid = u.id
