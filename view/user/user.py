@@ -7,7 +7,6 @@ from control import pinpin
 from control.pinpin import statusRef
 from module.user.user import User
 from module.user.useraddress import UserAddress
-from module.user.InviteCode import InviteCode
 from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
 from myapp import db
 
@@ -102,29 +101,3 @@ def get_u_addresses(uid, isDefault=False):
     if addr:
         return addr
     return None
-
-
-def isValidInviteCode(code):
-    """
-    when a user try to register,
-    we will check the invite code is valid and not use
-    """
-    code = InviteCode.query.filter_by(code=code, isUsed=False).first()
-    if code:
-        return True
-    return False
-
-
-def UseInviteCode(code, uid):
-    """
-    when a user register succ,
-    we will update the invite code status to used and link the uid
-    """
-    code = InviteCode.query.filter_by(code=code, isUsed=False).first()
-    if code:
-        code.isUsed = True
-        code.userid = uid
-        code.update_dt = pinpin.getCurTimestamp()
-        code.save
-        return True
-    return False
