@@ -24,9 +24,10 @@ module.exports = React.createClass({
         }
     },
     handlerReqnum:function(e){
+        var group = this.props.group;
         var newval  = e.target.value;
         if(newval > 0){
-            if(newval<=this.props.group.total_qty){
+            if(newval<=group.total_qty-group.req_qty-group.confirm_qty){
                 this.setState({
                     reqnum : parseInt(newval)
                 })

@@ -8,8 +8,10 @@ from wtforms import StringField, PasswordField, SubmitField, validators
 from wtforms.validators import DataRequired, Email, InputRequired, EqualTo
 from module.user.user import User
 from module.user.userinfo import UserInfo
+from module.user.InviteCode import InviteCode
 from control import pinpin
 from myapp import db
+
 
 
 class LoginForm(Form):
@@ -37,15 +39,46 @@ class RegisterForm(Form):
                              [InputRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password',  [InputRequired()])
     nickname = StringField('nickname', [InputRequired()])
+    invitecode = StringField('nickname', [InputRequired()])
     submit = SubmitField('submit')
+
+
+
+    def isValidInviteCode(code):
+        """
+        when a user try to register,
+        we will check the invite code is valid and not use
+        """
+        code = InviteCode.query.filter_by(code=code, isUsed=False).first()
+        if code:
+            return True
+        return False
+
+
+    def UseInviteCode(code, uid):
+        """
+        when a user register succ,
+        we will update the invite code status to used and link the uid
+        """
+        code = InviteCode.query.filter_by(code=code, isUsed=False).first()
+        if code:
+            code.isUsed = True
+            code.userid = uid
+            code.update_dt = pinpin.getCurTimestamp()
+            code.save
+            return True
+        return False
 
     def validate_password(self, field):
         email = self.email.data.lower()
         password = self.password.data
         nickname = self.nickname.data
+        code = self.invitecode.data
         user = User.query.filter_by(email=email).first()
         if user:
             raise ValueError('账号已被人注册，请更换')
+        elif isValidInviteCode(code):
+            raise ValueError('邀请码不正确')
         else:
             u = User()
             u.nickname = nickname
@@ -54,6 +87,7 @@ class RegisterForm(Form):
             u.reg_dt = pinpin.getCurTimestamp()
             u.update_dt = pinpin.getCurTimestamp()
             u.save
+            UseInviteCode(code, u.id)
             self.user = u
             info = UserInfo()
             info.uid = u.id

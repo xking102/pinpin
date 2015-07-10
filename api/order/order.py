@@ -77,9 +77,7 @@ class Orders(Resource):
                     o.actual_transfer_fee = actual_transfer_fee
                     o.memo = memo
                     o.save
-                    print o.id
                     init_order_wf(o.id)
-                    print o.id
                     g.req_qty += o.req_qty
                     g.save
                     t = TransModel()
@@ -129,16 +127,6 @@ class Order(Resource):
         return jsonify({'messages': 'please login', "status": 401})
 
 
-class MyOrder(Resource):
-
-    def get(self):
-        if session.get('logged_in'):
-            uid = session.get('logged_id')
-            orders = OrderModel.query.filter_by(create_userid=uid).all()
-            if orders:
-                return make_response(jsonify({"orders": [o.to_json for o in orders]}), 200)
-            return make_response('not exist', 404)
-        return make_response('need login', 401)
 
 
 class MyOrders(Resource):
@@ -163,7 +151,7 @@ class MyOrders(Resource):
             if page > 1:
                 prev = True
             uid = session.get('logged_id')
-            orders = OrderModel.query.filter_by(create_userid=uid).offset(p.offset).limit(p.limit)
+            orders = OrderModel.query.filter_by(create_userid=uid).order_by(OrderModel.create_dt.desc()).offset(p.offset).limit(p.limit)
             nextp = Pager(per, page+1)
             nextorders = OrderModel.query.filter_by(create_userid=uid).offset(nextp.offset).limit(nextp.limit).count()
             if nextorders:
