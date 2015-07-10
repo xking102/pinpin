@@ -8,3 +8,4 @@ arrow==0.5.4
 flask-restful
 flask-paginate
 Pillow
+shortuuid
