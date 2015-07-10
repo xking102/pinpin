@@ -57,7 +57,10 @@ module.exports = React.createClass({
 	render:function(){
 		var order = this.props.order;
 		var address = this.state.address;
-		var Myaddress = address.map(function(item){
+        var ConfirmContent = this.props.order.status==10 ? 
+       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a> :
+       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} >已确认订单，点击进入支付页面</a> ;
+        var Myaddress = address.map(function(item){
 			return <AddressItem key={item.id}
 							addr={item} setCurrentAddress={this.setCurrentAddress} />
 		}.bind(this));
@@ -88,8 +91,8 @@ module.exports = React.createClass({
               </div>
 				{Myaddress}
 				</div>
-                <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a>
-
+				{ConfirmContent}
+                
 			</div>
 		)
 	}

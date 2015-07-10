@@ -53,5 +53,10 @@ class Transport(Resource):
             t.tel = tel
             t.reciver = reciver
             t.save
+            o = OrderModel.query.get(oid)
+            if o:
+              o.status = statusRef.ORDER_APPORVED
+              o.save
+              return make_response('not exist', 404)
             return make_response(jsonify({'messages': 'ok'}), 201)
         return jsonify({'messages': 'please login', "status": 401})

@@ -51,7 +51,7 @@ class Orders(Resource):
         if session.get('logged_in'):
             gid = request.json['gid']
             if gid:
-                status = statusRef.ORDER_APPORVED
+                status = statusRef.ORDER_APPLY
                 create_dt = pinpin.getCurTimestamp()
                 create_userid = session.get('logged_id')
                 req_qty = request.json['req_qty']

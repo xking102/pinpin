@@ -79,7 +79,9 @@ module.exports = React.createClass({
     render:function(){
         var status = this.props.order.status;
         var statusName ='未知状态';
-        var displayBtn = ''
+        var displayBtn = '';
+        var transorg ='';
+        var transcode = '';
         var mod = this.props.order.id%3;
         var stylecolor = "greenDark";
         if(mod == 0){
@@ -109,12 +111,13 @@ module.exports = React.createClass({
             break
             case 25:
             statusName = '待发货'
-            displayBtn = <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a>
+            //displayBtn = <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a>
             break
             case 30:
             statusName = '待收货'
-            displayBtn = <div><a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerConfirm}>确认收货</a><br></br>
-            <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a></div>
+            transorg= '快递公司:'+this.props.order.transport.transorg
+            transcode= '运单号:'+this.props.order.transport.transcode
+            displayBtn = <div><a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerConfirm}>确认收货</a><br></br></div>
             break
             case 35:
             statusName = '完成'
@@ -127,17 +130,16 @@ module.exports = React.createClass({
                 <div className="row-fluid">
                     
                     <div className="span2 center"><img src={this.props.order.image+".big.png"} /></div>
-                    <div className="span2 center">{this.props.order.create_userid}</div>
+                    <div className="span2 center">{this.props.order.req_qty}</div>
                     <div className="span2 center">
-                    <p>{this.props.order.total_price}</p>
-                    <p>在线支付</p>
+                    {this.props.order.total_price}
                     </div>
                     <div className="span2 center">{this.props.order.create_dt}</div>
-                    <div className="span2 center">{statusName}</div>
                     <div className="span2 center">
-                        <a className="btn btn-link" href={"order#/"+this.props.order.id}>
-                            查看
-                        </a><br></br>
+                    <p>{statusName}</p> 
+                    <p>{transorg}</p>                  
+                    <p>{transcode}</p></div>
+                    <div className="span2 center">
                         {displayBtn}
                     </div>
                 </div>
