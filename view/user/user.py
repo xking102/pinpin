@@ -73,13 +73,15 @@ def setting():
     return redirect('/login')
 
 # change user password
+
+
 @user.route('/password', methods=['PUT'])
 def change_pw():
     if session.get('logged_in'):
         uid = session.get('logged_id')
         u = User.query.get(uid)
         if u:
-            if  pinpin.getmd5(request.json['old_password']) == u.password:
+            if pinpin.getmd5(request.json['old_password']) == u.password:
                 u.password = pinpin.getmd5(request.json['new_password'])
                 u.save
                 return make_response(jsonify({'messages': '修改成功'}), 201)
@@ -88,9 +90,9 @@ def change_pw():
     return redirect('/login')
 
 
-def get_u_addresses(uid,isDefault=False):
+def get_u_addresses(uid, isDefault=False):
     if isDefault:
-        addr = UserAddress.query.filter_by(uid=uid,isDefault=True).first()
+        addr = UserAddress.query.filter_by(uid=uid, isDefault=True).first()
         if addr:
             return addr
         else:
