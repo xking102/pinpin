@@ -25,6 +25,7 @@ def login():
         session['logged_in'] = True
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
+        session['isAdmin'] = form.user.isAdmin
         flash('You were logged in')
         return redirect(url_for('groupview.list_groups'))
     return render_template('./user/login.html', error=error, form=form)
@@ -42,6 +43,7 @@ def register():
         session['logged_in'] = True
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
+        session['isAdmin'] = form.user.isAdmin
         return redirect(url_for('groupview.list_groups'))
     return render_template('./user/register.html', error=error, form=form)
 
@@ -52,6 +54,7 @@ def logout():
     session.pop('logged_in', None)
     session.pop('logged_name', None)
     session.pop('logged_id', None)
+    session.pop('isAdmin', None)
     flash('You were logged out')
     return redirect(url_for('groupview.list_groups'))
 
