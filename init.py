@@ -27,20 +27,38 @@ from module.user.useraddress import UserAddress
 from module.user.userinfo import UserInfo as UserInfoModel
 from module.workflow.workflow import Workflow
 from module.transport.transport import Transport
+from module.user.InviteCode import InviteCode
 import arrow
 from view.workflow.workflow import init_order_wf
 
 import urllib
 import urllib2
 # db.drop_all()
-# db.create_all()
+#db.create_all()
 
-# g =Group()
-# g.title='123'
-# g.save
-wf = Workflow.query.all()
-print [w.to_json for w in wf]
 
+import shortuuid
+
+
+# for i in range(100):
+# 	code = shortuuid.ShortUUID().random(length=5)
+	
+# 	ic = InviteCode()
+# 	ic.code = code
+# 	ic.isUsed = False
+# 	ic.create_dt = pinpin.getCurTimestamp()
+# 	ic.update_dt = pinpin.getCurTimestamp()
+# 	db.session.add(ic)
+# db.session.commit()
+
+# ics = InviteCode.query.all()
+
+# f=open('code.txt','a')
+# for ic in ics:
+# 	f.write(ic.code)
+# 	f.write('\n')
+
+# f.close()
 
 
 # u = UserAddress.query.all()
