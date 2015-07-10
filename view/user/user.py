@@ -11,14 +11,14 @@ from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
 from myapp import db
 
 
-user = Blueprint('user', __name__)
+userview = Blueprint('userview', __name__)
 
 
 # user logon
-@user.route('/login', methods=['GET', 'POST'])
+@userview.route('/login', methods=['GET', 'POST'])
 def login():
     if session.get('logged_in'):
-        return redirect(url_for('group.list_groups'))
+        return redirect(url_for('groupview.list_groups'))
     form = LoginForm()
     error = None
     if request.method == 'POST' and form.validate_on_submit():
@@ -26,15 +26,15 @@ def login():
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
         flash('You were logged in')
-        return redirect(url_for('group.list_groups'))
+        return redirect(url_for('groupview.list_groups'))
     return render_template('./user/login.html', error=error, form=form)
 
 
 # user register
-@user.route('/register', methods=['GET', 'POST'])
+@userview.route('/register', methods=['GET', 'POST'])
 def register():
     if session.get('logged_in'):
-        return redirect(url_for('group.list_groups'))
+        return redirect(url_for('groupview.list_groups'))
     form = RegisterForm()
     error = None
     if request.method == 'POST' and form.validate_on_submit():
@@ -42,18 +42,18 @@ def register():
         session['logged_in'] = True
         session['logged_name'] = form.user.nickname
         session['logged_id'] = form.user.id
-        return redirect(url_for('group.list_groups'))
+        return redirect(url_for('groupview.list_groups'))
     return render_template('./user/register.html', error=error, form=form)
 
 
 # user logout
-@user.route('/logout')
+@userview.route('/logout')
 def logout():
     session.pop('logged_in', None)
     session.pop('logged_name', None)
     session.pop('logged_id', None)
     flash('You were logged out')
-    return redirect(url_for('group.list_groups'))
+    return redirect(url_for('groupview.list_groups'))
 
 
 def setAddressDefault(uid):
@@ -66,7 +66,7 @@ def setAddressDefault(uid):
 
 
 # user setting
-@user.route('/setting')
+@userview.route('/setting')
 def setting():
     if session.get('logged_in'):
         return render_template("./user/user.html")
@@ -75,7 +75,7 @@ def setting():
 # change user password
 
 
-@user.route('/password', methods=['PUT'])
+@userview.route('/password', methods=['PUT'])
 def change_pw():
     if session.get('logged_in'):
         uid = session.get('logged_id')

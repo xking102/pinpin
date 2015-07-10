@@ -15,23 +15,23 @@ from view.workflow.workflow import Push_Steps
 from control.pinpin import statusRef
 from werkzeug import secure_filename
 
-group = Blueprint('group', __name__)
+groupview = Blueprint('groupview', __name__)
 
 
 # list groups
-@group.route('/')
+@groupview.route('/')
 def list_groups():
     return render_template("./group/index.html")
 
 
 # add group
-@group.route('/groups')
+@groupview.route('/groups')
 def add_group():
     return render_template('./group/add.html')
 
 
 # add group check files
-@group.route('/groups/check/<int:gid>', methods=['POST'])
+@groupview.route('/groups/check/<int:gid>', methods=['POST'])
 def add_group_checkfile(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
@@ -68,13 +68,13 @@ def group_processing(gid):
 
 
 # list user orders
-@group.route('/u/group')
+@groupview.route('/u/group')
 def list_u_groups():
     return render_template("./group/mygroups.html")
 
 
 # list a group confirm orders
-@group.route('/u/group/<int:gid>')
+@groupview.route('/u/group/<int:gid>')
 def list_u_groupsOrder(gid):
     if session.get('logged_in'):
         g = Group.query.get(gid)
@@ -87,7 +87,7 @@ def list_u_groupsOrder(gid):
 
 
 # push a group status from PROCESSING(15) to CONFIRM(20)
-@group.route('/u/group/<int:gid>/delivery', methods=['PUT'])
+@groupview.route('/u/group/<int:gid>/delivery', methods=['PUT'])
 def deliver_u_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')
@@ -139,7 +139,7 @@ def isReady_Order_Transport(oid):
     return True
 
 
-@group.route('/u/group/<int:gid>/cancel', methods=['PUT'])
+@groupview.route('/u/group/<int:gid>/cancel', methods=['PUT'])
 def cancel_group(gid):
     if session.get('logged_in'):
         uid = session.get('logged_id')

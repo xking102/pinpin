@@ -8,14 +8,14 @@ from control.pinpin import statusRef
 from myapp import db
 
 
-other = Blueprint('other', __name__)
+otherview = Blueprint('otherview', __name__)
 
 
-@other.route('/faq')
+@otherview.route('/faq')
 def faq():
     return render_template("./other/faq.html")
 
 
-@other.route('/terms')
+@otherview.route('/terms')
 def terms():
     return render_template("./other/terms.html")
