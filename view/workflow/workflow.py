@@ -9,7 +9,7 @@ from module.workflow.workflow import Workflow as WorkflowModel
 from myapp import db
 
 
-workflow = Blueprint('workflow', __name__)
+workflowview = Blueprint('workflowview', __name__)
 
 group_title = [u'正在组人，看的中么', u'团长在买买买的路上', u'团长发货了', u'大功告成']
 order_title = [u'下单了，赶紧去支付吧', u'还在组队，稍等噢', u'团长在买买买的路上', u'发货了哦', u'大功告成']
