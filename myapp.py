@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
-from flask import Flask, render_template, Blueprint, session
+from flask import Flask, render_template, Blueprint, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.admin import Admin, BaseView, expose
+from flask.ext.admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.contrib.fileadmin import FileAdmin
 from flask_bootstrap import Bootstrap
@@ -20,23 +20,15 @@ SECRET_KEY = 'development key'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
 
 
-# class MyView(BaseView):
-
-#     @expose('/')
-#     def index(self):
-#         print 'ssss', session.get('logged_in')
-#         if session.get('logged_in'):
-#             return self.render('./admin/index1.html')
-#         print 'dddd', session.get('logged_in')
-#         return self.render("./group/index.html")
-
+from admin.MyModelView import MyAdminIndexView
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 db = SQLAlchemy(app)
-admin = Admin(app, name='PinPin Admin', template_mode='bootstrap3')
+admin = Admin(app, name='PinPin Admin',
+              index_view=MyAdminIndexView(), template_mode='bootstrap3')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
 
