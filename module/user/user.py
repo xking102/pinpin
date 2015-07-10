@@ -10,6 +10,7 @@ class User(db.Model):
     password = db.Column(db.String(100), unique=False)
     reg_dt = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)
+    isAdmin = db.Column(db.Boolean, unique=False)
 
     @property
     def to_json(self):
