@@ -11,7 +11,7 @@ class Image(db.Model):
     type 2 User
     type 3 GroupCheckImg
     """
-    image_path = db.Column(db.String, unique=False)
+    image_path = db.Column(db.String(100), unique=False)
     create_dt = db.Column(db.Integer, unique=False)
     create_userid = db.Column(db.Integer, unique=False)
     isUsed = db.Column(db.Boolean, unique=False)
