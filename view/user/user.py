@@ -1,14 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash, current_app, make_response, jsonify
-from sqlalchemy import or_
+    render_template, flash, make_response, jsonify
 from control import pinpin
-from control.pinpin import statusRef
 from module.user.user import User
 from module.user.useraddress import UserAddress
-from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
-from myapp import db
+from form.user.user import LoginForm, RegisterForm
 
 
 userview = Blueprint('userview', __name__)
