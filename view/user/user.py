@@ -65,7 +65,21 @@ def setAddressDefault(uid):
     return None
 
 
+def hasDefaultAddress(uid):
+    """
+    user has a default address
+    return False
+    else return True
+    """
+    address = UserAddress.query.filter_by(
+        uid=uid, isDefault=True).first()
+    if address:
+        return False
+    return True
+
 # user setting
+
+
 @userview.route('/setting')
 def setting():
     if session.get('logged_in'):
