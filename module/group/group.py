@@ -1,4 +1,4 @@
-from myapp import db
+from myapp import db, ml
 from control.pinpin import getMoment
 from module.image.image import Image
 from module.sku.sku import listSkuProperties
@@ -24,34 +24,44 @@ class Group(db.Model):
 
     @property
     def to_json(self):
+        ml.info(self)
         try:
             color = listSkuProperties(self.color)
-        except Exception as e:
-            print e
+            ml.info(self.color)
+        except Exception:
+            ml.exception('color')
             color = None
         try:
             size = listSkuProperties(self.size)
-        except Exception as e:
-            print e
+            ml.info(self.size)
+        except Exception:
+            ml.exception('size')
             size = None
         try:
             other = listSkuProperties(self.other)
-        except Exception as e:
-            print e
+            ml.info(self.other)
+        except Exception:
+            ml.exception('other')
             other = None
         imgs = []
         images = Image.query.filter_by(image_type=1, fkid=self.id).all()
+        ml.info(images)
         if images and len(images) > 0:
             image = images[0].image_path
+            ml.info(image)
             for img in images:
                 imgs.append(img.image_path)
+            ml.info(imgs)
         elif images and len(images) == 0:
             image = images[0]
             imgs.append(image)
+            ml.info(imgs)
         else:
             image = '/static/imgs/groups/350x400.png'
             imgs.append(image)
+            ml.info(imgs)
         file = Image.query.filter_by(image_type=3, fkid=self.id).count()
+        ml.info(file)
         if file:
             file = True
         else:
@@ -80,9 +90,11 @@ class Group(db.Model):
     @property
     def save(self):
         if not self.id:
+            ml.info('save')
             db.session.add(self)
             db.session.commit()
             return 'create'
         else:
+            ml.info('update')
             db.session.commit()
             return 'update'

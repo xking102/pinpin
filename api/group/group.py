@@ -3,7 +3,7 @@
 
 from flask import jsonify, session, make_response, request
 from flask.ext.restful import Resource
-from myapp import db, api
+from myapp import db, api, ml
 from control import pinpin
 from control.pinpin import statusRef, Pager
 from module.group.group import Group as GroupModel
@@ -15,7 +15,6 @@ from module.image.image import Image
 import os
 from utils.imageutils import resizeImage
 from module.sku.sku import mergeSkuProperties
-
 path = os.getcwd()
 
 
@@ -24,19 +23,24 @@ path = os.getcwd()
 class Groups(Resource):
 
     def get(self):
+        ml.info(self)
         time.sleep(1)
         next = False
         prev = False
         try:
             per = request.args.get('per')
+            ml.info('request per %s' %(per))
             page = request.args.get('page')
-        except Exception as e:
+            ml.info('request page %s' %(page))
+        except Exception:
+            ml.exception('exception')
             per = 16
             page = 1
         try:
             per = int(per)
             page = int(page)
-        except Exception as e:
+        except Exception:
+            ml.exception('exception')
             per = 16
             page = 1
         p = Pager(per, page)
@@ -55,10 +59,15 @@ class Groups(Resource):
             'per': per,
             'page': page
         }
+        ml.info(pager)
+        ml.info(groups)
         return make_response(jsonify({"groups": [g.to_json for g in groups], 'pager': pager}), 200)
 
     def post(self):
+        ml.info(self)
         if session.get('logged_in'):
+            ml.info('loged_in')
+            ml.info(request.form)
             title = request.form['title']
             desc = request.form['desc']
             unit_price = request.form['unit_price']
@@ -88,6 +97,8 @@ class Groups(Resource):
             g.size = mergeSkuProperties('',size)
             g.other = mergeSkuProperties('',other)
             g.save
+            ml.info(g)
+            ml.info(images)
             for image in images:
                 filename = secure_filename(image.filename)
                 pre = 'static/imgs/groups/group-img-' + \
@@ -108,8 +119,11 @@ class Groups(Resource):
                     img.create_userid = create_userid
                     img.isUsed = True
                     img.save
+                    ml.info(img)
             init_group_wf(g.id)
+            ml.info(g.id)
             return make_response(jsonify({'id': g.id}), 201)
+        ml.info('not logged_in')
         return jsonify({'messages': 'fail', "status": 401})
 
 
@@ -147,13 +161,13 @@ class MyGroups(Resource):
             try:
                 per = request.args.get('per')
                 page = request.args.get('page')
-            except Exception as e:
+            except Exception:
                 per = 10
                 page = 1
             try:
                 per = int(per)
                 page = int(page)
-            except Exception as e:
+            except Exception:
                 per = 10
                 page = 1
             p = Pager(per, page)
