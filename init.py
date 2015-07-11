@@ -21,6 +21,7 @@ from myapp import db
 # from pinpin.transport.module import Transport
 from sqlalchemy import or_
 from module.group.group import Group
+from module.image.image import Image
 from module.order.order import Order
 from module.user.user import User
 from module.user.useraddress import UserAddress
@@ -37,12 +38,26 @@ import urllib2
 #db.create_all()
 
 
-import shortuuid
+
+
+
+# files = open('/Users/Kevin/Desktop/code.txt')
+# for f in files:
+# 	ic = InviteCode()
+# 	ic.code = f.strip()
+# 	ic.isUsed = False
+# 	ic.create_dt = pinpin.getCurTimestamp()
+# 	ic.update_dt = pinpin.getCurTimestamp()
+# 	db.session.add(ic)
+# db.session.commit()
+# files.close()
+
+
 
 
 # for i in range(100):
 # 	code = shortuuid.ShortUUID().random(length=5)
-	
+
 # 	ic = InviteCode()
 # 	ic.code = code
 # 	ic.isUsed = False
