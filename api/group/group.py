@@ -111,8 +111,8 @@ class Groups(Resource):
                     img.image_type = 1
                     img.image_path = '/' + pre + filename
                     infile = os.path.join(path, pre + filename)
-                    outfile_small = infile + ".small.png"
-                    outfile_big = infile + ".big.png"
+                    outfile_small = infile + ".small.jpg"
+                    outfile_big = infile + ".big.jpg"
                     resizeImage(infile, 350, 400, outfile_small)
                     resizeImage(infile, 700, 500, outfile_big)
                     img.create_dt = pinpin.getCurTimestamp()
