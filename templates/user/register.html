@@ -1,22 +1,7 @@
 {% import "wtf.html" as wtf %}
 {% import "bootstrap/utils.html" as util %}
 
- {% macro render_field_with_errors(field) %}
-       <p> 
-         {{ field(**kwargs)|safe }}
-          {% if field.errors %}
-             <ul>
-                  {% for error in field.errors %}
-                     <li style="color: red;">{{ error }}</li>
-                  {% endfor %}
-            </ul>
-          {% endif %}
-       </p>
-    {% endmacro %}
 
-{% macro render_field(field) %}
-   <p>{{ field(**kwargs)|safe }}</p>
-{% endmacro %}
 <!DOCTYPE html>
 <html lang="zh_cn">
     <head>
@@ -28,44 +13,44 @@
         <meta name="author" content="xingkaixin">
         <meta name="keyword" content="pinpin">
         <!-- end: Meta -->
-        
+
         <!-- start: Mobile Specific -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- end: Mobile Specific -->
-        
+
         <!-- start: CSS -->
         <link id="bootstrap-style" href="/static/css/bootstrap.css" rel="stylesheet">
         <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
         <link id="base-style" href="/static/css/style.css" rel="stylesheet">
         <link id="base-style-responsive" href="/static/css/style-responsive.css" rel="stylesheet">
         <!-- end: CSS -->
-        
+
         <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <link id="ie-style" href="css/ie.css" rel="stylesheet">
         <![endif]-->
-        
+
         <!--[if IE 9]>
         <link id="ie9style" href="css/ie9.css" rel="stylesheet">
         <![endif]-->
-        
+
         <!-- start: Favicon -->
         <link rel="shortcut icon" href="/static/imgs/favicon.ico">
         <!-- end: Favicon -->
-    
+
             <style type="text/css">
             body { background: url(/static/imgs/bg-login.jpg) !important; }
         </style>
-        
-        
-        
+
+
+
 </head>
 
 <body>
         <div class="container-fluid-full">
         <div class="row-fluid">
-                    
+
             <div class="row-fluid">
                 <div class="login-box">
                     <div class="icons">
@@ -73,12 +58,12 @@
                     </div>
 
                     <h2>新会员注册</h2>
-                     
-                  
+
+
                     <form class="form-horizontal" action="/register" method="post">
                         {{ form.csrf_token }}
                         <fieldset>
-                            
+
                              <div class="input-prepend" title="Nickname">
                                 <span class="add-on"><i class="halflings-icon user"></i></span>
                                 {{ form.nickname(class_="input-large span10",placeholder="输入昵称",required=True)}}
@@ -102,88 +87,95 @@
                                 {{ form.confirm(class_="input-large span10",placeholder="再输一遍",required=True)}}
                             </div>
                             <div class="clearfix"></div>
-                            
+
                             <div class="input-prepend" title="InviteCode">
                                 <span class="add-on"><i class="halflings-icon user"></i></span>
                                 {{ form.invitecode(class_="input-large span10",placeholder="输入邀请码",required=True)}}
                             </div>
                             <div class="clearfix"></div>
 
-                            
+
                             <label class="remember" for="remember"><input required type="checkbox" id="remember" />已阅读 <a href="/terms" target="_blank">注册条款</a></label>
 
-                            <div class="button-login">  
+                            <div class="button-login">
                                 <button type="submit" class="btn btn-primary">注册</button>
                             </div>
                             <div class="clearfix"></div>
+                              {% if form.errors %}
+                               {% for fieldname,errors in form.errors.items() %}
+                                {% for error in errors %}
+                                    <p class="error">{{ error }}</p>
+                                {% endfor %}
+                               {% endfor %}
+                              {% endif %}
                     </form>
                     <hr>
-                    
+
                     <p>
                         我已经有账号了 <a href="/login">点击登录</a>
-                    </p>    
+                    </p>
                 </div><!--/span-->
             </div><!--/row-->
-            
+
 
     </div><!--/.fluid-container-->
 
         </div><!--/fluid-row-->
-    
+
       <!-- start: JavaScript-->
                         <script src="/static/js/lib/jquery-1.9.1.min.js"></script>
                         <script src="/static/js/lib/jquery-migrate-1.0.0.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery-ui-1.10.0.custom.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.ui.touch-punch.js"></script>
-                        
+
                         <script src="/static/js/lib/modernizr.js"></script>
-                        
+
                         <script src="/static/js/lib/bootstrap.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.cookie.js"></script>
-                        
+
                         <script src='/static/js/lib/fullcalendar.min.js'></script>
-                        
+
                         <script src='/static/js/lib/jquery.dataTables.min.js'></script>
                         <script src="/static/js/lib/excanvas.js"></script>
                         <script src="/static/js/lib/jquery.flot.js"></script>
                         <script src="/static/js/lib/jquery.flot.pie.js"></script>
                         <script src="/static/js/lib/jquery.flot.stack.js"></script>
                         <script src="/static/js/lib/jquery.flot.resize.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.chosen.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.uniform.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.cleditor.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.noty.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.elfinder.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.raty.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.iphone.toggle.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.uploadify-3.1.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.gritter.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.imagesloaded.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.masonry.min.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.knob.modified.js"></script>
-                        
+
                         <script src="/static/js/lib/jquery.sparkline.min.js"></script>
-                        
+
                         <script src="/static/js/lib/counter.js"></script>
-                        
-                    
+
+
                         <script src="/static/js/lib/custom.js"></script>
                         <!-- end: JavaScript-->
-    
+
 </body>
 </html>
