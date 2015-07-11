@@ -7,7 +7,7 @@ from myapp import db, api
 from control import pinpin
 from control.pinpin import statusRef
 from module.user.useraddress import UserAddress as UserAddressModel
-from view.user.user import setAddressDefault
+from view.user.user import setAddressDefault, hasDefaultAddress
 
 
 class MyAddresses(Resource):
@@ -22,9 +22,7 @@ class MyAddresses(Resource):
     def post(self):
         if session.get('logged_in'):
             uid = session.get('logged_id')
-            isDefault = request.json['isDefault']
-            if isDefault:
-                setAddressDefault(uid)
+            isDefault = hasDefaultAddress(uid)
             address_line1 = request.json['address_line1']
             address_line2 = request.json['address_line2']
             tel = request.json['tel']
