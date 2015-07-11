@@ -45,9 +45,9 @@
                     <div class="nav-no-collapse header-nav">
                         <ul class="nav pull-right">
                             {% if session.logged_in %}
-             
-                               
-                               
+
+
+
                                 <!-- start: User Dropdown -->
                                 <li class="dropdown">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -93,7 +93,7 @@
                             {% else %}
                             {% endif %}
                             {% if session.isAdmin %}
-                                <li><a href="/admin"><i class="icon-tasks"></i><span class="hidden-tablet"> 后台管理</span></a></li>
+                                <li><a href="/admin" target="_blank"><i class="icon-tasks"></i><span class="hidden-tablet"> 后台管理</span></a></li>
                             {% else %}
                             {% endif %}
                         </ul>
