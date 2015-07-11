@@ -106,7 +106,7 @@ module.exports = React.createClass({
   },
   render:function(){
     var group = this.props.group;
-    var clickimage = this.state.clickimage.length?this.state.clickimage:group.image+'.big.png';
+    var clickimage = this.state.clickimage.length?this.state.clickimage:group.image+'.big.jpg';
     return(
       <div>
 <ScrollSpy norepeat animation="slide-bottom" delay={1000}>
@@ -119,7 +119,7 @@ module.exports = React.createClass({
    <img className="grayscale" src={clickimage} />
   </Col>
 
-  
+
   <Col sm={12} md={7} lg={7}>
     <p>到手价：{group.unit_price}</p>
     <p>剩余数：{group.total_qty-group.req_qty-group.confirm_qty}</p>
@@ -140,7 +140,7 @@ module.exports = React.createClass({
     <br/>
     <a href="javascript:void(0)" onClick={this.handlerOrder} className="btn btn-danger">{this.state.btn_buy_name}</a>
     </Col>
-    
+
   </Col>
 
 </Grid>
@@ -166,28 +166,28 @@ module.exports = React.createClass({
     this.setState({
       clickimage:img
     })
-   
+
   },
 
   _handleColorCheck:function(color){
     this.setState({
       clickcolor:color
     })
-   
+
   },
 
   _handleSizeCheck:function(size){
     this.setState({
       clicksize:size
     })
-   
+
   },
 
   _handleOtherCheck:function(other){
     this.setState({
       clickother:other
     })
-   
+
   },
 
 })

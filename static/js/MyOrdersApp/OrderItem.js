@@ -7,7 +7,7 @@ module.exports = React.createClass({
     contextTypes: {
         router: React.PropTypes.func.isRequired
     },
-    
+
     getInitialState:function(){
         return {
             query_flag: false,
@@ -47,7 +47,7 @@ module.exports = React.createClass({
                 );
             }.bind(this)
 
-        });             
+        });
     }
     },
     handlerConfirm: function(){
@@ -73,7 +73,7 @@ module.exports = React.createClass({
                 );
             }.bind(this)
 
-        });             
+        });
     }
     },
     render:function(){
@@ -103,7 +103,7 @@ module.exports = React.createClass({
             break
             case 20:
             statusName = '待付款'
-            displayBtn = 
+            displayBtn =
             <div><a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>支付</a><br></br>
             <a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerCancel}>取消订单</a></div>
             break
@@ -125,8 +125,8 @@ module.exports = React.createClass({
 			<div style={{marginBottom:'15px'}} onMouseEnter={this.MouseIn} onMouseLeave={this.MouseOut}>
                 <div className="row-fluid">{this.props.order.id}</div>
                 <div className="row-fluid">
-                    
-                    <div className="span2 center"><img src={this.props.order.image+".big.png"} /></div>
+
+                    <div className="span2 center"><img src={this.props.order.image+".big.jpg"} /></div>
                     <div className="span2 center">{this.props.order.create_userid}</div>
                     <div className="span2 center">
                     <p>{this.props.order.total_price}</p>
@@ -143,6 +143,6 @@ module.exports = React.createClass({
                 </div>
             </div>
 
-		)		
+		)
 	}
 })

@@ -39,7 +39,7 @@ module.exports = React.createClass({
                     <CardMedia overlay={
                         <CardTitle title={group.title} />
                     }>
-                        <img  src={group.image+'.small.png'}/>
+                        <img  src={group.image+'.small.jpg'}/>
                     </CardMedia>
 
                     <CardText>
