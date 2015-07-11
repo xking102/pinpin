@@ -10,7 +10,11 @@ from flask_admin.contrib.fileadmin import FileAdmin
 from flask_bootstrap import Bootstrap
 from flask.ext.restful import Api, Resource
 from werkzeug.contrib.fixers import ProxyFix
+import logging
+from logging.handlers import RotatingFileHandler
+from logging import Formatter
 import myapp
+import os
 import os.path as op
 
 
@@ -18,6 +22,10 @@ DEBUG = True
 
 SECRET_KEY = 'development key'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
+# SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@127.0.0.1:3306/pinpin' % (
+#     os.getenv('mysql'), os.getenv('mysqlpw'))
+
+LOGFILE = op.join(op.dirname(__file__), 'log/sysout.log')
 
 
 from admin.MyModelView import MyAdminIndexView
@@ -31,6 +39,18 @@ admin = Admin(app, name='PinPin Admin',
               index_view=MyAdminIndexView(), template_mode='bootstrap3')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
+
+
+file_handler = RotatingFileHandler(app.config['LOGFILE'], maxBytes=10 * 1024 * 1024,
+                                   backupCount=10)
+file_handler.setFormatter(Formatter(
+    '[PinPin] %(asctime)s %(levelname)s: %(message)s '
+    '[in %(pathname)s:%(lineno)d]'
+))
+
+ml = logging.getLogger('my_logger')
+ml.addHandler(file_handler)
+ml.setLevel(logging.DEBUG)
 
 
 from admin.MyModelView import MyModelView
