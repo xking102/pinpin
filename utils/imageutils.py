@@ -29,7 +29,8 @@ def resizeImage(image_location, des_w, des_h, save_location):
             y1 = a - b
             y2 = a + b
             box = [0, y1, des_w, y2]
-        img.crop(box).save(save_location)
+        img.crop(box).save(
+            save_location, option={'progression': True, 'quality': 60, 'optimize': True})
         return True
     except Exception, e:
         print e
