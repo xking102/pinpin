@@ -38,7 +38,7 @@ module.exports = React.createClass({
     _MouseIn:function(){
       if(this.props.address.isDefault){
 
-      }else{  
+      }else{
         var self = this
         if(this._timeout){
           clearTimeout(this._timeout);
@@ -47,7 +47,7 @@ module.exports = React.createClass({
           self.setState({
             setflag:true
           });
-        },1000);
+        },300);
       }
     },
     _MouseOut:function(){
@@ -248,7 +248,7 @@ module.exports = React.createClass({
             <p>
                 <span>{this.props.address.address_line1}</span>
             </p>
-        </div>    
+        </div>
    </Paper>
    <Snackbar
           ref="snackbar"
