@@ -24,7 +24,6 @@ class Groups(Resource):
 
     def get(self):
         ml.info(self)
-        time.sleep(1)
         next = False
         prev = False
         try:
