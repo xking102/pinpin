@@ -5,7 +5,7 @@ from control.pinpin import getMoment
 class Transport(db.Model):
     __tablename__ = 't_transport'
     id = db.Column(db.Integer, primary_key=True)
-    oid = db.Column(db.Integer, unique=True)
+    oid = db.Column(db.Integer, unique=False)
     status = db.Column(db.Integer, unique=False)
     create_dt = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)

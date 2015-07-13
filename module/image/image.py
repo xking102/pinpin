@@ -4,7 +4,7 @@ from control.pinpin import getMoment
 class Image(db.Model):
     __tablename__ = 't_image'
     id = db.Column(db.Integer, primary_key=True)
-    fkid = db.Column(db.Integer, unique=True)
+    fkid = db.Column(db.Integer, unique=False)
     image_type = db.Column(db.Integer, unique=False)
     """
     type 1 Group
