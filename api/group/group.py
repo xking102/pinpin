@@ -64,66 +64,71 @@ class Groups(Resource):
 
     def post(self):
         ml.info(self)
-        if session.get('logged_in'):
-            ml.info('loged_in')
-            ml.info(request.form)
-            title = request.form['title']
-            desc = request.form['desc']
-            unit_price = request.form['unit_price']
-            list_price = request.form['list_price']
-            total_qty = request.form['total_qty']
-            color = request.form['color']
-            size = request.form['size']
-            other = request.form['other']
-            images = request.files.getlist("photos")
-            create_dt = pinpin.getCurTimestamp()
-            create_userid = session.get('logged_id')
-            update_dt = pinpin.getCurTimestamp()
-            status = statusRef.GROUP_PUBLISH
-            g = GroupModel()
-            g.title = title
-            g.desc = desc
-            g.unit_price = unit_price
-            g.list_price = list_price
-            g.total_qty = total_qty
-            g.create_dt = create_dt
-            g.create_userid = create_userid
-            g.status = status
-            g.update_dt = update_dt
-            g.req_qty = 0
-            g.confirm_qty = 0
-            g.color = mergeSkuProperties('',color)
-            g.size = mergeSkuProperties('',size)
-            g.other = mergeSkuProperties('',other)
-            g.save
-            ml.info(g)
-            ml.info(images)
-            for image in images:
-                filename = secure_filename(image.filename)
-                pre = 'static/imgs/groups/group-img-' + \
-                    str(pinpin.getCurTimestamp()) + \
-                    '-'
-                if filename:
-                    image.save(pre + filename)
-                    img = Image()
-                    img.fkid = g.id
-                    img.image_type = 1
-                    img.image_path = '/' + pre + filename
-                    infile = os.path.join(path, pre + filename)
-                    outfile_small = infile + ".small.jpg"
-                    outfile_big = infile + ".big.jpg"
-                    resizeImage(infile, 350, 400, outfile_small)
-                    resizeImage(infile, 700, 500, outfile_big)
-                    img.create_dt = pinpin.getCurTimestamp()
-                    img.create_userid = create_userid
-                    img.isUsed = True
-                    img.save
-                    ml.info(img)
-            init_group_wf(g.id)
-            ml.info(g.id)
-            return make_response(jsonify({'id': g.id}), 201)
-        ml.info('not logged_in')
-        return jsonify({'messages': 'fail', "status": 401})
+        try:
+            if session.get('logged_in'):
+                ml.info('loged_in')
+                ml.info(request.form)
+                title = request.form['title']
+                desc = request.form['desc']
+                unit_price = request.form['unit_price']
+                list_price = request.form['list_price']
+                total_qty = request.form['total_qty']
+                color = request.form['color']
+                size = request.form['size']
+                other = request.form['other']
+                images = request.files.getlist("photos")
+                create_dt = pinpin.getCurTimestamp()
+                create_userid = session.get('logged_id')
+                update_dt = pinpin.getCurTimestamp()
+                status = statusRef.GROUP_PUBLISH
+                g = GroupModel()
+                g.title = title
+                g.desc = desc
+                g.unit_price = unit_price
+                g.list_price = list_price
+                g.total_qty = total_qty
+                g.create_dt = create_dt
+                g.create_userid = create_userid
+                g.status = status
+                g.update_dt = update_dt
+                g.req_qty = 0
+                g.confirm_qty = 0
+                g.color = mergeSkuProperties('',color)
+                g.size = mergeSkuProperties('',size)
+                g.other = mergeSkuProperties('',other)
+                g.save
+                ml.info(g)
+                ml.info(images)
+                for image in images:
+                    filename = secure_filename(image.filename)
+                    pre = 'static/imgs/groups/group-img-' + \
+                        str(pinpin.getCurTimestamp()) + \
+                        '-'
+                    if filename:
+                        image.save(pre + filename)
+                        img = Image()
+                        img.fkid = g.id
+                        img.image_type = 1
+                        img.image_path = '/' + pre + filename
+                        infile = os.path.join(path, pre + filename)
+                        outfile_small = infile + ".small.jpg"
+                        outfile_big = infile + ".big.jpg"
+                        resizeImage(infile, 350, 400, outfile_small)
+                        resizeImage(infile, 700, 500, outfile_big)
+                        img.create_dt = pinpin.getCurTimestamp()
+                        img.create_userid = create_userid
+                        img.isUsed = True
+                        img.save
+                        ml.info(img)
+                init_group_wf(g.id)
+                ml.info(g.id)
+                return make_response(jsonify({'id': g.id}), 201)
+            ml.info('not logged_in')
+            return jsonify({'messages': 'fail', "status": 401})
+        except Exception as e:
+            print e
+            return jsonify({'messages': 'server error', "status": 501})
+
 
 
 class Group(Resource):
