@@ -13,25 +13,18 @@ from werkzeug.contrib.fixers import ProxyFix
 import logging
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
+from config import load_config
+from flask.ext.login import LoginManager
 import myapp
-import os
-import os.path as op
 
 
-DEBUG = True
 
-SECRET_KEY = 'development key'
-SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
-# SQLALCHEMY_DATABASE_URI = 'mysql://%s:%s@127.0.0.1:3306/pinpin' % (
-#     os.getenv('mysql'), os.getenv('mysqlpw'))
-
-LOGFILE = op.join(op.dirname(__file__), 'log/sysout.log')
 
 
 from admin.MyModelView import MyAdminIndexView
 
 app = Flask(__name__)
-app.config.from_object(__name__)
+app.config.from_object(load_config())
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 db = SQLAlchemy(app)
@@ -39,6 +32,16 @@ admin = Admin(app, name='PinPin Admin',
               index_view=MyAdminIndexView(), template_mode='bootstrap3')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+
+from module.user.user import User as UserModule
+# Create user loader function
+@login_manager.user_loader
+def load_user(user_id):
+    return UserModule.query.get(user_id)
 
 
 file_handler = RotatingFileHandler(app.config['LOGFILE'], maxBytes=10 * 1024 * 1024,
@@ -54,7 +57,6 @@ ml.setLevel(logging.DEBUG)
 
 
 from admin.MyModelView import MyModelView
-from module.user.user import User as UserModule
 from module.user.useraddress import UserAddress as UserAddressModule
 from module.user.InviteCode import InviteCode as InviteCodeModule
 from module.group.group import Group as GroupModule
@@ -139,4 +141,4 @@ def no_permission(error):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run()
