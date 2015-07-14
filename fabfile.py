@@ -3,6 +3,15 @@
 
 from fabric.api import *
 
+env.user = 'root'
+env.hosts = ['120.26.211.220']
+
+
+def build():
+    path = 'static/js/'
+    with lcd(path):
+        local('webpack -p')
+
 
 def pack():
     tar_files = ['*.py', 'gun.conf', 'supervisord.conf', 'requirements.txt']
@@ -16,7 +25,6 @@ def pack():
     tar_files.append('view/*')
     tar_files.append('static/css/*')
     tar_files.append('static/fonts/*')
-    tar_files.append('static/imgs/*')
     tar_files.append('static/js/build/*')
     tar_files.append('static/js/lib/*')
     local('rm -f www.tar.gz')
@@ -24,9 +32,15 @@ def pack():
           ' '.join(tar_files))
 
 
-
 def dbupdate():
-	print 'fack dbupdate'
+    print 'fake db update'
+
 
 def deploy():
-	print 'fack deploy'
+    tarfile = 'www.tar.gz'
+    remote_tmp_tar = '~/tmp/%s' % tarfile
+    run('rm -f %s' % remote_tmp_tar)
+    put('www.tar.gz', remote_tmp_tar)
+    remote_dist_dir = '/home/www/'
+    run('tar -xzvf %s -C %s' % (remote_tmp_tar, remote_dist_dir))
+    run('supervisorctl restart pinpin')
