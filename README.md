@@ -28,3 +28,16 @@ location @pp {
 
 ## Run Gunicorn
 gunicorn -c gun.conf myapp:app
+
+
+
+## Flask
+### Common
+####set environment
+- FLASK_KEY
+- FLASK_ENV
+
+###PRODUCTION
+####set environment
+- mysql
+- mysqlpw
