@@ -27,11 +27,28 @@ class User(db.Model):
     @property
     def save(self):
         if not self.id:
-            self.nickname = trancChar(self.nickname,30) if self.nickname else self.nickname
-            self.email = trancChar(self.email,30) if self.email else self.email
+            self.nickname = trancChar(
+                self.nickname, 30) if self.nickname else self.nickname
+            self.email = trancChar(
+                self.email, 30) if self.email else self.email
             db.session.add(self)
             db.session.commit()
             return 'create'
         else:
             db.session.commit()
             return 'update'
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    def __unicode__(self):
+        return self.nickname
