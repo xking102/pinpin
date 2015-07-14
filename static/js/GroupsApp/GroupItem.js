@@ -24,7 +24,12 @@ module.exports = React.createClass({
 	render:function(){
 		var group = this.props.group;
 		var detail_link = '#/group/'+group.id;
-
+        var title = group.title;
+        if(title){
+            if(title.length>8){
+                title = title.substring(0,8)+'...';
+            }
+        }
 		return(
             <div>
             <a href={detail_link}>
@@ -37,7 +42,7 @@ module.exports = React.createClass({
 
                 <Card>
                     <CardMedia overlay={
-                        <CardTitle title={group.title} />
+                        <CardTitle title={title} />
                     }>
                         <img  src={group.image+'.small.jpg'}/>
                     </CardMedia>
