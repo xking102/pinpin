@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import jsonify, session, make_response, request
+from flask import jsonify, make_response, request
 from flask.ext.restful import Resource
 from myapp import db, api, ml
 from control import pinpin
@@ -15,6 +15,8 @@ from module.image.image import Image
 import os
 from utils.imageutils import resizeImage
 from module.sku.sku import mergeSkuProperties
+from flask.ext.login import current_user
+
 path = os.getcwd()
 
 
@@ -65,7 +67,7 @@ class Groups(Resource):
     def post(self):
         ml.info(self)
         try:
-            if session.get('logged_in'):
+            if current_user.is_authenticated():
                 ml.info('loged_in')
                 ml.info(request.form)
                 title = request.form['title']
@@ -78,7 +80,7 @@ class Groups(Resource):
                 other = request.form['other']
                 images = request.files.getlist("photos")
                 create_dt = pinpin.getCurTimestamp()
-                create_userid = session.get('logged_id')
+                create_userid = current_user.id
                 update_dt = pinpin.getCurTimestamp()
                 status = statusRef.GROUP_PUBLISH
                 g = GroupModel()
@@ -146,9 +148,9 @@ class Group(Resource):
         return jsonify({'messages': 'not exist', "status": 404})
 
     def delete(self, id):
-        if session.get('logged_in'):
+        if current_user.is_authenticated():
             g = GroupModel.query.get(id)
-            if g and g.create_user == session.get('logged_id'):
+            if g and g.create_user == current_user.id:
                 g.status = statusRef.GROUP_CANCEL
                 g.save
                 return jsonify({'gid': g.id, 'messages': 'ok', "status": 201})
@@ -159,7 +161,7 @@ class Group(Resource):
 class MyGroups(Resource):
 
     def get(self):
-        if session.get('logged_in'):
+        if current_user.is_authenticated():
             next = False
             prev = False
             try:
@@ -177,7 +179,7 @@ class MyGroups(Resource):
             p = Pager(per, page)
             if page > 1:
                 prev = True
-            uid = session.get('logged_id')
+            uid = current_user.id
             groups = GroupModel.query.filter_by(create_userid=uid).order_by(
                 GroupModel.create_dt.desc()).offset(p.offset).limit(p.limit)
             nextp = Pager(per, page + 1)
@@ -198,8 +200,8 @@ class MyGroups(Resource):
 class MyGroup(Resource):
 
     def get(self, id):
-        if session.get('logged_in'):
-            uid = session.get('logged_id')
+        if current_user.is_authenticated():
+            uid = current_user.id
             g = GroupModel.query.get(id)
             if g and uid == g.create_userid:
                 group = GroupModel.query.get(id)

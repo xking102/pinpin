@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, session, redirect, url_for, \
+from flask import Blueprint, request, redirect, url_for, \
     abort, render_template, flash, current_app, make_response
 from sqlalchemy import or_
 from control import pinpin
@@ -10,7 +10,7 @@ from module.group.group import Group
 from myapp import db
 from view.workflow.workflow import Push_Steps
 from view.group.group import group_processing, tellGroupThatOrderisConfirmed
-
+from flask.ext.login import current_user
 
 orderview = Blueprint('orderview', __name__)
 
@@ -24,8 +24,8 @@ def list_u_orders():
 # user payment the order
 @orderview.route('/order_pay/<int:oid>', methods=['PUT'])
 def order_pay(oid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         order = Order.query.get(oid)
         if order and order.create_userid == uid and is_pay(oid):
             g = Group.query.get(order.gid)
@@ -45,8 +45,8 @@ def order_pay(oid):
 
 @orderview.route('/order_cancel/<int:oid>', methods=['PUT'])
 def order_cancel(oid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         order = Order.query.get(oid)
         if order and order.create_userid == uid:
             g = Group.query.get(order.gid)
@@ -63,8 +63,8 @@ def order_cancel(oid):
 
 @orderview.route('/order_confirm/<int:oid>', methods=['PUT'])
 def order_confirm(oid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         order = Order.query.get(oid)
         if order and order.create_userid == uid:
             order.status = statusRef.ORDER_CONFIRM

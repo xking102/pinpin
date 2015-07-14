@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, session, redirect, url_for, \
+from flask import Blueprint, request, redirect, url_for, \
     abort, render_template, flash, current_app, make_response
 from sqlalchemy import or_
 from control import pinpin

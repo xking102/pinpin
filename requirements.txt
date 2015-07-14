@@ -11,3 +11,4 @@ Pillow==2.8.2
 shortuuid==0.4.2
 Flask-Admin==1.1.0
 MySQL-python==1.2.5
+Flask-Login==0.2.11

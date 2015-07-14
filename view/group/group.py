@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, session, redirect, url_for, \
+from flask import Blueprint, request, redirect, url_for, \
     abort, render_template, flash, current_app, make_response, jsonify
 from sqlalchemy import or_
 from control import pinpin
@@ -14,6 +14,7 @@ from myapp import db
 from view.workflow.workflow import Push_Steps
 from control.pinpin import statusRef
 from werkzeug import secure_filename
+from flask.ext.login import current_user
 
 groupview = Blueprint('groupview', __name__)
 
@@ -33,8 +34,8 @@ def add_group():
 # add group check files
 @groupview.route('/groups/check/<int:gid>', methods=['POST'])
 def add_group_checkfile(gid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         group = Group.query.get(gid)
         if group and uid == group.create_userid:
             images = request.files.getlist("photos")
@@ -76,9 +77,9 @@ def list_u_groups():
 # list a group confirm orders
 @groupview.route('/u/group/<int:gid>')
 def list_u_groupsOrder(gid):
-    if session.get('logged_in'):
+    if current_user.is_authenticated():
         g = Group.query.get(gid)
-        if g and g.create_userid == session.get('logged_id'):
+        if g and g.create_userid == current_user.id:
             orders = Order.query.filter_by(
                 status=statusRef.ORDER_PAIED, gid=gid).all()
             return make_response(jsonify({"orders": [order.to_json for order in orders]}), 200)
@@ -89,8 +90,8 @@ def list_u_groupsOrder(gid):
 # push a group status from PROCESSING(15) to CONFIRM(20)
 @groupview.route('/u/group/<int:gid>/delivery', methods=['PUT'])
 def deliver_u_group(gid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         g = Group.query.filter_by(
             status=statusRef.GROUP_PROCESSING, id=gid, create_userid=uid).first()
         if g:
@@ -141,8 +142,8 @@ def isReady_Order_Transport(oid):
 
 @groupview.route('/u/group/<int:gid>/cancel', methods=['PUT'])
 def cancel_group(gid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         g = Group.query.get(gid)
         if g and g.create_userid == uid and g.status == statusRef.GROUP_PUBLISH and g.req_qty == 0 and g.confirm_qty == 0:
             g.status = statusRef.GROUP_CANCEL

@@ -44,14 +44,14 @@
                     <!-- start: Header Menu -->
                     <div class="nav-no-collapse header-nav">
                         <ul class="nav pull-right">
-                            {% if session.logged_in %}
+                            {% if current_user.is_authenticated() %}
 
 
 
                                 <!-- start: User Dropdown -->
                                 <li class="dropdown">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="halflings-icon white user"></i> {{ session.logged_name }}
+                                        <i class="halflings-icon white user"></i> {{ current_user.nickname }}
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
@@ -86,13 +86,13 @@
                     <div class="nav-collapse sidebar-nav">
                         <ul class="nav nav-tabs nav-stacked main-menu">
                             <li><a href="/"><i class="icon-bullhorn"></i><span class="hidden-tablet"> 买买买</span></a></li>
-                            {% if session.logged_in %}
+                            {% if current_user.is_authenticated() %}
                                 <li><a href="/groups"><i class="icon-user"></i><span class="hidden-tablet"> 我来做团长</span></a></li>
                                 <li><a href="/u/group"><i class="icon-bullhorn"></i><span class="hidden-tablet"> 我开的团</span></a></li>
                                 <li><a href="/u/order"><i class="icon-tasks"></i><span class="hidden-tablet"> 我的订单</span></a></li>
                             {% else %}
                             {% endif %}
-                            {% if session.isAdmin %}
+                            {% if current_user.isAdmin %}
                                 <li><a href="/admin" target="_blank"><i class="icon-tasks"></i><span class="hidden-tablet"> 后台管理</span></a></li>
                             {% else %}
                             {% endif %}
