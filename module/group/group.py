@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from myapp import db, ml
 from control.pinpin import getMoment
 from module.image.image import Image
 from module.sku.sku import listSkuProperties
+from utils.UnicodeTranslate import trancChar
 
 
 class Group(db.Model):
@@ -91,6 +94,8 @@ class Group(db.Model):
     def save(self):
         if not self.id:
             ml.info('save')
+            self.title = trancChar(self.title,30) if self.title else self.title
+            self.desc = trancChar(self.desc,5000) if self.desc else self.desc
             db.session.add(self)
             db.session.commit()
             return 'create'

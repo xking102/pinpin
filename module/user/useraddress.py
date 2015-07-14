@@ -1,5 +1,6 @@
 from myapp import db
 from control.pinpin import getMoment
+from utils.UnicodeTranslate import trancChar
 
 
 class UserAddress(db.Model):
@@ -31,6 +32,10 @@ class UserAddress(db.Model):
     @property
     def save(self):
         if not self.id:
+            self.address_line1 = trancChar(self.address_line1,30) if self.address_line1 else self.address_line1
+            self.address_line2 = trancChar(self.address_line2,30) if self.address_line2 else self.address_line2
+            self.tel = trancChar(self.tel,30) if self.tel else self.tel
+            self.reciver = trancChar(self.reciver,30) if self.reciver else self.reciver
             db.session.add(self)
             db.session.commit()
             return 'create'
