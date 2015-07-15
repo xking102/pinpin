@@ -79,19 +79,25 @@ module.exports = React.createClass({
     });
   },
     handlerReciver:function(e){
-       this.setState({
+      if(e.target.value<30){
+        this.setState({
             reciver:e.target.value
        })
+      }  
     },
     handlerTel:function(e){
-       this.setState({
+      if(e.target.value<30){
+        this.setState({
             tel:e.target.value
        })
+      }
     },
     handlerAddress:function(e){
-       this.setState({
+      if(e.target.value<30){
+        this.setState({
             address_line1:e.target.value
        })
+      }   
     },
 	render:function(){
        var customActions = [
