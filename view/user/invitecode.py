@@ -23,7 +23,7 @@ def UseInviteCode(code, uid):
     rs = InviteCode.query.filter_by(code=code, isUsed=False).first()
     if rs:
         rs.isUsed = True
-        rs.userid = uid
+        rs.usedid = uid
         rs.update_dt = pinpin.getCurTimestamp()
         rs.save
         return True
