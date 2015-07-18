@@ -27,10 +27,6 @@ class User(db.Model):
     @property
     def save(self):
         if not self.id:
-            self.nickname = trancChar(
-                self.nickname, 30) if self.nickname else self.nickname
-            self.email = trancChar(
-                self.email, 30) if self.email else self.email
             db.session.add(self)
             db.session.commit()
             return 'create'

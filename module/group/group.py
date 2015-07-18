@@ -94,8 +94,6 @@ class Group(db.Model):
     def save(self):
         if not self.id:
             ml.info('save')
-            self.title = trancChar(self.title,30) if self.title else self.title
-            self.desc = trancChar(self.desc,5000) if self.desc else self.desc
             db.session.add(self)
             db.session.commit()
             return 'create'
