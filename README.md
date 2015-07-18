@@ -36,6 +36,9 @@ gunicorn -c gun.conf myapp:app
 ####set environment
 - FLASK_KEY
 - FLASK_ENV
+- alipay_PID
+- alipay_KEY
+- alipay_acct
 
 ###PRODUCTION
 ####set environment
