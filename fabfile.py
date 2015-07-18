@@ -28,7 +28,7 @@ def pack():
     tar_files.append('static/js/build/*')
     tar_files.append('static/js/lib/*')
     local('rm -f www.tar.gz')
-    local('tar -czvf www.tar.gz --exclude=\'*.tar.gz\' --exclude=\'*.pyc\' --exclude=\'README.MD\' --exclude=\'fabfile.py\' %s' %
+    local('tar -czvf www.tar.gz --exclude=\'*.tar.gz\' --exclude=\'.DS_Store\' --exclude=\'._.DS_Store\' --exclude=\'*.pyc\' --exclude=\'README.MD\' --exclude=\'fabfile.py\' %s' %
           ' '.join(tar_files))
 
 
