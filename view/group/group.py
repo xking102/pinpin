@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, redirect, url_for, \
-    abort, render_template, flash, current_app, make_response, jsonify
+from flask import Blueprint, request, render_template, make_response, jsonify
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group
@@ -82,6 +81,8 @@ def feedback():
     return make_response('need login', 401)
 
 # list user orders
+
+
 @groupview.route('/u/group')
 def list_u_groups():
     return render_template("./group/mygroups.html")
