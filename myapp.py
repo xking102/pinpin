@@ -63,6 +63,7 @@ from module.group.group import Group as GroupModule
 from module.image.image import Image as ImageModule
 from module.order.order import Order as OrderModule
 from module.transport.transport import Transport as TransportModule
+from module.feedback.feedback import Feedback as FeedbackModule
 admin.add_view(
     MyModelView(UserModule, db.session, endpoint='info', category='User'))
 admin.add_view(
@@ -77,7 +78,8 @@ admin.add_view(
     MyModelView(OrderModule, db.session, endpoint='order', category='Order'))
 admin.add_view(
     MyModelView(TransportModule, db.session, endpoint='transport', category='Order'))
-
+admin.add_view(
+    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='Other'))
 
 from view.group.group import groupview
 from view.user.user import userview
