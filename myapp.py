@@ -85,7 +85,7 @@ from view.group.group import groupview
 from view.user.user import userview
 from view.order.order import orderview
 from view.other.other import otherview
-
+from view.alipayapp.alipayapp import alipayview
 from api.group.group import Groups, Group, MyGroups, MyGroup
 from api.order.order import Orders, Order, MyOrders
 from api.user.user import MyUserInfo
@@ -97,6 +97,7 @@ app.register_blueprint(userview)
 app.register_blueprint(groupview)
 app.register_blueprint(orderview)
 app.register_blueprint(otherview)
+app.register_blueprint(alipayview)
 
 
 """
@@ -139,7 +140,7 @@ def page_not_found(error):
 
 @app.errorhandler(401)
 def no_permission(error):
-    return render_template('error.html', error=error)
+    return redirect('/login')
 
 
 if __name__ == "__main__":
