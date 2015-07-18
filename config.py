@@ -23,6 +23,10 @@ class Config(object):
     SECRET_KEY = os.getenv('FLASK_KEY')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///server.db'
     LOGFILE = op.join(op.dirname(__file__), 'log/sysout.log')
+    ALIPAY_PID = os.getenv('alipay_PID')
+    ALIPAY_KEY = os.getenv('alipay_KEY')
+    ALIPAY_ACCT = os.getenv('alipay_acct')
+
 
 
 class Development(Config):
