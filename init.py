@@ -29,6 +29,7 @@ from module.user.userinfo import UserInfo as UserInfoModel
 from module.workflow.workflow import Workflow
 from module.transport.transport import Transport
 from module.user.InviteCode import InviteCode
+from module.feedback.feedback import Feedback
 import arrow
 from view.workflow.workflow import init_order_wf
 
