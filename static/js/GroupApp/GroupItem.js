@@ -1,11 +1,10 @@
 var React = require("react");
-var Steps = require('../Step/index');
 
 var mui = require('material-ui');
 var {Paper} = mui;
 
 var AMUIReact = require('amazeui-react');
-var {Grid, Col, ScrollSpy} = AMUIReact;
+var {Grid, Col} = AMUIReact;
 
 var ImageList = require('./GroupImageList');
 var PropertyList =require('./GroupPropertyList');
@@ -109,7 +108,6 @@ module.exports = React.createClass({
     var clickimage = this.state.clickimage.length?this.state.clickimage:group.image+'.big.jpg';
     return(
       <div>
-<ScrollSpy norepeat animation="slide-bottom" delay={1000}>
 <Paper zDepth={3}>
 <Grid className="doc-g" style={{marginLeft:'20px',paddingTop:'15px'}}>
 {group.title}
@@ -156,7 +154,6 @@ module.exports = React.createClass({
   </Col>
 </Grid>
 </Paper>
-</ScrollSpy>
 </div>
 
     )

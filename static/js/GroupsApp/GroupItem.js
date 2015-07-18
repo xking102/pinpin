@@ -1,11 +1,14 @@
 var React = require("react");
 var AMUIReact = require('amazeui-react');
-var {ScrollSpy,Grid,Col,Panel} = AMUIReact;
+var {ScrollSpy} = AMUIReact;
 
 var mui = require('material-ui');
 var {Card, CardMedia, CardTitle, CardText, Paper} = mui;
 
 module.exports = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
     getInitialState:function(){
         return {
             depth:1
@@ -21,18 +24,20 @@ module.exports = React.createClass({
             depth:1
         });
     },
+    _handleClick:function(){
+        this.context.router.transitionTo('group', {gid: this.props.group.id});
+    },
 	render:function(){
 		var group = this.props.group;
-		var detail_link = '#/group/'+group.id;
         var title = group.title;
         if(title){
-            if(title.length>8){
-                title = title.substring(0,8)+'...';
+            if(title.length>9){
+                title = title.substring(0,9)+'...';
             }
         }
 		return(
             <div>
-            <a href={detail_link}>
+            <a href="javascript:void(0)" onClick={this._handleClick}>
 			<div className="span3"
                 style={{marginBottom:'20px',marginRight:'20px'}}
                 onMouseEnter={this.MouseIn} onMouseLeave={this.MouseOut}>
