@@ -108,9 +108,39 @@
                 </div><!--/fluid-row-->
                 <div>
                     <div class="pagetop">
-                        <a href="#">
+                        <a href="javascript:void(0)">
                         </a>
                     </div>
+ {% if current_user.is_authenticated() %}
+                        <div id="feedback" class="feedback">
+                            <a href="javascript:void(0)">
+                                <p>意</p>
+                                <p>见</p>
+                                <p>反</p>
+                                <p>馈</p>
+                            </a>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">意见反馈</h4>
+                                    </div>
+                                    <div id="feedback_body" class="modal-body">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">不说了</button>
+                                        <button type="button"  id="feedback_save"  data-loading-text="提交中..."  class="btn btn-primary">就说这么多</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                 </div>
                 <div class="clearfix"></div>
                 <footer>

@@ -5901,3 +5901,36 @@ label, input, button, select, textarea {
 }
 
 
+/* feedback
+=================================================================== */
+
+.feedback {
+  position: fixed;
+  top: 50%;
+  z-index: 10000;
+  width: 30px;
+  margin: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  line-height: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  font-family: arial, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', '宋体', Tahoma, Arial, Helvetica, STHeiti;
+  font-style: normal;
+  font-variant: normal;
+  right: 0;
+  border-radius: 4px 0 0 4px;
+  display: block;
+  background-color: black;
+}
+
+.feedback a {
+	color:white;
+	text-decoration:none;
+}
+
+.feedback_textarea {
+	width:100%;
+	border-style: none;
+}

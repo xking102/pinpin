@@ -1,7 +1,7 @@
 /* -------------------- Check Browser --------------------- */
 
 function browser() {
-	
+
 	var isOpera = !!(window.opera && window.opera.version);  // Opera 8.0+
 	var isFirefox = testCSS('MozBoxSizing');                 // FF 0.8+
 	var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
@@ -12,21 +12,21 @@ function browser() {
 	function testCSS(prop) {
 	    return prop in document.documentElement.style;
 	}
-	
+
 	if (isOpera) {
-		
+
 		return false;
-		
+
 	}else if (isSafari || isChrome) {
-		
+
 		return true;
-		
+
 	} else {
-		
+
 		return false;
-		
+
 	}
-	
+
 }
 
 
@@ -34,90 +34,90 @@ $(document).ready(function(){
 
 
 	$("#username").focus(function() {
-		
+
 		$(this).parent(".input-prepend").addClass("input-prepend-focus");
-	
+
 	});
-	
+
 	$("#username").focusout(function() {
-		
+
 		$(this).parent(".input-prepend").removeClass("input-prepend-focus");
-	
+
 	});
 
 	$("#email").focus(function() {
-		
+
 		$(this).parent(".input-prepend").addClass("input-prepend-focus");
-	
+
 	});
-	
+
 	$("#email").focusout(function() {
-		
+
 		$(this).parent(".input-prepend").removeClass("input-prepend-focus");
-	
+
 	});
-	
+
 	$("#password").focus(function() {
-		
+
 		$(this).parent(".input-prepend").addClass("input-prepend-focus");
-	
+
 	});
-	
+
 	$("#password").focusout(function() {
-		
+
 		$(this).parent(".input-prepend").removeClass("input-prepend-focus");
-	
+
 	});
-	
-				
+
+
 	/* ---------- Add class .active to current link  ---------- */
 	$('ul.main-menu li a').each(function(){
-		
+
 			if($($(this))[0].href==String(window.location)) {
-				
+
 				$(this).parent().addClass('active');
-				
+
 			}
-	
+
 	});
-	
+
 	$('ul.main-menu li ul li a').each(function(){
-		
+
 			if($($(this))[0].href==String(window.location)) {
-				
+
 				$(this).parent().addClass('active');
 				$(this).parent().parent().show();
-				
+
 			}
-	
+
 	});
-	
+
 	/* ---------- Submenu  ---------- */
-	
+
 	$('.dropmenu').click(function(e){
 
 		e.preventDefault();
 
 		$(this).parent().find('ul').slideToggle();
-	
+
 	});
-			
+
 	/* ---------- Acivate Functions ---------- */
 	growlLikeNotifications();
 	widthFunctions();
-	
-	if(jQuery.browser.version.substring(0, 2) == "8.") {
-		 
-		//disable jQuery Knob
-		
-	} else {
-		
-		
-		
-	}
-	
 
-	
+	if(jQuery.browser.version.substring(0, 2) == "8.") {
+
+		//disable jQuery Knob
+
+	} else {
+
+
+
+	}
+
+
+
 });
 
 
@@ -125,11 +125,11 @@ $(document).ready(function(){
 
 
 
-      
+
 
 
 function growlLikeNotifications() {
-	
+
 	$('#add-sticky').click(function(){
 
 		var unique_id = $.gritter.add({
@@ -324,193 +324,193 @@ function growlLikeNotifications() {
 $(window).bind("resize", widthFunctions);
 
 function widthFunctions(e) {
-	
+
     var winHeight = $(window).height();
     var winWidth = $(window).width();
 
 	var contentHeight = $("#content").height();
 
 	if (winHeight) {
-		
+
 		$("#content").css("min-height",winHeight);
-		
+
 	}
-	
+
 	if (contentHeight) {
-		
+
 		$("#sidebar-left2").css("height",contentHeight);
-		
+
 	}
-    
+
 	if (winWidth < 980 && winWidth > 767) {
-		
+
 		if($("#sidebar-left").hasClass("span2")) {
-			
+
 			$("#sidebar-left").removeClass("span2");
 			$("#sidebar-left").addClass("span1");
-			
+
 		}
-		
+
 		if($("#content").hasClass("span10")) {
-			
+
 			$("#content").removeClass("span10");
 			$("#content").addClass("span11");
-			
+
 		}
-		
-		
+
+
 		$("a").each(function(){
-			
+
 			if($(this).hasClass("quick-button-small span1")) {
 
 				$(this).removeClass("quick-button-small span1");
 				$(this).addClass("quick-button span2 changed");
-			
+
 			}
-			
+
 		});
-		
+
 		$(".circleStatsItem, .circleStatsItemBox").each(function() {
-			
+
 			var getOnTablet = $(this).parent().attr('onTablet');
 			var getOnDesktop = $(this).parent().attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).parent().removeClass(getOnDesktop);
 				$(this).parent().addClass(getOnTablet);
-			
+
 			}
-			  			
+
 		});
-		
+
 		$(".box").each(function(){
-			
+
 			var getOnTablet = $(this).attr('onTablet');
 			var getOnDesktop = $(this).attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).removeClass(getOnDesktop);
 				$(this).addClass(getOnTablet);
-			
+
 			}
-			  			
+
 		});
-		
+
 		$(".widget").each(function(){
-			
+
 			var getOnTablet = $(this).attr('onTablet');
 			var getOnDesktop = $(this).attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).removeClass(getOnDesktop);
 				$(this).addClass(getOnTablet);
-			
+
 			}
-			  			
+
 		});
-		
+
 		$(".statbox").each(function(){
-			
+
 			var getOnTablet = $(this).attr('onTablet');
 			var getOnDesktop = $(this).attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).removeClass(getOnDesktop);
 				$(this).addClass(getOnTablet);
-			
+
 			}
-			  			
+
 		});
-							
+
 	} else {
-		
+
 		if($("#sidebar-left").hasClass("span1")) {
-			
+
 			$("#sidebar-left").removeClass("span1");
 			$("#sidebar-left").addClass("span2");
-			
+
 		}
-		
+
 		if($("#content").hasClass("span11")) {
-			
+
 			$("#content").removeClass("span11");
 			$("#content").addClass("span11");
-			
+
 		}
-		
+
 		$("a").each(function(){
-			
+
 			if($(this).hasClass("quick-button span2 changed")) {
 
 				$(this).removeClass("quick-button span2 changed");
 				$(this).addClass("quick-button-small span1");
-			
+
 			}
-			
+
 		});
-		
+
 		$(".circleStatsItem, .circleStatsItemBox").each(function() {
-			
+
 			var getOnTablet = $(this).parent().attr('onTablet');
 			var getOnDesktop = $(this).parent().attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).parent().removeClass(getOnTablet);
 				$(this).parent().addClass(getOnDesktop);
-			
+
 			}
-			  			
+
 		});
-		
+
 		$(".box").each(function(){
-			
+
 			var getOnTablet = $(this).attr('onTablet');
 			var getOnDesktop = $(this).attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).removeClass(getOnTablet);
 				$(this).addClass(getOnDesktop);
-			
+
 			}
-			  			
+
 		});
-		
+
 		$(".widget").each(function(){
-			
+
 			var getOnTablet = $(this).attr('onTablet');
 			var getOnDesktop = $(this).attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).removeClass(getOnTablet);
 				$(this).addClass(getOnDesktop);
-			
+
 			}
-			  			
+
 		});
-		
+
 		$(".statbox").each(function(){
-			
+
 			var getOnTablet = $(this).attr('onTablet');
 			var getOnDesktop = $(this).attr('onDesktop');
-			
+
 			if (getOnTablet) {
-			
+
 				$(this).removeClass(getOnTablet);
 				$(this).addClass(getOnDesktop);
-			
+
 			}
-			  			
+
 		});
-		
+
 	}
-	
+
 
 
 }
@@ -522,7 +522,7 @@ jQuery(function($) {
   var isDisplayed = false;
   var pagetop = $('.pagetop');
 
-  $(window).scroll(function () {    
+  $(window).scroll(function () {
     if ( $(window).scrollTop() / $(window).height() > 0.80) {
       //スクロールの位置がwindow上部80%の範囲を超えた場合に表示
       if (isDisplayed === false) {
@@ -538,12 +538,12 @@ jQuery(function($) {
       hidePageTop();
     }
   });
-  
+
   //windowサイズが変わった場合も非表示
   $(window).resize(function () {
     hidePageTop();
   });
-  
+
   function hidePageTop () {
     if (isDisplayed) {
       isDisplayed = false;
@@ -554,15 +554,78 @@ jQuery(function($) {
       });
     }
   }
-  
+
   pagetop.click(function () {
     // Scroll 'em to top!
-    $('body, html').animate({ 
+    $('body, html').animate({
       scrollTop: 0
     }, {
       duration: 500
     });
     return false;
   });
-  
+
+});
+
+//feedback
+
+jQuery(function($) {
+  var feedback = $('#feedback');
+  var feedback_save = $('#feedback_save');
+
+
+
+
+  feedback.click(function () {
+   	$('#myModal').modal('show');
+   	//$('#feedback_body').append("<textarea class="feedback_textarea" rows="20" cols="10" id="feedback_textarea"></textarea>");
+  });
+
+  $('#myModal').on('show.bs.modal', function (e) {
+  	$('#feedback_body').append("<textarea class='feedback_textarea' rows='20' cols='10' id='feedback_textarea'></textarea>");
+  })
+
+  $('#myModal').on('hide.bs.modal', function (e) {
+  	$('#feedback_body').empty();
+  })
+
+
+  feedback_save.click(function () {
+   	var fb = $('#feedback_textarea');
+   	var url = window.location.href;
+   	var $btn = $(this).button('loading')
+   	if(fb.val().length>0&&fb.val().length<=2000){
+   		$.ajax({
+    	  url      : '/feedback',
+    	  dataType : 'json',
+    	  type     : 'post',
+    	  contentType: "application/json",
+    	  data:JSON.stringify({
+    	            'feedback':fb.val(),
+    	            'url':url
+    	          }),
+    	  success: function(resp) {
+    	  	$btn.button('reset')
+    	    alert('您的意见已经收到，谢谢反馈！');
+    	    fb.val('');
+    	    $('#myModal').modal('hide');
+    	  }.bind(this),
+    	  error: function(xhr, status, err) {
+    	  	$btn.button('reset')
+    	    console.error(status, err.toString);
+    	    alert('发生了奇怪的问题，请再试一次');
+    	  }.bind(this)
+    	});
+   	}else if(fb.val().length>2000){
+   		$btn.button('reset');
+   		alert('抱歉让您写这么多，不过我们其实只看你前面2000字哦')
+
+   	}else{
+   		$btn.button('reset');
+   		alert('抱歉您什么都没写啊！')
+   	}
+  });
+
+
+
 });

@@ -2,17 +2,15 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, redirect, url_for, \
     abort, render_template, flash, current_app, make_response, jsonify
-from sqlalchemy import or_
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group
 from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
-from form.group.group import newGroupForm, newGroupCheckForm
+from module.feedback.feedback import Feedback
 from myapp import db
 from view.workflow.workflow import Push_Steps
-from control.pinpin import statusRef
 from werkzeug import secure_filename
 from flask.ext.login import current_user
 
@@ -67,6 +65,21 @@ def group_processing(gid):
             g.save
             Push_Steps(1, gid)
 
+
+@groupview.route('/feedback', methods=['POST'])
+def feedback():
+    if current_user.is_authenticated():
+        uid = current_user.id
+        fb = request.json['feedback']
+        url = request.json['url']
+        f = Feedback()
+        f.create_userid = uid
+        f.create_dt = pinpin.getCurTimestamp()
+        f.desc = fb
+        f.url = url
+        f.save
+        return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+    return make_response('need login', 401)
 
 # list user orders
 @groupview.route('/u/group')
