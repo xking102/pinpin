@@ -1,8 +1,8 @@
 var React = require('react');
 var PayItems = require('./PayItems');
 
-
 module.exports = React.createClass({
+
 	getInitialState:function(){
 		return {
 			order: []

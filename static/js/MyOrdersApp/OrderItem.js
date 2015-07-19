@@ -101,7 +101,10 @@ module.exports = React.createClass({
             statusName = '订单取消'
             break
             case 10:
-            statusName = '订单申请中'
+            statusName = '待确认'
+            displayBtn =
+            <div><a className="btn btn-link" href={"order#/"+this.props.order.id+"/pay"}>确认订单信息</a><br></br>
+            <a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerCancel}>取消订单</a></div>
             break
             case 20:
             statusName = '待付款'
