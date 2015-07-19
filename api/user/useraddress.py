@@ -5,10 +5,9 @@ from flask import jsonify, make_response, request
 from flask.ext.restful import Resource
 from myapp import db, api
 from control import pinpin
-from control.pinpin import statusRef
 from module.user.useraddress import UserAddress as UserAddressModel
 from view.user.user import setAddressDefault, hasDefaultAddress
-
+from flask.ext.login import current_user
 
 class MyAddresses(Resource):
 

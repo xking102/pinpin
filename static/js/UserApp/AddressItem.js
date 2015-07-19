@@ -152,19 +152,25 @@ module.exports = React.createClass({
         this.refs.customDialog.dismiss();
     },
     _handlerReciver:function(e){
-       this.setState({
+       if(e.target.value.length<30){
+        this.setState({
             reciver:e.target.value
        })
+      }
     },
     _handlerTel:function(e){
-       this.setState({
+       if(e.target.value.length<30){
+        this.setState({
             tel:e.target.value
        })
+      }
     },
     _handlerAddress:function(e){
-       this.setState({
+       if(e.target.value.length<30){
+        this.setState({
             address_line1:e.target.value
        })
+      }
     },
 	render:function(){
         var customActions = [
