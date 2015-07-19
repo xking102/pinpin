@@ -41,7 +41,8 @@ class Order(db.Model):
             imgs.append(image)
         return {
             'id': self.id,
-            'order_code':self.order_code,
+            'trade_no':self.trade_no,
+            'out_trade_no':self.out_trade_no,
             'gid': self.gid,
             'status': self.status,
             'create_dt': getMoment(self.create_dt),
