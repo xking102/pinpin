@@ -4,10 +4,12 @@
 import hashlib
 import time
 import urlparse
-
+import shortuuid
 import arrow
 
-salt = 'pinpin.com'
+SALT = 'pinpin.com'
+PREFIX = 'PP'
+DASH_CHAR = '-'
 
 
 class statusRef():
@@ -38,7 +40,7 @@ class Pager():
 
 
 def getmd5(str):
-    md5 = hashlib.md5(str + salt).hexdigest()
+    md5 = hashlib.md5(str + SALT).hexdigest()
     return md5
 
 
@@ -59,6 +61,13 @@ def getMoment(timestamp):
 def gethumanzie(date):
     u = arrow.get(date, 'YYYY-MM-DD HHmmss').replace(hours=-8)
     return u.humanize(locale='zh')
+
+
+def generateTradeNo():
+    utc = arrow.utcnow().format('YYYYMMDD')
+    code = shortuuid.ShortUUID().random(length=8)
+    trade_no = PREFIX + DASH_CHAR + utc + DASH_CHAR + code
+    return trade_no
 
 
 def CurrentActive(**current):

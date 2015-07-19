@@ -2,6 +2,7 @@ from myapp import db
 from control.pinpin import getMoment
 from module.transport.transport import Transport
 from module.image.image import Image
+from control.pinpin import generateTradeNo
 
 class Order(db.Model):
     __tablename__ = 't_order'
@@ -16,6 +17,8 @@ class Order(db.Model):
     actual_price = db.Column(db.Float, unique=False)
     actual_transfer_fee = db.Column(db.Float, unique=False)
     memo = db.Column(db.String(100), unique=False)
+    trade_no = db.Column(db.String(30), unique=False)
+    out_trade_no = db.Column(db.String(30), unique=False)
 
     @property
     def to_json(self):
@@ -38,6 +41,7 @@ class Order(db.Model):
             imgs.append(image)
         return {
             'id': self.id,
+            'order_code':self.order_code,
             'gid': self.gid,
             'status': self.status,
             'create_dt': getMoment(self.create_dt),
@@ -56,6 +60,7 @@ class Order(db.Model):
     @property
     def save(self):
         if not self.id:
+            self.trade_no = generateTradeNo()
             db.session.add(self)
             db.session.commit()
             return 'create'

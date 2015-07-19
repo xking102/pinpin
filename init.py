@@ -32,7 +32,7 @@ from module.user.InviteCode import InviteCode
 from module.feedback.feedback import Feedback
 import arrow
 from view.workflow.workflow import init_order_wf
-
+from control.pinpin import generateTradeNo
 import urllib
 import urllib2
 # db.drop_all()
@@ -54,7 +54,10 @@ import urllib2
 # files.close()
 
 
-
+# rs = Order.query.all()
+# for r in  rs:
+# 	r.trade_no = generateTradeNo()
+# 	r.save
 
 # for i in range(100):
 # 	code = shortuuid.ShortUUID().random(length=5)
