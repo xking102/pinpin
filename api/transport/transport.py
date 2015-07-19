@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import jsonify, session, make_response, request
+from flask import jsonify, make_response, request
 from flask.ext.restful import Resource
 from myapp import db, api
 from control import pinpin
@@ -10,12 +10,13 @@ from module.group.group import Group as GroupModel
 from module.order.order import Order as OrderModel
 from module.transport.transport import Transport as TransportModel
 from module.user.useraddress import UserAddress as AddressModel
+from flask.ext.login import current_user
 
 
 class MyTransports(Resource):
 
     def post(self):
-        if session.get('logged_in'):
+        if current_user.is_authenticated():
             aid = request.json['aid']
             oid = request.json['oid']
             a = AddressModel.query.get(aid)
@@ -48,9 +49,9 @@ class MyTransports(Resource):
 class MyTransport(Resource):
 
     def put(self, id):
-        if session.get('logged_in'):
+        if current_user.is_authenticated():
             o = OrderModel.query.get(id)
-            uid = session.get('logged_id')
+            uid = current_user.id
             if o and o.create_userid == uid:
                 t = TransportModel.query.filter_by(oid=o.id).first()
                 t.transcode = request.json['transcode']

@@ -141,11 +141,24 @@ module.exports = React.createClass({
       );
     },
 
+    _checkimage:function(img){
+      if(img.size>1024*1024&&img.type in ('image/jpeg','image/gif','image/png')){
+        return false;
+      }{
+        return true;
+      }
+    },
 
     _onDrop:function(imgs){
       if(imgs.length<6){
+        var imgslist=[];
+        for (var i=0;i<imgs.length;i++){
+          if(this._checkimage(imgs[i])){
+            imgslist.push(imgs[i]);
+          }
+        }
         this.setState({
-          images:imgs,
+          images:imgslist,
           errorImages:''
         });
       }else{

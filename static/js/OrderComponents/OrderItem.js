@@ -11,7 +11,7 @@ module.exports = React.createClass({
 						<i className="halflings-icon user"></i>
 						<span className="break"></span>
 						订单编号: {this.props.order.id}
-						</h2>	
+						</h2>
 				</div>
 
 				<div className="box-content">
@@ -27,14 +27,14 @@ module.exports = React.createClass({
 								</div>
 
                 <div className="row-fluid">
-                    
-                    <div className="span2 center"><img alt="香水" src={this.props.order.image+".big.png"} /></div>
+
+                    <div className="span2 center"><img alt="香水" src={this.props.order.image+".big.jpg"} /></div>
                     <div className="span2 center">{this.props.order.create_userid}</div>
                     <div className="span1 center">{this.props.order.unit_price}</div>
                     <div className="span1 center">{this.props.order.req_qty}</div>
                     <div className="span2 center">{this.props.order.total_price}</div>
-                    <div className="span2 center">{this.props.order.actual_price}</div> 
-                    <div className="span2 center">{this.props.order.transfer_fee}</div>             
+                    <div className="span2 center">{this.props.order.actual_price}</div>
+                    <div className="span2 center">{this.props.order.transfer_fee}</div>
                 </div>
 
 

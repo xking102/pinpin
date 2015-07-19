@@ -8,7 +8,7 @@ class Workflow(db.Model):
     w_type = db.Column(db.Integer, unique=False)
     typeid = db.Column(db.Integer, unique=False)
     sort_id = db.Column(db.Integer, unique=False)
-    title =  db.Column(db.String, unique=False)
+    title =  db.Column(db.String(100), unique=False)
     isActive = db.Column(db.Boolean, unique=False)
     isDone = db.Column(db.Boolean, unique=False)
     create_dt = db.Column(db.Integer, unique=False)

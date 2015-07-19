@@ -1,5 +1,6 @@
 from myapp import db
 from control.pinpin import getMoment
+from utils.UnicodeTranslate import trancChar
 
 
 class UserAddress(db.Model):

@@ -56,3 +56,4 @@ docs/_build/
 target/
 static/js/node_modules/
 static/js/build/
+www.tar.gz

@@ -27,8 +27,9 @@ var App = React.createClass({
     var errorImages = this.state.errorImages;
     var errorPrice = this.state.errorPrice;
     var errorQty = this.state.errorQty;
-
-    if(title.length==0||desc.length==0||errorImages.length>0||errorPrice.length>0||errorQty.length>0){
+    var errorTitle = this.state.errorTitle;
+    var errorDesc = this.state.errorDesc;
+    if(errorTitle.length>0||errorDesc.length>0||errorImages.length>0||errorPrice.length>0||errorQty.length>0){
       this.setState({
         errorSubmit:'请填写完整'
       });
@@ -108,9 +109,13 @@ var App = React.createClass({
       size:[],
       other:[],
       flag:true,
+      errorTitle:'',
+      errorDesc:'',
       errorImages:'别忘了上传图片',
+      errorPrice:'',
+      errorQty:'',
       errorSubmit:'',
-      submitflag:false,
+      submitflag:false
     }
   },
   _handleForm:function(e){
@@ -170,6 +175,8 @@ var App = React.createClass({
               hintText="商品名称"
               type='text'
               multiLine={true}
+              onChange={this._handlerTitleChange}
+              errorText={this.state.errorTitle}
               floatingLabelText="输入商品名称"
             />
 
@@ -182,6 +189,8 @@ var App = React.createClass({
               type='text'
               row={3}
               multiLine={true}
+              onChange={this._handlerDescChange}
+              errorText={this.state.errorDesc}
               floatingLabelText="输入商品详情介绍"
             />
 
@@ -269,11 +278,24 @@ var App = React.createClass({
     );
   },
 
+  _checkimage:function(img){
+    if(img.size>1024*1024&&img.type in ('image/jpeg','image/gif','image/png')){
+      return false;
+    }{
+      return true;
+    }
+  },
 
   _onDrop:function(imgs){
     if(imgs.length<6){
+      var imgslist=[];
+      for (var i=0;i<imgs.length;i++){
+        if(this._checkimage(imgs[i])){
+          imgslist.push(imgs[i]);
+        }
+      }
       this.setState({
-        images:imgs,
+        images:imgslist,
         errorImages:''
       });
     }else{
@@ -339,6 +361,32 @@ var App = React.createClass({
     }else{
       this.setState({
         errorQty:'请输入大于0的整数'
+      })
+    }
+  },
+
+  _handlerTitleChange:function(){
+    var title = this.refs.title.getValue();
+    if(title.length>0&&title.length<=30){
+      this.setState({
+        errorTitle:''
+      });
+    }else{
+      this.setState({
+        errorTitle:'标题最多30字'
+      })
+    }
+  },
+
+  _handlerDescChange:function(){
+    var desc = this.refs.desc.getValue();
+    if(desc.length>0&&desc.length<=5000){
+      this.setState({
+        errorDesc:''
+      });
+    }else{
+      this.setState({
+        errorDesc:'标题最多30字'
       })
     }
   },

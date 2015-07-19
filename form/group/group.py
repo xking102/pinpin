@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import session
+from flask.ext.login import current_user
 from flask_wtf import Form
 from flask_wtf.html5 import EmailField
 from wtforms import StringField, PasswordField, SubmitField, validators, \
@@ -46,7 +46,7 @@ class newGroupForm(Form):
         list_price = self.list_price.data
         total_qty = self.total_qty.data
         image = self.image.data
-        uid = session.get('logged_id')
+        uid = current_user.id
         group = Group()
         group.title = title
         group.desc = desc

@@ -4,14 +4,14 @@ from control.pinpin import getMoment
 class Image(db.Model):
     __tablename__ = 't_image'
     id = db.Column(db.Integer, primary_key=True)
-    fkid = db.Column(db.Integer, unique=True)
+    fkid = db.Column(db.Integer, unique=False)
     image_type = db.Column(db.Integer, unique=False)
     """
     type 1 Group
     type 2 User
     type 3 GroupCheckImg
     """
-    image_path = db.Column(db.String, unique=False)
+    image_path = db.Column(db.String(100), unique=False)
     create_dt = db.Column(db.Integer, unique=False)
     create_userid = db.Column(db.Integer, unique=False)
     isUsed = db.Column(db.Boolean, unique=False)

@@ -9,7 +9,7 @@ module.exports = React.createClass({
 		var newprop = {
 			name:newinput
 		};
-		if(newinput.length>0){
+		if(newinput.length>0&&newinput.length<6){
 			this.props.onAdd(newprop);
 			this.refs.name.clearValue();
 		}

@@ -1,40 +1,38 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash, current_app, make_response, jsonify
-from sqlalchemy import or_
+from flask import Blueprint, request, render_template, make_response, jsonify
 from control import pinpin
 from control.pinpin import statusRef
 from module.group.group import Group
 from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
-from form.group.group import newGroupForm, newGroupCheckForm
+from module.feedback.feedback import Feedback
 from myapp import db
 from view.workflow.workflow import Push_Steps
-from control.pinpin import statusRef
 from werkzeug import secure_filename
+from flask.ext.login import current_user
 
-group = Blueprint('group', __name__)
+groupview = Blueprint('groupview', __name__)
 
 
 # list groups
-@group.route('/')
+@groupview.route('/')
 def list_groups():
     return render_template("./group/index.html")
 
 
 # add group
-@group.route('/groups')
+@groupview.route('/groups')
 def add_group():
     return render_template('./group/add.html')
 
 
 # add group check files
-@group.route('/groups/check/<int:gid>', methods=['POST'])
+@groupview.route('/groups/check/<int:gid>', methods=['POST'])
 def add_group_checkfile(gid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         group = Group.query.get(gid)
         if group and uid == group.create_userid:
             images = request.files.getlist("photos")
@@ -67,18 +65,35 @@ def group_processing(gid):
             Push_Steps(1, gid)
 
 
+@groupview.route('/feedback', methods=['POST'])
+def feedback():
+    if current_user.is_authenticated():
+        uid = current_user.id
+        fb = request.json['feedback']
+        url = request.json['url']
+        f = Feedback()
+        f.create_userid = uid
+        f.create_dt = pinpin.getCurTimestamp()
+        f.desc = fb
+        f.url = url
+        f.save
+        return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+    return make_response('need login', 401)
+
 # list user orders
-@group.route('/u/group')
+
+
+@groupview.route('/u/group')
 def list_u_groups():
     return render_template("./group/mygroups.html")
 
 
 # list a group confirm orders
-@group.route('/u/group/<int:gid>')
+@groupview.route('/u/group/<int:gid>')
 def list_u_groupsOrder(gid):
-    if session.get('logged_in'):
+    if current_user.is_authenticated():
         g = Group.query.get(gid)
-        if g and g.create_userid == session.get('logged_id'):
+        if g and g.create_userid == current_user.id:
             orders = Order.query.filter_by(
                 status=statusRef.ORDER_PAIED, gid=gid).all()
             return make_response(jsonify({"orders": [order.to_json for order in orders]}), 200)
@@ -87,10 +102,10 @@ def list_u_groupsOrder(gid):
 
 
 # push a group status from PROCESSING(15) to CONFIRM(20)
-@group.route('/u/group/<int:gid>/delivery', methods=['PUT'])
+@groupview.route('/u/group/<int:gid>/delivery', methods=['PUT'])
 def deliver_u_group(gid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         g = Group.query.filter_by(
             status=statusRef.GROUP_PROCESSING, id=gid, create_userid=uid).first()
         if g:
@@ -139,10 +154,10 @@ def isReady_Order_Transport(oid):
     return True
 
 
-@group.route('/u/group/<int:gid>/cancel', methods=['PUT'])
+@groupview.route('/u/group/<int:gid>/cancel', methods=['PUT'])
 def cancel_group(gid):
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         g = Group.query.get(gid)
         if g and g.create_userid == uid and g.status == statusRef.GROUP_PUBLISH and g.req_qty == 0 and g.confirm_qty == 0:
             g.status = statusRef.GROUP_CANCEL

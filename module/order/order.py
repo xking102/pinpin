@@ -6,7 +6,7 @@ from module.image.image import Image
 class Order(db.Model):
     __tablename__ = 't_order'
     id = db.Column(db.Integer, primary_key=True)
-    gid = db.Column(db.Integer, unique=True)
+    gid = db.Column(db.Integer, unique=False)
     status = db.Column(db.Integer, unique=False)
     create_dt = db.Column(db.Integer, unique=False)
     create_userid = db.Column(db.Integer, unique=False)

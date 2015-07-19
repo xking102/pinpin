@@ -1,5 +1,6 @@
 from myapp import db
 from control.pinpin import getMoment
+from utils.UnicodeTranslate import trancChar
 
 
 class User(db.Model):
@@ -10,6 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(100), unique=False)
     reg_dt = db.Column(db.Integer, unique=False)
     update_dt = db.Column(db.Integer, unique=False)
+    isAdmin = db.Column(db.Boolean, unique=False)
 
     @property
     def to_json(self):
@@ -31,3 +33,18 @@ class User(db.Model):
         else:
             db.session.commit()
             return 'update'
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    def __unicode__(self):
+        return self.nickname

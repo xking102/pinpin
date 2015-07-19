@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, session, redirect, url_for, \
+from flask import Blueprint, request, redirect, url_for, \
     abort, render_template, flash, current_app, make_response
 from sqlalchemy import or_
 from control import pinpin
@@ -14,7 +14,7 @@ from view.user.user import get_u_addresses
 
 
 # post a order set the default address into transport
-def set_default_transport(uid,oid):
+def set_default_transport(uid, oid):
     """
     param:
     uid:user id
@@ -24,7 +24,7 @@ def set_default_transport(uid,oid):
 
     order = Order.query.get(oid)
     if order:
-        addr = get_u_addresses(uid,True)
+        addr = get_u_addresses(uid, True)
         if addr:
             t = Transport()
             t.oid = oid

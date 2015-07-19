@@ -1,59 +1,50 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, session, redirect, url_for, \
-    abort, render_template, flash, current_app, make_response, jsonify
-from sqlalchemy import or_
+from flask import Blueprint, request, redirect, url_for, \
+    render_template, flash, make_response, jsonify
 from control import pinpin
-from control.pinpin import statusRef
 from module.user.user import User
 from module.user.useraddress import UserAddress
-from form.user.user import LoginForm, RegisterForm, ModifyPasswordForm
-from myapp import db
+from form.user.user import LoginForm, RegisterForm
+from flask.ext.login import current_user, login_required, logout_user, login_user
 
-
-user = Blueprint('user', __name__)
+userview = Blueprint('userview', __name__)
 
 
 # user logon
-@user.route('/login', methods=['GET', 'POST'])
+@userview.route('/login', methods=['GET', 'POST'])
 def login():
-    if session.get('logged_in'):
-        return redirect(url_for('group.list_groups'))
+    if current_user.is_authenticated():
+        return redirect(url_for('groupview.list_groups'))
     form = LoginForm()
     error = None
     if request.method == 'POST' and form.validate_on_submit():
-        session['logged_in'] = True
-        session['logged_name'] = form.user.nickname
-        session['logged_id'] = form.user.id
+        login_user(form.user, remember=form.remember_me.data)
         flash('You were logged in')
-        return redirect(url_for('group.list_groups'))
+        return redirect(url_for('groupview.list_groups'))
     return render_template('./user/login.html', error=error, form=form)
 
 
 # user register
-@user.route('/register', methods=['GET', 'POST'])
+@userview.route('/register', methods=['GET', 'POST'])
 def register():
-    if session.get('logged_in'):
-        return redirect(url_for('group.list_groups'))
+    if current_user.is_authenticated():
+        return redirect(url_for('groupview.list_groups'))
     form = RegisterForm()
     error = None
     if request.method == 'POST' and form.validate_on_submit():
         flash('New user was successfully registered')
-        session['logged_in'] = True
-        session['logged_name'] = form.user.nickname
-        session['logged_id'] = form.user.id
-        return redirect(url_for('group.list_groups'))
+        login_user(form.user)
+        return redirect(url_for('groupview.list_groups'))
     return render_template('./user/register.html', error=error, form=form)
 
 
 # user logout
-@user.route('/logout')
+@login_required
+@userview.route('/logout')
 def logout():
-    session.pop('logged_in', None)
-    session.pop('logged_name', None)
-    session.pop('logged_id', None)
-    flash('You were logged out')
-    return redirect(url_for('group.list_groups'))
+    logout_user()
+    return redirect(url_for('groupview.list_groups'))
 
 
 def setAddressDefault(uid):
@@ -65,20 +56,34 @@ def setAddressDefault(uid):
     return None
 
 
+def hasDefaultAddress(uid):
+    """
+    user has a default address
+    return False
+    else return True
+    """
+    address = UserAddress.query.filter_by(
+        uid=uid, isDefault=True).first()
+    if address:
+        return False
+    return True
+
 # user setting
-@user.route('/setting')
+
+
+@userview.route('/setting')
 def setting():
-    if session.get('logged_in'):
+    if current_user.is_authenticated():
         return render_template("./user/user.html")
     return redirect('/login')
 
 # change user password
 
 
-@user.route('/password', methods=['PUT'])
+@userview.route('/password', methods=['PUT'])
 def change_pw():
-    if session.get('logged_in'):
-        uid = session.get('logged_id')
+    if current_user.is_authenticated():
+        uid = current_user.id
         u = User.query.get(uid)
         if u:
             if pinpin.getmd5(request.json['old_password']) == u.password:

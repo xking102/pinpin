@@ -5,7 +5,7 @@ var {RaisedButton, FlatButton, Dialog} = mui;
 module.exports = React.createClass({
     getInitialState:function(){
         return{
-            modal:false,
+            modal:true,
             id:0,
             isDefault:false,
             address_line1:'',
@@ -24,23 +24,6 @@ module.exports = React.createClass({
 
         })
     },
-	_handleCustomDialogSubmit:function(){
-        this.addNewAddress();
-        this.refs.customDialog.dismiss();
-        this._clear();
-        var newAddress = {
-            id:this.state.id,
-            reciver:this.state.reciver,
-            uid:this.state.uid,
-            tel:this.state.tel,
-            create_dt:this.state.create_dt,
-            update_dt:this.state.update_dt,
-            address_line1:this.state.address_line1,
-            address_line2:this.state.address_line2,
-            isDefault:this.state.isDefault
-        };
-        this.props.onNewAddress( newAddress );
-    },
     _handleCustomDialogCancel:function(){
         this.refs.customDialog.dismiss();
         this._clear();
@@ -48,7 +31,8 @@ module.exports = React.createClass({
     handleCustomDialogTouchTap:function() {
       this.refs.customDialog.show();
     },
-    addNewAddress:function(){
+    _handleCustomDialogSubmit:function(){
+
     $.ajax({
       url      : '/api/v1/u/address',
       dataType : 'json',
@@ -73,6 +57,20 @@ module.exports = React.createClass({
           uid:resp.address.uid,
           update_dt:resp.address.update_dt
         });
+        this.refs.customDialog.dismiss();
+        var newAddress = {
+            id:this.state.id,
+            reciver:this.state.reciver,
+            uid:this.state.uid,
+            tel:this.state.tel,
+            create_dt:this.state.create_dt,
+            update_dt:this.state.update_dt,
+            address_line1:this.state.address_line1,
+            address_line2:this.state.address_line2,
+            isDefault:this.state.isDefault
+        };
+        this.props.onNewAddress( newAddress );
+        this._clear();
       }.bind(this),
 
       error: function(xhr, status, err) {
@@ -81,19 +79,25 @@ module.exports = React.createClass({
     });
   },
     handlerReciver:function(e){
-       this.setState({
+      if(e.target.value<30){
+        this.setState({
             reciver:e.target.value
        })
+      }  
     },
     handlerTel:function(e){
-       this.setState({
+      if(e.target.value<30){
+        this.setState({
             tel:e.target.value
        })
+      }
     },
     handlerAddress:function(e){
-       this.setState({
+      if(e.target.value<30){
+        this.setState({
             address_line1:e.target.value
        })
+      }   
     },
 	render:function(){
        var customActions = [
@@ -111,7 +115,7 @@ module.exports = React.createClass({
 		return (
             <div>
             <div style={{marginBottom:'40px',marginLeft:'20px'}}>
-            <RaisedButton label="添加一个新地址" 
+            <RaisedButton label="添加一个新地址"
             secondary={true}
             onTouchTap={this.handleCustomDialogTouchTap} />
             <Dialog
@@ -127,13 +131,17 @@ module.exports = React.createClass({
 
                <label>地址</label>
                <input  type="text" value={this.state.address_line1} onChange={this.handlerAddress} />
+
+
+
             </Dialog>
             </div>
-			
+
 </div>
 
 		)
 	}
+
 })
 
 

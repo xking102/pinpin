@@ -28,3 +28,19 @@ location @pp {
 
 ## Run Gunicorn
 gunicorn -c gun.conf myapp:app
+
+
+
+## Flask
+### Common
+####set environment
+- FLASK_KEY
+- FLASK_ENV
+- alipay_PID
+- alipay_KEY
+- alipay_acct
+
+###PRODUCTION
+####set environment
+- mysql
+- mysqlpw
