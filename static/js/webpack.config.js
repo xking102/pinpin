@@ -1,5 +1,8 @@
 var webpack = require('webpack');
 
+var commonsPlugin =
+  new webpack.optimize.CommonsChunkPlugin('common.js');
+
 module.exports = {
     entry : {
         groupsindex: "./groupsindex.js",
@@ -12,6 +15,7 @@ module.exports = {
         path : "./build",
         filename : "[name].js"
     },
+    plugins: [commonsPlugin],
     module : {
         loaders :[
             {test:/\.js$/, loader:'babel-loader?stage=1'}
