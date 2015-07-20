@@ -111,7 +111,7 @@
                         <a href="javascript:void(0)">
                         </a>
                     </div>
- {% if current_user.is_authenticated() %}
+                    {% if current_user.is_authenticated() %}
                         <div id="feedback" class="feedback">
                             <a href="javascript:void(0)">
                                 <p>意</p>
@@ -120,7 +120,6 @@
                                 <p>馈</p>
                             </a>
                         </div>
-
                         <!-- Modal -->
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
@@ -130,7 +129,6 @@
                                         <h4 class="modal-title" id="myModalLabel">意见反馈</h4>
                                     </div>
                                     <div id="feedback_body" class="modal-body">
-
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">不说了</button>
@@ -140,7 +138,6 @@
                             </div>
                         </div>
                     {% endif %}
-
                 </div>
                 <div class="clearfix"></div>
                 <footer>
@@ -157,16 +154,18 @@
                         <span style="text-align:left;float:left">&nbsp;&nbsp;<a href="http://www.miitbeian.gov.cn" target="_blank" alt="沪ICP备15032259号-1">沪ICP备15032259号-1</a></span>
                     </p>
                 </footer>
+                <!-- start: JavaScript-->
+                <script src="/static/js/lib/jquery-1.9.1.min.js"></script>
+                <script src="/static/js/lib/jquery-migrate-1.0.0.min.js"></script>
+                <script src="/static/js/lib/jquery-ui-1.10.0.custom.min.js"></script>
+                <script src="/static/js/lib/jquery.ui.touch-punch.js"></script>
+                <script src="/static/js/lib/modernizr.min.js"></script>
+                <script src="/static/js/lib/bootstrap.min.js"></script>
+                <script src="/static/js/lib/custom.js"></script>
+                <script src="/static/js/build/common.js"></script>
+                <!-- end: JavaScript-->
                 {% block scripts %}
-                    <!-- start: JavaScript-->
-                    <script src="/static/js/lib/jquery-1.9.1.min.js"></script>
-                    <script src="/static/js/lib/jquery-migrate-1.0.0.min.js"></script>
-                    <script src="/static/js/lib/jquery-ui-1.10.0.custom.min.js"></script>
-                    <script src="/static/js/lib/jquery.ui.touch-punch.js"></script>
-                    <script src="/static/js/lib/modernizr.min.js"></script>
-                    <script src="/static/js/lib/bootstrap.min.js"></script>
-                    <script src="/static/js/lib/custom.js"></script>
-                    <!-- end: JavaScript-->
+                    
                     {%- endblock scripts %}
                 </body>
             </html>
