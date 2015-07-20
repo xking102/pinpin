@@ -33,6 +33,7 @@ admin = Admin(app, name='PinPin Admin',
 app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
 login_manager = LoginManager()
+login_manager.login_view = "userview.login"
 login_manager.init_app(app)
 
 
@@ -138,9 +139,9 @@ def page_not_found(error):
     return render_template('error.html', error=error)
 
 
-@app.errorhandler(401)
-def no_permission(error):
-    return redirect('/login')
+# @app.errorhandler(401)
+# def no_permission(error):
+#     return redirect('/login')
 
 
 if __name__ == "__main__":
