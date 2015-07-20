@@ -19,13 +19,17 @@ groupview = Blueprint('groupview', __name__)
 # list groups
 @groupview.route('/')
 def list_groups():
-    return render_template("./group/index.html")
+    common = pinpin.getBuildJSName('common')
+    groupsindex = pinpin.getBuildJSName('groupsindex')
+    return render_template("./group/index.html", common=common, groupsindex=groupsindex)
 
 
 # add group
 @groupview.route('/groups')
 def add_group():
-    return render_template('./group/add.html')
+    common = pinpin.getBuildJSName('common')
+    newgroup = pinpin.getBuildJSName('newgroup')
+    return render_template('./group/add.html', common=common, newgroup=newgroup)
 
 
 # add group check files
@@ -85,7 +89,9 @@ def feedback():
 
 @groupview.route('/u/group')
 def list_u_groups():
-    return render_template("./group/mygroups.html")
+    common = pinpin.getBuildJSName('common')
+    mygroup = pinpin.getBuildJSName('mygroup')
+    return render_template("./group/mygroups.html", common=common, mygroup=mygroup)
 
 
 # list a group confirm orders

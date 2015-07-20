@@ -18,7 +18,9 @@ orderview = Blueprint('orderview', __name__)
 # list user orders
 @orderview.route('/u/order')
 def list_u_orders():
-    return render_template("./order/order_list.html")
+    common = pinpin.getBuildJSName('common')
+    my_order_list = pinpin.getBuildJSName('my_order_list')
+    return render_template("./order/order_list.html", common=common, my_order_list=my_order_list)
 
 
 # user payment the order

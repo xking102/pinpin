@@ -74,7 +74,9 @@ def hasDefaultAddress(uid):
 @userview.route('/setting')
 def setting():
     if current_user.is_authenticated():
-        return render_template("./user/user.html")
+        common = pinpin.getBuildJSName('common')
+        user = pinpin.getBuildJSName('user')
+        return render_template("./user/user.html", common=common, user=user)
     return redirect('/login')
 
 # change user password

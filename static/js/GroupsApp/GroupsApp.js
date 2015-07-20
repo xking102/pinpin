@@ -30,13 +30,11 @@ module.exports = React.createClass({
 			page: 1,
 			pager_display: false,
 			query_flag:false,
-			button_name:'这里以后放分页'
 		}
 	},
 	listGroups:function(per,page){
 		this.setState({
-            		query_flag:true,
-            		button_name:'加载中'
+            		query_flag:true
             	});
 		$.ajax({
             type:'get',
@@ -55,8 +53,7 @@ module.exports = React.createClass({
             		//groups:resp.groups,
             		pager:resp.pager,
             		pager_display:true,
-            		query_flag:false,
-            		button_name:'这里以后放分页'
+            		query_flag:false
             	})
             }.bind(this),
             error: function(xhr, status, err) {
