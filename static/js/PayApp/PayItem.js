@@ -25,18 +25,13 @@ module.exports = React.createClass({
             url:'/order_pay/'+this.props.order.id,
             contentType: "application/json",
             success:function (resp) {
-                this.setState({
-                        btn_name:'付款成功',
-                        query_flag: true,
-                        result:true,
-                        isPay:true
-                });
+                window.location.href = resp.url;
             }.bind(this),
             error:function (resp){
               this.setState({
                         btn_name:'付款失败',
                         query_flag: false
-  
+
               });
             }.bind(this)
         });
@@ -46,21 +41,21 @@ module.exports = React.createClass({
         var styleObj={
             display: 'block',
          };
-        var PayContent = this.state.isPay||this.props.order.status==25 ? 
+        var PayContent = this.state.isPay||this.props.order.status==25 ?
        <div>
  <div className="row-fluid">
             已支付 {this.props.order.total_price}
           </div>
- <a   href="/" className="btn btn-danger">去看看别的</a>   
+ <a   href="/" className="btn btn-danger">去看看别的</a>
        </div> :
          <div>
  <div className="row-fluid">
             共需要支付 {this.props.order.total_price}
           </div>
 
-            
+
           <div className="row-fluid">
-            <a href="#"  onClick={this.handlerPay} className="btn btn-danger">{this.state.btn_name}</a>   
+            <a href="#"  onClick={this.handlerPay} className="btn btn-danger">{this.state.btn_name}</a>
           </div>
        </div> ;
 		return (
@@ -70,12 +65,12 @@ module.exports = React.createClass({
 						<i className="halflings-icon user"></i>
 						<span className="break"></span>
 						支付
-						</h2>	
+						</h2>
 				</div>
 
 				<div className="box-content">
 					{PayContent}
-						
+
 
 				</div>
 			</div>
