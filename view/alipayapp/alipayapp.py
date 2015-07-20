@@ -63,6 +63,27 @@ def alipay_web():
     return redirect(ch)
 
 
+
+def alipay_pay_on_web(**kw):
+    params = {
+        'out_trade_no': kw.get('out_trade_no'),
+        'subject': kw.get('subject'),
+        'logistics_type': 'EXPRESS',
+        'logistics_fee': '0',
+        'logistics_payment': 'SELLER_PAY',
+        'price': kw.get('price'),
+        'quantity': kw.get('quantity'),
+        'return_url': 'http://pinpin.in/alipay_return',
+        'notify_url': 'http://pinpin.in/alipay_notify',
+        'receive_name': kw.get('receive_name'),
+        'receive_address': kw.get('receive_address'),
+        'receive_mobile': kw.get('receive_mobile')
+    }
+    ch = ali.create_partner_trade_by_buyer_url(**params)
+    return ch
+
+
+
 @alipayview.route('/alipay_notify', methods=['POST'])
 def alipay_notify():
     orderid = ''
