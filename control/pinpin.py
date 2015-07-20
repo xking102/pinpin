@@ -6,7 +6,11 @@ import time
 import urlparse
 import shortuuid
 import arrow
+import json
+import os
 
+
+JS_JSON = os.path.join(os.getcwd(), 'static/js/build/react.json')
 SALT = 'pinpin.com'
 PREFIX = 'PP'
 DASH_CHAR = '-'
@@ -68,6 +72,13 @@ def generateTradeNo():
     code = shortuuid.ShortUUID().random(length=8)
     trade_no = PREFIX + DASH_CHAR + utc + DASH_CHAR + code
     return trade_no
+
+
+def getBuildJSName(jsname):
+    fp = open(JS_JSON, 'r')
+    dict = json.loads(fp.read())
+    fp.close()
+    return dict[jsname]['js']
 
 
 def CurrentActive(**current):
