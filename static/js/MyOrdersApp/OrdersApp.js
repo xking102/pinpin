@@ -74,7 +74,7 @@ module.exports = React.createClass({
 			<div>
 						<div className="row-fluid">
 							<div className="span2"><h3>订单编号</h3></div>
-							<div className="span2"><h3>收货人</h3></div>
+							<div className="span2"><h3>购买数量</h3></div>
 							<div className="span2"><h3>订单金额</h3></div>
 							<div className="span2"><h3>订单时间</h3></div>
 							<div className="span2"><h3>订单状态</h3></div>
@@ -83,8 +83,6 @@ module.exports = React.createClass({
 
 
 						<div>{orderComps}</div>
-
-
 
 				    <div style={{marginBottom:'10px'}}>
                     <Pager {...pager_props}/>

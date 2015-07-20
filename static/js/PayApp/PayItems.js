@@ -30,6 +30,7 @@ module.exports = React.createClass({
 		this.setState(
             {CurrentAddressId:id}
          );
+		this.listAdress();
 	  },
 	setTransAdress:function(){
 	    $.ajax({
@@ -57,9 +58,13 @@ module.exports = React.createClass({
 	render:function(){
 		var order = this.props.order;
 		var address = this.state.address;
-		var Myaddress = address.map(function(item){
+		var CurrentAddressId = this.state.CurrentAddressId;
+        var ConfirmContent = this.props.order.status==10 ? 
+       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a> :
+       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} >已确认订单，点击进入支付页面</a> ;
+        var Myaddress = address.map(function(item){
 			return <AddressItem key={item.id}
-							addr={item} setCurrentAddress={this.setCurrentAddress} />
+							addr={item} setCurrentAddress={this.setCurrentAddress} CurrentAddressId = {CurrentAddressId}/>
 		}.bind(this));
 
 		return (
@@ -82,14 +87,14 @@ module.exports = React.createClass({
 
               <div className="row-fluid">
                   <div className="span2"><h3>收货人</h3></div>
-                  <div className="span6"><h3>地址</h3></div>
+                  <div className="span4"><h3>地址</h3></div>
                   <div className="span2"><h3>电话</h3></div>
+                  <div className="span2"><h3>状态</h3></div>
                   <div className="span2"><h3>操作</h3></div>
               </div>
 				{Myaddress}
 				</div>
-                <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a>
-
+				{ConfirmContent}
 			</div>
 		)
 	}

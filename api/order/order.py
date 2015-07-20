@@ -52,7 +52,7 @@ class Orders(Resource):
         if current_user.is_authenticated():
             gid = request.json['gid']
             if gid:
-                status = statusRef.ORDER_APPORVED
+                status = statusRef.ORDER_APPLY
                 create_dt = pinpin.getCurTimestamp()
                 create_userid = current_user.id
                 req_qty = request.json['req_qty']
