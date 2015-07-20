@@ -10,6 +10,7 @@ env.hosts = ['120.26.211.220']
 def build():
     path = 'static/js/'
     with lcd(path):
+        local('rm -rf build/*')
         local('webpack -p')
 
 
