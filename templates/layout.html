@@ -4,7 +4,7 @@
     <head>
         <!-- start: Meta -->
         <meta charset="utf-8">
-        <title>PinPin</title>
+        <title>{% block title %}PinPin{% endblock title %}</title>
         <meta name="description" content="PinPin">
         <meta name="author" content="xingkaixin">
         <meta name="keyword" content="pinpin">
@@ -165,7 +165,7 @@
                 <script src={{common}}></script>
                 <!-- end: JavaScript-->
                 {% block scripts %}
-                    
+
                     {%- endblock scripts %}
                 </body>
             </html>
