@@ -92,6 +92,7 @@ def alipay_notify():
 
 
 @alipayview.route('/alipay_return')
+@login_required
 def alipay_return():
     orderid = ''
     trade_status = ''
@@ -108,8 +109,14 @@ def alipay_return():
         trade_status = req.pop('trade_status')
         ml.info('Order %s trade status changd to %s' % (orderid, trade_status))
         trade_no = req.pop('trade_no')
+        ml.info('Order %s Alipayno %s pay succ,order status is %s' %
+                (orderid, trade_no, trade_status))
     f = Feedback()
     f.uid = orderid
     f.desc = 'sync ' + trade_status + ' ' + trade_no
     f.save
-    return orderid + ' ' + trade_status
+    orderinfo = {
+        'trade_code': orderid,
+        'out_trade_code': trade_no
+    }
+    return render_template('./order/order_pay_succ.html', orderinfo=orderinfo)
