@@ -8,6 +8,7 @@ from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
 from module.payment.alipay_log import Alipay_Log
+from view.order.order_operator import order_pay_succ, order_send_goods_succ, order_confirm_succ
 from alipay import Alipay
 from myapp import db, ml, app
 from flask.ext.login import current_user, login_required
@@ -97,7 +98,7 @@ def alipay_notify():
                 ml.info('Order %s trade status changd to %s' %
                         (orderid, trade_status))
                 trade_no = req.get('trade_no')
-            ml.info('>>>sync alipay notify log begin order is ' % orderid)
+            ml.info('>>>async alipay notify log begin order is ' % orderid)
             al = Alipay_Log
             al.nontify_type = 'async'
             al.trade_no = orderid
@@ -108,10 +109,16 @@ def alipay_notify():
             al.quantity = req.get('quantity')
             al.create_dt = pinpin.getCurTimestamp()
             al.save
-            ml.info('sync alipay notify log end order is %s <<<' % orderid)
+            ml.info('async alipay notify log end order is %s <<<' % orderid)
+            if trade_status == ALIPAY_Trade_Status.WAIT_SELLER_SEND_GOODS:
+                order_pay_succ(order, trade_no)
+            if trade_state == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
+                order_send_goods_succ(order, trade_no)
+            if trade_state == ALIPAY_Trade_Status.TRADE_FINISHED:
+                order_confirm_succ(order, trade_no)
             return 'success'
-    except Exception as  e:
-        ml.info('not access request %s' %e)
+    except Exception as e:
+        ml.info('not access request %s' % e)
         abort(404)
     abort(404)
 
@@ -147,13 +154,15 @@ def alipay_return():
             al.create_dt = pinpin.getCurTimestamp()
             al.save
             ml.info('sync alipay notify log end order is %s <<<' % orderid)
+            if trade_status == ALIPAY_Trade_Status.WAIT_SELLER_SEND_GOODS:
+                order_pay_succ(order, trade_no)
             orderinfo = {
                 'trade_code': orderid,
                 'out_trade_code': trade_no
             }
             return render_template('./order/order_pay_succ.html', orderinfo=orderinfo)
     except Exception as e:
-        ml.info('not access request %s' %e)
+        ml.info('not access request %s' % e)
         abort(404)
     ml.info('not access request')
     abort(404)
