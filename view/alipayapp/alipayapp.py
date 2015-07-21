@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, redirect, request, render_template, make_response, jsonify
+from flask import Blueprint, redirect, request, render_template, make_response, jsonify, abort
 from control import pinpin
 from control.pinpin import statusRef, ALIPAY_Trade_Status
 from module.group.group import Group
 from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
-from module.feedback.feedback import Feedback
+from module.payment.alipay_log import Alipay_Log
 from alipay import Alipay
 from myapp import db, ml, app
 from flask.ext.login import current_user, login_required
@@ -81,30 +81,39 @@ def alipay_pay_on_web(**kw):
 
 @alipayview.route('/alipay_notify', methods=['POST'])
 def alipay_notify():
-    orderid = ''
-    trade_status = ''
-    trade_no = ''
-    print '>>>>>>>>>>>>>>notfiy'
-    ml.info('>>alipay async update order status')
-    if request.method == 'POST':
-        ml.info('>>alipay async POST process')
-        print request.form
-        req = request.form.to_dict()
-        print ali.verify_notify(**req)
-        if ali.verify_notify(**req):
-            print 'aync pass verification........'
-            ml.info('aync pass verification........')
-            orderid = req.pop('out_trade_no')
-            ml.info('Order is %s' % orderid)
-            trade_status = req.pop('trade_status')
-            ml.info('Order %s trade status changd to %s' %
-                    (orderid, trade_status))
-            trade_no = req.pop('trade_no')
-        f = Feedback()
-        f.uid = orderid
-        f.desc = 'async ' + trade_status + ' ' + trade_no
-        f.save
-        return 'success'
+    try:
+        orderid = ''
+        trade_status = ''
+        trade_no = ''
+        ml.info('>>alipay async update order status')
+        if request.method == 'POST':
+            ml.info('>>alipay async POST process')
+            req = request.form.to_dict()
+            if ali.verify_notify(**req):
+                ml.info('aync pass verification........')
+                orderid = req.get('out_trade_no')
+                ml.info('Order is %s' % orderid)
+                trade_status = req.get('trade_status')
+                ml.info('Order %s trade status changd to %s' %
+                        (orderid, trade_status))
+                trade_no = req.get('trade_no')
+            ml.info('>>>sync alipay notify log begin order is ' % orderid)
+            al = Alipay_Log
+            al.nontify_type = 'async'
+            al.trade_no = orderid
+            al.out_trade_no = trade_no
+            al.trade_status = trade_status
+            al.refund_status = req.get('refund_status')
+            al.price = req.get('price')
+            al.quantity = req.get('quantity')
+            al.create_dt = pinpin.getCurTimestamp()
+            al.save
+            ml.info('sync alipay notify log end order is %s <<<' % orderid)
+            return 'success'
+    except Exception as  e:
+        ml.info('not access request %s' %e)
+        abort(404)
+    abort(404)
 
 
 @alipayview.route('/alipay_return')
@@ -113,26 +122,38 @@ def alipay_return():
     orderid = ''
     trade_status = ''
     trade_no = ''
-    print '>>>>>>>>>>>>>>notfiy'
     ml.info('>>alipay sync update order status')
     req = request.args.to_dict()
-    print ali.verify_notify(**req)
-    if ali.verify_notify(**req):
-        ml.info('pass verification........')
-        print 'pass verification........'
-        orderid = req.pop('out_trade_no')
-        ml.info('Order is %s' % orderid)
-        trade_status = req.pop('trade_status')
-        ml.info('Order %s trade status changd to %s' % (orderid, trade_status))
-        trade_no = req.pop('trade_no')
-        ml.info('Order %s Alipayno %s pay succ,order status is %s' %
-                (orderid, trade_no, trade_status))
-    f = Feedback()
-    f.uid = orderid
-    f.desc = 'sync ' + trade_status + ' ' + trade_no
-    f.save
-    orderinfo = {
-        'trade_code': orderid,
-        'out_trade_code': trade_no
-    }
-    return render_template('./order/order_pay_succ.html', orderinfo=orderinfo)
+    try:
+        if ali.verify_notify(**req):
+            ml.info('pass verification........')
+            orderid = req.get('out_trade_no')
+            ml.info('Order is %s' % orderid)
+            trade_status = req.get('trade_status')
+            ml.info('Order %s trade status changd to %s' %
+                    (orderid, trade_status))
+            trade_no = req.get('trade_no')
+            ml.info('Order %s Alipayno %s pay succ,order status is %s' %
+                    (orderid, trade_no, trade_status))
+            ml.info('>>>sync alipay notify log begin order is ' % orderid)
+            al = Alipay_Log
+            al.nontify_type = 'sync'
+            al.trade_no = orderid
+            al.out_trade_no = trade_no
+            al.trade_status = trade_status
+            al.refund_status = req.get('refund_status')
+            al.price = req.get('price')
+            al.quantity = req.get('quantity')
+            al.create_dt = pinpin.getCurTimestamp()
+            al.save
+            ml.info('sync alipay notify log end order is %s <<<' % orderid)
+            orderinfo = {
+                'trade_code': orderid,
+                'out_trade_code': trade_no
+            }
+            return render_template('./order/order_pay_succ.html', orderinfo=orderinfo)
+    except Exception as e:
+        ml.info('not access request %s' %e)
+        abort(404)
+    ml.info('not access request')
+    abort(404)
