@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, redirect, request, render_template, make_response, jsonify
 from control import pinpin
-from control.pinpin import statusRef
+from control.pinpin import statusRef, ALIPAY_Trade_Status
 from module.group.group import Group
 from module.order.order import Order
 from module.image.image import Image
@@ -14,6 +14,7 @@ from flask.ext.login import current_user, login_required
 from module.feedback.feedback import Feedback
 import shortuuid
 import urllib
+from xml.dom import minidom
 
 alipayview = Blueprint('alipayview', __name__)
 
@@ -26,45 +27,39 @@ acct = app.config['ALIPAY_ACCT']
 ali = Alipay(pid=PID, key=KEY, seller_email=acct)
 
 
-@alipayview.route('/send')
-@login_required
-def alipay_send():
-    params = {
-        'trade_no': '2015071800001000700059685059',
-        'logistics_name': u'中国邮政',
-        'transport_type': u'POST',
-        'invoice_no': u'AAAAAAAA'
+def alipay_send_goods_confirm(**kw):
+    ml.info('send goods confirm info : %s' % kw)
+    parmas = {
+        'trade_no': kw.get('trade_no'),
+        'logistics_name': kw.get('logistics_name'),
+        'transport_type': 'EXPRESS',
+        'invoice_no': kw.get('invoice_no')
     }
     ch = ali.send_goods_confirm_by_platform(**params)
-    print ch
+    ml.info('the send goods confirm url is %s' % ch)
     req = urllib.urlopen(ch)
-    print req
-    return 'success'
-
-
-@alipayview.route('/testpay')
-@login_required
-def alipay_web():
-    params = {
-        'out_trade_no': shortuuid.uuid(),
-        'subject': 'a test prodject',
-        'logistics_type': 'POST',
-        'logistics_fee': '0',
-        'logistics_payment': 'SELLER_PAY',
-        'price': '0.01',
-        'quantity': '1',
-        'return_url': 'http://pinpin.in/alipay_return',
-        'notify_url': 'http://pinpin.in/alipay_notify',
-        'receive_name': u'Kevin Xing',
-        'receive_address': u'上海市',
-        'receive_mobile': u'13312341234'
-    }
-    ch = ali.create_partner_trade_by_buyer_url(**params)
-    return redirect(ch)
-
+    if req.getcode() == 200:
+        ali_resp = {}
+        rsp = req.read()
+        dom = minidom.parseString(rsp)
+        root = dom.firstChild
+        childs = root.childNodes
+        for child in childs:
+            ali_resp[child.nodeName] = child.childNodes[0].data
+        if ali_resp['is_success'] == 'T' and ali_resp['trade_no'] == params['trade_no'] and ali_resp['trade_status'] == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
+            ml.info('the alipay_no %s send goods confirm succ status will change to %s' % (
+                params['trade_no'], ali_resp['trade_status']))
+            return True
+        ml.info('the alipay_no %s send gools confirm fail ,the status is %s ' % (
+            params['trade_no'], ali_resp['trade_status']))
+        return False
+    ml.info(
+        'send goods confirm request failed becasue network the response code is %s' % req.getcode())
+    return False
 
 
 def alipay_pay_on_web(**kw):
+    ml.info('pay info : %s' % kw)
     params = {
         'out_trade_no': kw.get('out_trade_no'),
         'subject': kw.get('subject'),
@@ -80,8 +75,8 @@ def alipay_pay_on_web(**kw):
         'receive_mobile': kw.get('receive_mobile')
     }
     ch = ali.create_partner_trade_by_buyer_url(**params)
+    ml.info('the pay url is %s' % ch)
     return ch
-
 
 
 @alipayview.route('/alipay_notify', methods=['POST'])
