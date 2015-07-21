@@ -39,9 +39,10 @@ def alipay_send_goods_confirm(**kw):
             rsp = req.read()
             dom = minidom.parseString(rsp)
             root = dom.firstChild
-            childs = root.childNodes
-            for child in childs:
-                ali_resp[child.nodeName] = child.childNodes[0].data
+            ali_resp['is_success'] = root.getElementsByTagName('is_success')[0].childNodes[0].data
+            ali_resp['trade_no'] = root.getElementsByTagName('trade_no')[0].childNodes[0].data
+            ali_resp['trade_status'] = root.getElementsByTagName('trade_status')[0].childNodes[0].data
+            ml.info('send goods confirm xml is %s' %ali_resp)
             if ali_resp['is_success'] == 'T' and ali_resp['trade_no'] == params['trade_no'] and ali_resp['trade_status'] == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
                 ml.info('the alipay_no %s send goods confirm succ status will change to %s' % (
                     params['trade_no'], ali_resp['trade_status']))
