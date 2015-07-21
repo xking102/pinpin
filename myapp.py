@@ -65,12 +65,15 @@ from module.image.image import Image as ImageModule
 from module.order.order import Order as OrderModule
 from module.transport.transport import Transport as TransportModule
 from module.feedback.feedback import Feedback as FeedbackModule
+from module.payment.alipay_log import Alipay_Log as Alipay_LogModule
 admin.add_view(
     MyModelView(UserModule, db.session, endpoint='info', category='User'))
 admin.add_view(
     MyModelView(UserAddressModule, db.session, endpoint='address', category='User'))
 admin.add_view(
     MyModelView(InviteCodeModule, db.session, endpoint='invitecode', category='User'))
+admin.add_view(
+    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='User'))
 admin.add_view(
     MyModelView(GroupModule, db.session, endpoint='group', category='Group'))
 admin.add_view(
@@ -80,7 +83,7 @@ admin.add_view(
 admin.add_view(
     MyModelView(TransportModule, db.session, endpoint='transport', category='Order'))
 admin.add_view(
-    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='Other'))
+    MyModelView(Alipay_LogModule, db.session, endpoint='alipay', category='Log'))
 
 from view.group.group import groupview
 from view.user.user import userview
