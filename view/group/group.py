@@ -8,8 +8,10 @@ from module.order.order import Order
 from module.image.image import Image
 from module.transport.transport import Transport
 from module.feedback.feedback import Feedback
-from myapp import db
+from myapp import db, ml
 from view.workflow.workflow import Push_Steps
+from view.alipayapp.alipayapp import alipay_send_goods_confirm
+from view.order.order_operator import order_send_goods_succ
 from werkzeug import secure_filename
 from flask.ext.login import current_user
 
@@ -60,13 +62,6 @@ def add_group_checkfile(gid):
     return jsonify({'messages': 'fail', "status": 401})
 
 
-def group_processing(gid):
-    g = Group.query.get(gid)
-    if g:
-        if g.confirm_qty == g.total_qty and g.status == statusRef.GROUP_PUBLISH:
-            g.status = statusRef.GROUP_PROCESSING
-            g.save
-            Push_Steps(1, gid)
 
 
 @groupview.route('/feedback', methods=['POST'])
@@ -118,17 +113,29 @@ def deliver_u_group(gid):
             file = Image.query.filter_by(fkid=gid, image_type=3).count()
             if file:
                 if isReady_Group_Transport(g.id):
-                    # TODO  push group workflow
                     orders = Order.query.filter_by(
                         gid=gid, status=statusRef.ORDER_PAIED).all()
-                    g.status = statusRef.GROUP_CONFIRM
-                    g.req_qty = g.total_qty
-                    g.confirm_qty = 0
+                    
+                    rs = True
                     for o in orders:
-                        o.status = statusRef.ORDER_PENDING
-                        # TODO push order workflow
-                    db.session.commit()
-                    return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+                        trans = Transport.query.filter_by(oid=oid).first()
+                        params = {
+                            'trade_no':order.out_trade_no,
+                            'logistics_name':trans.transorg,
+                            'invoice_no':trans.transcode
+                        }
+                        if alipay_send_goods_confirm(**params):
+                            if order_send_goods_succ(order.trade_no,order.out_trade_no):
+                                pass
+                            else:
+                                rs = False
+                    if rs:
+                        g.status = statusRef.GROUP_CONFIRM
+                        g.req_qty = g.total_qty
+                        g.confirm_qty = 0
+                        return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+                    else:
+                        return make_response(jsonify({'messages': 'confirm fail', 'status': 'fail'}), 201)
                 return make_response(jsonify({'messages': 'todo', 'status': 'failtrans'}), 200)
             return make_response(jsonify({'messages': 'todo', 'status': 'failfile'}), 200)
         return make_response('not exist', 404)
@@ -192,19 +199,4 @@ def isConfirm(gid):
     return False
 
 
-def tellGroupThatOrderisConfirmed(oid):
-    """
-    when order is confirmed
-    then noity group to change the req_qty and confirm_qty
-    and judge the group confirm_qty and total_qty if equle then push group status
-    """
-    o = Order.query.get(oid)
-    g = Group.query.get(o.gid)
-    if o and g:
-        g.req_qty -= o.req_qty
-        g.confirm_qty += o.req_qty
-        if g.confirm_qty == g.total_qty:
-            g.status = statusRef.GROUP_CLOSE
-        g.save
-        return True
-    return False
+
