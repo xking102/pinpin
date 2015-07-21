@@ -135,7 +135,7 @@ def deliver_u_group(gid):
                         g.confirm_qty = 0
                         return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
                     else:
-                        return make_response(jsonify({'messages': 'confirm fail', 'status': 'fail'}), 201)
+                        return make_response(jsonify({'messages': 'confirm fail', 'status': 'failsend'}), 201)
                 return make_response(jsonify({'messages': 'todo', 'status': 'failtrans'}), 200)
             return make_response(jsonify({'messages': 'todo', 'status': 'failfile'}), 200)
         return make_response('not exist', 404)

@@ -75,6 +75,8 @@ module.exports = React.createClass({
                 this.refs.sb_checkfile.show();
             }else if(status=='failtrans'){
                 this.refs.sb_trans.show();
+            }else if(status=='failsend'){
+                this.refs.sb_send.show();
             }
           }.bind(this),
           error: function(xhr, status, err) {
@@ -218,6 +220,11 @@ module.exports = React.createClass({
             <Snackbar
                   ref="sb_trans"
                   message={'还没有填写发货运单信息'}
+            />
+
+            <Snackbar
+                  ref="sb_send"
+                  message={'订单发货确认失败，请稍后尝试'}
             />
                 {actionBtn}
             </div>
