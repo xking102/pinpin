@@ -30,6 +30,7 @@ from module.workflow.workflow import Workflow
 from module.transport.transport import Transport
 from module.user.InviteCode import InviteCode
 from module.feedback.feedback import Feedback
+from module.payment.alipay_log import Alipay_Log
 import arrow
 from view.workflow.workflow import init_order_wf
 from control.pinpin import generateTradeNo
