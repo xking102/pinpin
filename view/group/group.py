@@ -13,7 +13,7 @@ from view.workflow.workflow import Push_Steps
 from view.alipayapp.alipayapp import alipay_send_goods_confirm
 from view.order.order_operator import order_send_goods_succ
 from werkzeug import secure_filename
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 
 groupview = Blueprint('groupview', __name__)
 
@@ -21,6 +21,7 @@ groupview = Blueprint('groupview', __name__)
 # list groups
 @groupview.route('/')
 def list_groups():
+    ml.info('view the index')
     common = pinpin.getBuildJSName('common')
     groupsindex = pinpin.getBuildJSName('groupsindex')
     return render_template("./group/index.html", common=common, groupsindex=groupsindex)
@@ -28,7 +29,9 @@ def list_groups():
 
 # add group
 @groupview.route('/groups')
+@login_required
 def add_group():
+    ml.info('view the mygroup')
     common = pinpin.getBuildJSName('common')
     newgroup = pinpin.getBuildJSName('newgroup')
     return render_template('./group/add.html', common=common, newgroup=newgroup)
@@ -37,9 +40,11 @@ def add_group():
 # add group check files
 @groupview.route('/groups/check/<int:gid>', methods=['POST'])
 def add_group_checkfile(gid):
+    ml.info('>>>Begin upload group check files')
     if current_user.is_authenticated():
         uid = current_user.id
         group = Group.query.get(gid)
+        ml.info('Userid %s try to upload' % uid)
         if group and uid == group.create_userid:
             images = request.files.getlist("photos")
             for image in images:
@@ -47,51 +52,72 @@ def add_group_checkfile(gid):
                 pre = 'static/imgs/groupfiles/group-file-' + \
                     str(pinpin.getCurTimestamp()) + \
                     '-'
-                if filename:
-                    image.save(pre + filename)
-                    img = Image()
-                    img.fkid = gid
-                    img.image_type = 3
-                    img.image_path = '/' + pre + filename
-                    img.create_dt = pinpin.getCurTimestamp()
-                    img.create_userid = uid
-                    img.isUsed = True
-                    img.save
-                return make_response(jsonify({'id': gid}), 201)
-        return jsonify({'messages': 'fail', "status": 401})
-    return jsonify({'messages': 'fail', "status": 401})
-
-
+                ml.info('Upload filename is %s' % filename)
+                try:
+                    if filename:
+                        image.save(pre + filename)
+                        img = Image()
+                        img.fkid = gid
+                        img.image_type = 3
+                        img.image_path = '/' + pre + filename
+                        img.create_dt = pinpin.getCurTimestamp()
+                        img.create_userid = uid
+                        img.isUsed = True
+                        img.save
+                        ml.info('Upload file succ')
+                    return make_response(jsonify({'id': gid}), 201)
+                except Exception as e:
+                    ml.info('Upload Check File exception %s' % e)
+                    db.session.rollback()
+                    ml.info('Upload Check File DB rollback')
+                    return make_response(jsonify({'id': gid}), 500)
+        return make_response(jsonify({'messages': 'fail', "status": 401}), 401)
+    ml.info('Upload group check files fails becaues not login in<<<')
+    return make_response(jsonify({'messages': 'fail', "status": 401}), 401)
 
 
 @groupview.route('/feedback', methods=['POST'])
 def feedback():
     if current_user.is_authenticated():
-        uid = current_user.id
-        fb = request.json['feedback']
-        url = request.json['url']
-        f = Feedback()
-        f.create_userid = uid
-        f.create_dt = pinpin.getCurTimestamp()
-        f.desc = fb
-        f.url = url
-        f.save
-        return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+        try:
+            uid = current_user.id
+            ml.info('User %s feedback' % uid)
+            fb = request.json['feedback']
+            url = request.json['url']
+            f = Feedback()
+            f.create_userid = uid
+            f.create_dt = pinpin.getCurTimestamp()
+            f.desc = fb
+            f.url = url
+            f.save
+            return make_response(jsonify({'messages': 'ok', 'status': 'succ'}), 201)
+        except Exception as e:
+            ml.info('rollback')
+            db.session.rollback()
+            return make_response(jsonify({'messages': 'fail', 'status': 'fail'}), 500)
     return make_response('need login', 401)
 
-# list user orders
+
 
 
 @groupview.route('/u/group')
+@login_required
 def list_u_groups():
+    '''
+    list user orders
+    '''
+    ml.info('view mygroup')
     common = pinpin.getBuildJSName('common')
     mygroup = pinpin.getBuildJSName('mygroup')
     return render_template("./group/mygroups.html", common=common, mygroup=mygroup)
 
 
-# list a group confirm orders
+
 @groupview.route('/u/group/<int:gid>')
 def list_u_groupsOrder(gid):
+    '''
+    list a group confirm orders
+    '''
     if current_user.is_authenticated():
         g = Group.query.get(gid)
         if g and g.create_userid == current_user.id:
@@ -102,9 +128,12 @@ def list_u_groupsOrder(gid):
     return make_response('need login', 401)
 
 
-# push a group status from PROCESSING(15) to CONFIRM(20)
+
 @groupview.route('/u/group/<int:gid>/delivery', methods=['PUT'])
 def deliver_u_group(gid):
+    '''
+    # push a group status from PROCESSING(15) to CONFIRM(20)
+    '''
     if current_user.is_authenticated():
         uid = current_user.id
         g = Group.query.filter_by(
@@ -115,17 +144,17 @@ def deliver_u_group(gid):
                 if isReady_Group_Transport(g.id):
                     orders = Order.query.filter_by(
                         gid=gid, status=statusRef.ORDER_PAIED).all()
-                    
+
                     rs = True
                     for o in orders:
                         trans = Transport.query.filter_by(oid=oid).first()
                         params = {
-                            'trade_no':order.out_trade_no,
-                            'logistics_name':trans.transorg,
-                            'invoice_no':trans.transcode
+                            'trade_no': order.out_trade_no,
+                            'logistics_name': trans.transorg,
+                            'invoice_no': trans.transcode
                         }
                         if alipay_send_goods_confirm(**params):
-                            if order_send_goods_succ(order.trade_no,order.out_trade_no):
+                            if order_send_goods_succ(order.trade_no, order.out_trade_no):
                                 pass
                             else:
                                 rs = False
@@ -197,6 +226,3 @@ def isConfirm(gid):
             g.save
             return True
     return False
-
-
-
