@@ -9,7 +9,7 @@ from myapp import ml
 def order_pay_succ(trade_no, out_trade_no):
     ml.info('Order_no  %s alipay_no %s try to pay_succ' %
             (trade_no, out_trade_no))
-    order = Order.query.filter(trade_no=trade_no).first()
+    order = Order.query.filter_by(trade_no=trade_no).first()
     if order and order.trade_no == trade_no and order.status == statusRef.ORDER_APPORVED:
         g = Group.query.get(order.gid)
         g.req_qty -= order.req_qty
@@ -28,12 +28,14 @@ def order_pay_succ(trade_no, out_trade_no):
 def order_send_goods_succ(trade_no, out_trade_no):
     ml.info('Order_no  %s alipay_no %s try to send_goods_succ' %
             (trade_no, out_trade_no))
-    order = Order.query.filter(trade_no=trade_no).first()
-    if group and order and order.trade_no == trade_no and order.out_trade_no == out_trade_no and order.status == statusRef.ORDER_PAIED:
+    order = Order.query.filter_by(trade_no=trade_no).first()
+    if order and order.trade_no == trade_no and order.out_trade_no == out_trade_no and order.status == statusRef.ORDER_PAIED:
         order.status = statusRef.ORDER_PENDING
         order.save
         ml.info('Order_no %s alipay_no %s  send_goods_succ' %
                 (trade_no, out_trade_no))
+        ml.info('send_goods_succ tell Group Begin')
+        tellGroupThatOrderisSended(order.id)
         return True
     return False
 
@@ -50,7 +52,7 @@ def orders_send_goods_succ(trade_list):
 def order_confirm_succ(trade_no, out_trade_no):
     ml.info('Order_no  %s alipay_no %s try to confirm_succ' %
             (trade_no, out_trade_no))
-    order = Order.query.filter(trade_no=trade_no).first()
+    order = Order.query.filter_by(trade_no=trade_no).first()
     if order and order.trade_no == trade_no and order.out_trade_no == out_trade_no and order.status == statusRef.ORDER_PENDING:
         order.status = statusRef.ORDER_CONFIRM
         order.save
@@ -83,6 +85,20 @@ def tellGroupThatOrderisConfirmed(oid):
         g.confirm_qty += o.req_qty
         if g.confirm_qty == g.total_qty:
             g.status = statusRef.GROUP_CLOSE
+        g.save
+        return True
+    return False
+
+def tellGroupThatOrderisSended(oid):
+    o = Order.query.get(oid)
+    orders = Order.query.filter_by(gid=o.gid,status=statusRef.ORDER_PAIED).count()
+    if orders:
+        return False
+    else:
+        g = Group.query.get(o.gid)
+        g.status = statusRef.GROUP_CONFIRM
+        g.req_qty = g.total_qty
+        g.confirm_qty = 0
         g.save
         return True
     return False

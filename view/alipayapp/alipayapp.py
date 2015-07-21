@@ -1,19 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from flask import Blueprint, redirect, request, render_template, make_response, jsonify, abort
+from flask import Blueprint, request, render_template, abort
 from control import pinpin
-from control.pinpin import statusRef, ALIPAY_Trade_Status
-from module.group.group import Group
-from module.order.order import Order
-from module.image.image import Image
-from module.transport.transport import Transport
+from control.pinpin import ALIPAY_Trade_Status
 from module.payment.alipay_log import Alipay_Log
 from view.order.order_operator import order_pay_succ, order_send_goods_succ, order_confirm_succ
 from alipay import Alipay
-from myapp import db, ml, app
-from flask.ext.login import current_user, login_required
-from module.feedback.feedback import Feedback
-import shortuuid
+from myapp import ml, app
+from flask.ext.login import login_required
 import urllib
 from xml.dom import minidom
 
@@ -30,7 +24,7 @@ ali = Alipay(pid=PID, key=KEY, seller_email=acct)
 
 def alipay_send_goods_confirm(**kw):
     ml.info('send goods confirm info : %s' % kw)
-    parmas = {
+    params = {
         'trade_no': kw.get('trade_no'),
         'logistics_name': kw.get('logistics_name'),
         'transport_type': 'EXPRESS',
@@ -39,24 +33,28 @@ def alipay_send_goods_confirm(**kw):
     ch = ali.send_goods_confirm_by_platform(**params)
     ml.info('the send goods confirm url is %s' % ch)
     req = urllib.urlopen(ch)
-    if req.getcode() == 200:
-        ali_resp = {}
-        rsp = req.read()
-        dom = minidom.parseString(rsp)
-        root = dom.firstChild
-        childs = root.childNodes
-        for child in childs:
-            ali_resp[child.nodeName] = child.childNodes[0].data
-        if ali_resp['is_success'] == 'T' and ali_resp['trade_no'] == params['trade_no'] and ali_resp['trade_status'] == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
-            ml.info('the alipay_no %s send goods confirm succ status will change to %s' % (
+    try:
+        if req.getcode() == 200:
+            ali_resp = {}
+            rsp = req.read()
+            dom = minidom.parseString(rsp)
+            root = dom.firstChild
+            childs = root.childNodes
+            for child in childs:
+                ali_resp[child.nodeName] = child.childNodes[0].data
+            if ali_resp['is_success'] == 'T' and ali_resp['trade_no'] == params['trade_no'] and ali_resp['trade_status'] == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
+                ml.info('the alipay_no %s send goods confirm succ status will change to %s' % (
+                    params['trade_no'], ali_resp['trade_status']))
+                return True
+            ml.info('the alipay_no %s send gools confirm fail ,the status is %s ' % (
                 params['trade_no'], ali_resp['trade_status']))
-            return True
-        ml.info('the alipay_no %s send gools confirm fail ,the status is %s ' % (
-            params['trade_no'], ali_resp['trade_status']))
+            return False
+        ml.info(
+            'send goods confirm request failed becasue network the response code is %s' % req.getcode())
         return False
-    ml.info(
-        'send goods confirm request failed becasue network the response code is %s' % req.getcode())
-    return False
+    except Exception as e:
+        ml.info('exception is $s' % e)
+        return False
 
 
 def alipay_pay_on_web(**kw):
@@ -98,8 +96,8 @@ def alipay_notify():
                 ml.info('Order %s trade status changd to %s' %
                         (orderid, trade_status))
                 trade_no = req.get('trade_no')
-            ml.info('>>>async alipay notify log begin order is ' % orderid)
-            al = Alipay_Log
+            ml.info('>>>async alipay notify log begin order is %s ' % orderid)
+            al = Alipay_Log()
             al.nontify_type = 'async'
             al.trade_no = orderid
             al.out_trade_no = trade_no
@@ -108,14 +106,18 @@ def alipay_notify():
             al.price = req.get('price')
             al.quantity = req.get('quantity')
             al.create_dt = pinpin.getCurTimestamp()
+            al.buyer_id = req.get('buyer_id')
+            al.buyer_email = req.get('buyer_email')
+            al.seller_email = req.get('seller_email')
+            al.seller_id = req.get('seller_id')
             al.save
             ml.info('async alipay notify log end order is %s <<<' % orderid)
             if trade_status == ALIPAY_Trade_Status.WAIT_SELLER_SEND_GOODS:
-                order_pay_succ(order, trade_no)
-            if trade_state == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
-                order_send_goods_succ(order, trade_no)
-            if trade_state == ALIPAY_Trade_Status.TRADE_FINISHED:
-                order_confirm_succ(order, trade_no)
+                order_pay_succ(orderid, trade_no)
+            if trade_status == ALIPAY_Trade_Status.WAIT_BUYER_CONFIRM_GOODS:
+                order_send_goods_succ(orderid, trade_no)
+            if trade_status == ALIPAY_Trade_Status.TRADE_FINISHED:
+                order_confirm_succ(orderid, trade_no)
             return 'success'
     except Exception as e:
         ml.info('not access request %s' % e)
@@ -142,8 +144,8 @@ def alipay_return():
             trade_no = req.get('trade_no')
             ml.info('Order %s Alipayno %s pay succ,order status is %s' %
                     (orderid, trade_no, trade_status))
-            ml.info('>>>sync alipay notify log begin order is ' % orderid)
-            al = Alipay_Log
+            ml.info('>>>sync alipay notify log begin order is %s ' % orderid)
+            al = Alipay_Log()
             al.nontify_type = 'sync'
             al.trade_no = orderid
             al.out_trade_no = trade_no
@@ -152,10 +154,14 @@ def alipay_return():
             al.price = req.get('price')
             al.quantity = req.get('quantity')
             al.create_dt = pinpin.getCurTimestamp()
+            al.buyer_id = req.get('buyer_id')
+            al.buyer_email = req.get('buyer_email')
+            al.seller_email = req.get('seller_email')
+            al.seller_id = req.get('seller_id')
             al.save
             ml.info('sync alipay notify log end order is %s <<<' % orderid)
             if trade_status == ALIPAY_Trade_Status.WAIT_SELLER_SEND_GOODS:
-                order_pay_succ(order, trade_no)
+                order_pay_succ(orderid, trade_no)
             orderinfo = {
                 'trade_code': orderid,
                 'out_trade_code': trade_no

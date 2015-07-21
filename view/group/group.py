@@ -144,17 +144,16 @@ def deliver_u_group(gid):
                 if isReady_Group_Transport(g.id):
                     orders = Order.query.filter_by(
                         gid=gid, status=statusRef.ORDER_PAIED).all()
-
                     rs = True
                     for o in orders:
-                        trans = Transport.query.filter_by(oid=oid).first()
+                        trans = Transport.query.filter_by(oid=o.id).first()
                         params = {
-                            'trade_no': order.out_trade_no,
+                            'trade_no': o.out_trade_no,
                             'logistics_name': trans.transorg,
                             'invoice_no': trans.transcode
                         }
                         if alipay_send_goods_confirm(**params):
-                            if order_send_goods_succ(order.trade_no, order.out_trade_no):
+                            if order_send_goods_succ(o.trade_no, o.out_trade_no):
                                 pass
                             else:
                                 rs = False
