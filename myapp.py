@@ -139,6 +139,10 @@ def page_not_found(error):
     return render_template('error.html', error=error)
 
 
+@app.errorhandler(405)
+def page_not_found(error):
+    return render_template('error.html', error=error)
+
 # @app.errorhandler(401)
 # def no_permission(error):
 #     return redirect('/login')
