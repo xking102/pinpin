@@ -15,6 +15,10 @@ class Alipay_Log(db.Model):
     price = db.Column(db.Float, unique=False)
     quantity = db.Column(db.Float, unique=False)
     create_dt = db.Column(db.Integer, unique=False)
+    buyer_email =  db.Column(db.String(100), unique=False)
+    buyer_id =  db.Column(db.String(30), unique=False)
+    seller_email =  db.Column(db.String(100), unique=False)
+    seller_id =  db.Column(db.String(30), unique=False)
 
     @property
     def save(self):
