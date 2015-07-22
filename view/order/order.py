@@ -117,5 +117,5 @@ def orderPreSend(id):
             t.update_dt = pinpin.getCurTimestamp()
             t.save
             return make_response(jsonify({'messages': 'ok'}), 201)
-        return jsonify({'messages': 'not exist', "status": 404})
-    return jsonify({'messages': 'please login', "status": 401})
+        return make_response(jsonify({'messages': 'not exist', "status": 404}),404)
+    return make_response(jsonify({'messages': 'please login', "status": 401}),401)
