@@ -5,7 +5,10 @@ var assetsPluginInstance =
 
 
 var commonsPlugin =
-    new webpack.optimize.CommonsChunkPlugin({name:'common',filename:'common.[hash].js'});
+    new webpack.optimize.CommonsChunkPlugin({
+            name:'common',
+            filename:'common.[hash].js'
+        });
 
 module.exports = {
     entry : {
