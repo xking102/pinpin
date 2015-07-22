@@ -2,13 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-from flask import Flask, render_template, Blueprint, session, redirect
+from flask import Flask, render_template, Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.admin import Admin
-from flask_admin.contrib.sqla import ModelView
-from flask_admin.contrib.fileadmin import FileAdmin
 from flask_bootstrap import Bootstrap
-from flask.ext.restful import Api, Resource
+from flask.ext.restful import Api
 from werkzeug.contrib.fixers import ProxyFix
 import logging
 from logging.handlers import RotatingFileHandler
@@ -16,9 +14,6 @@ from logging import Formatter
 from config import load_config
 from flask.ext.login import LoginManager
 import myapp
-
-
-
 
 
 from admin.MyModelView import MyAdminIndexView
@@ -37,11 +32,14 @@ login_manager.login_view = "userview.login"
 login_manager.init_app(app)
 
 
-
 from module.user.user import User as UserModule
-# Create user loader function
+
+
 @login_manager.user_loader
 def load_user(user_id):
+    '''
+    # Create user loader function
+    '''
     return UserModule.query.get(user_id)
 
 

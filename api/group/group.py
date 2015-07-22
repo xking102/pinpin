@@ -9,7 +9,6 @@ from control.pinpin import statusRef, Pager
 from module.group.group import Group as GroupModel
 from module.workflow.workflow import Workflow as WorkflowModel
 from view.workflow.workflow import init_group_wf, get_init_group
-import time
 from werkzeug import secure_filename
 from module.image.image import Image
 import os
