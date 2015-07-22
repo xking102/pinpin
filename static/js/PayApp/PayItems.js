@@ -69,32 +69,27 @@ module.exports = React.createClass({
 
 		return (
 			<div className="row-fluid sortable">
-
 				<div className="box span12">
 					<OrderItem order={this.props.order}/>
-					
 				</div>
-
 				<div className="box span12">
-
-				        <div className="box-header" data-original-title>
-          <h2>
-            <i className="halflings-icon user"></i>
-            <span className="break"></span>
-            收货人信息：
-            </h2> 
-        </div>
-
-              <div className="row-fluid">
-                  <div className="span2"><h3>收货人</h3></div>
-                  <div className="span4"><h3>地址</h3></div>
-                  <div className="span2"><h3>电话</h3></div>
-                  <div className="span2"><h3>状态</h3></div>
-                  <div className="span2"><h3>操作</h3></div>
-              </div>
-				{Myaddress}
+					<div className="box-header" data-original-title>
+          				<h2>
+            				<i className="halflings-icon user"></i>
+            				<span className="break"></span>
+            					收货人信息：
+            			</h2> 
+       				 </div>
+	          		<div className="row-fluid">
+	                  <div className="span2"><h3>收货人</h3></div>
+	                  <div className="span4"><h3>地址</h3></div>
+	                  <div className="span2"><h3>电话</h3></div>
+	                  <div className="span2"><h3>状态</h3></div>
+	                  <div className="span2"><h3>操作</h3></div>
+	              	</div>
+						{Myaddress}
 				</div>
-				{ConfirmContent}
+					{ConfirmContent}
 			</div>
 		)
 	}
