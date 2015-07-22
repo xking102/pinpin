@@ -22,7 +22,7 @@ module.exports = React.createClass({
     saveOrder:function(){
         console.log('saveit',this.props.order.id);
         $.ajax({
-          url      : '/api/v1/u/transport/'+this.props.order.id,
+          url      : '/order_pre_send/'+this.props.order.id,
           dataType : 'json',
           type     : 'put',
           contentType: "application/json",
