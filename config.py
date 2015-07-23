@@ -9,7 +9,6 @@ else:
     os.makedirs('log')
 
 
-
 def load_config():
     mode = os.getenv('FLASK_ENV')
     if mode == 'PRODUCTION':
@@ -26,7 +25,7 @@ class Config(object):
     ALIPAY_PID = os.getenv('alipay_PID')
     ALIPAY_KEY = os.getenv('alipay_KEY')
     ALIPAY_ACCT = os.getenv('alipay_acct')
-
+    WTF_CSRF_METHODS = ['POST', 'PUT', 'DELETE', 'PATCH']
 
 
 class Development(Config):
