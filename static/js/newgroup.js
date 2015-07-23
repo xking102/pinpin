@@ -86,7 +86,7 @@ var App = React.createClass({
     });
     $.ajax({
       url      : '/api/v1/groups',
-      type     : 'POST',
+      type     : 'post',
       dataType: 'json',
       cache: false,
       contentType: false,
