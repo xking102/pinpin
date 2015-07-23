@@ -13,6 +13,7 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 from config import load_config
 from flask.ext.login import LoginManager
+from flask_wtf.csrf import CsrfProtect
 import myapp
 
 
@@ -23,6 +24,7 @@ app.config.from_object(load_config())
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 db = SQLAlchemy(app)
+csrf = CsrfProtect(app)
 admin = Admin(app, name='PinPin Admin',
               index_view=MyAdminIndexView(), template_mode='bootstrap3')
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -94,6 +96,7 @@ from api.user.user import MyUserInfo
 from api.user.useraddress import MyAddresses, MyAddress
 from api.transport.transport import MyTransport, MyTransports
 
+csrf.exempt(alipayview)
 
 app.register_blueprint(userview)
 app.register_blueprint(groupview)
