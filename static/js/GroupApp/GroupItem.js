@@ -66,6 +66,15 @@ module.exports = React.createClass({
             btn_buy_name:'稍等',
             query_flag: true
         });
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
         $.ajax({
           type:'post',
           url:'/api/v1/orders',

@@ -15,7 +15,15 @@ module.exports = React.createClass({
         }
     },
     setDefault:function(){
-
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
         $.ajax({
           url      : '/api/v1/u/address/'+this.props.id,
           dataType : 'json',
@@ -38,15 +46,15 @@ module.exports = React.createClass({
     },
     render:function(){
          console.log(this.props.address.id);
-       var displayBtn = this.props.address.isDefault? 
+       var displayBtn = this.props.address.isDefault?
         <div key={this.props.id}>当前默认地址</div> :
-        <RaisedButton key={this.props.id} label="设为默认" 
+        <RaisedButton key={this.props.id} label="设为默认"
             secondary={true}
             onTouchTap={this.setDefault} />;
         return (
             <div key={this.props.id}>
             {displayBtn}
-            
+
 </div>
 
         )

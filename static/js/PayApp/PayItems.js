@@ -33,6 +33,15 @@ module.exports = React.createClass({
 		this.listAdress();
 	  },
 	setTransAdress:function(){
+		var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
 	    $.ajax({
 	      url      : '/api/v1/u/transport',
           contentType: "application/json",
@@ -59,7 +68,7 @@ module.exports = React.createClass({
 		var order = this.props.order;
 		var address = this.state.address;
 		var CurrentAddressId = this.state.CurrentAddressId;
-        var ConfirmContent = this.props.order.status==10 ? 
+        var ConfirmContent = this.props.order.status==10 ?
        <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a> :
        <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} >已确认订单，点击进入支付页面</a> ;
         var Myaddress = address.map(function(item){
@@ -72,7 +81,7 @@ module.exports = React.createClass({
 
 				<div className="box span12">
 					<OrderItem order={this.props.order}/>
-					
+
 				</div>
 
 				<div className="box span12">
@@ -82,7 +91,7 @@ module.exports = React.createClass({
             <i className="halflings-icon user"></i>
             <span className="break"></span>
             收货人信息：
-            </h2> 
+            </h2>
         </div>
 
               <div className="row-fluid">

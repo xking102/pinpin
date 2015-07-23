@@ -20,6 +20,15 @@ module.exports = React.createClass({
         }
     },
     saveOrder:function(){
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
         console.log('saveit',this.props.order.id);
         $.ajax({
           url      : '/order_pre_send/'+this.props.order.id,
@@ -84,7 +93,7 @@ module.exports = React.createClass({
                      type='text'
                      value={this.state.org}
                      onBlur={this.handleBlurTransportOrg}
-                     onChange={this.handlerTransportOrg} 
+                     onChange={this.handlerTransportOrg}
                  />
              </span>
              <span className="span3">
@@ -93,7 +102,7 @@ module.exports = React.createClass({
                      type='text'
                      value={this.state.code}
                      onBlur={this.handleBlurTransportCode}
-                     onChange={this.handlerTransportCode} 
+                     onChange={this.handlerTransportCode}
                  />
              </span>
             </div>
@@ -123,13 +132,13 @@ module.exports = React.createClass({
         }else if(this.props.viewMode='Pay'){
             viewMode = Pay;
         }else{
-            
+
         }
 		return(
-			<div> 
-                {viewMode} 
+			<div>
+                {viewMode}
             </div>
 
-		)		
+		)
 	}
 })

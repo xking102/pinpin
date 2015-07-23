@@ -51,6 +51,15 @@ module.exports = React.createClass({
 		}
 	},
 	changePWJSON:function(){
+    var csrftoken = $('meta[name=csrf-token]').attr('content');
+    console.log(csrftoken);
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+    });
     $.ajax({
       url      : '/password',
       dataType : 'json',
@@ -74,12 +83,12 @@ module.exports = React.createClass({
 	render:function(){
 		return (
 			<div style={{marginTop:'10px',marginLeft:'40%'}} className="row-fluid">
-				
+
 				<TextField
   					hintText="请输密码"
   					type='password'
   					floatingLabelText="在这输入旧密码"
-  					onChange={this.handlerOldPassword} 
+  					onChange={this.handlerOldPassword}
   				/>
   				<br/>
   				<TextField
@@ -88,7 +97,7 @@ module.exports = React.createClass({
   					errorText={this.state.errorText}
   					floatingLabelText="在这输入新密码"
   					onBlur={this.handleBlurPW}
-  					onChange={this.handlerNewPassword} 
+  					onChange={this.handlerNewPassword}
   				/>
   				<br/>
   				<TextField
@@ -97,10 +106,10 @@ module.exports = React.createClass({
   					errorText={this.state.errorText}
   					floatingLabelText="重新输一遍"
   					onBlur={this.handleBlurPW}
-  					onChange={this.handlerConfirmPassword} 
+  					onChange={this.handlerConfirmPassword}
   				/>
   				<br/>
-  				<RaisedButton style={{marginBottom:'40px',marginTop:'20px'}}  label="确认修改" 
+  				<RaisedButton style={{marginBottom:'40px',marginTop:'20px'}}  label="确认修改"
             		secondary={true}
             		onTouchTap={this.handleModify} />
             	<br/>

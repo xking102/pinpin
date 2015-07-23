@@ -42,7 +42,15 @@ module.exports = React.createClass({
           formData.append('photos',file);
         }
         formData.append('images',this.state.images);
-
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
         $.ajax({
           url      : '/groups/check/' + gid,
           type     : 'POST',

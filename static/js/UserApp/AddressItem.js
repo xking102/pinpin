@@ -61,6 +61,15 @@ module.exports = React.createClass({
     },
     handleDefault:function(){
       this._sendmsg(this.state.msg_pool.setDefault.beg);
+      var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
       $.ajax({
           url      : '/api/v1/u/address/'+this.props.address.id,
           dataType : 'json',
@@ -89,6 +98,15 @@ module.exports = React.createClass({
     },
     PutAddress:function(){
       this._sendmsg(this.state.msg_pool.update.beg);
+      var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+        });
         $.ajax({
           url      : '/api/v1/u/address/'+this.state.id,
           dataType : 'json',
@@ -114,19 +132,28 @@ module.exports = React.createClass({
     },
     DelAddress:function(){
       this._sendmsg(this.state.msg_pool.delete.beg);
-        $.ajax({
-          url      : '/api/v1/u/address/'+this.props.address.id,
-          dataType : 'json',
-          type     : 'delete',
-          success: function(resp) {
-            console.log('delete');
-            this._sendmsg(this.state.msg_pool.delete.succ);
-          }.bind(this),
-          error: function(xhr, status, err) {
-            console.error(status, err.toString);
-            this._sendmsg(this.state.msg_pool.delete.fail);
-          }.bind(this)
-        });
+      var csrftoken = $('meta[name=csrf-token]').attr('content');
+        console.log(csrftoken);
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+            }
+      });
+      $.ajax({
+        url      : '/api/v1/u/address/'+this.props.address.id,
+        dataType : 'json',
+        type     : 'delete',
+        success: function(resp) {
+          console.log('delete');
+          this._sendmsg(this.state.msg_pool.delete.succ);
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(status, err.toString);
+          this._sendmsg(this.state.msg_pool.delete.fail);
+        }.bind(this)
+      });
     },
     handleModify:function(){
         this.refs.customDialog.show();
