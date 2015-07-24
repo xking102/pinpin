@@ -3,7 +3,6 @@
 #-*- coding=utf-8 -*-
 import random
 import os
-import time
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 _letter_cases = "abcdefghjkmnpqrstuvwxy"
