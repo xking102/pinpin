@@ -98,6 +98,8 @@ from api.user.useraddress import MyAddresses, MyAddress
 from api.transport.transport import MyTransport, MyTransports
 
 csrf.exempt(alipayview)
+csrf.exempt(captchaview)
+
 
 app.register_blueprint(userview)
 app.register_blueprint(groupview)

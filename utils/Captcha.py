@@ -76,8 +76,9 @@ def CreatePPCaptcha(size=(180, 50),
 
 
 def newCaptcha():
-	code_img = CreatePPCaptcha()
-	filename =  code_img[1]
-	file_path = 'static/imgs/captcha/'+filename+'.jpg'
-	code_img[0].save(file_path, "JPEG")
-	return [filename,'/'+file_path]
+    code_img = CreatePPCaptcha()
+    filename =  code_img[1]
+    file_path = 'static/imgs/captcha/'+filename+'.jpg'
+    code_img[0].save(file_path, "JPEG")
+    return [filename,'/'+file_path]
+
