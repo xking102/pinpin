@@ -76,7 +76,6 @@ var App = React.createClass({
     formData.append('size',size);
     formData.append('other',other);
     var csrftoken = $('meta[name=csrf-token]').attr('content');
-    console.log(csrftoken);
     $.ajaxSetup({
       beforeSend: function(xhr, settings) {
           if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
