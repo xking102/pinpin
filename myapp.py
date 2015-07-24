@@ -90,6 +90,7 @@ from view.user.user import userview
 from view.order.order import orderview
 from view.other.other import otherview
 from view.alipayapp.alipayapp import alipayview
+from view.captcha import captchaview
 from api.group.group import Groups, Group, MyGroups, MyGroup
 from api.order.order import Orders, Order, MyOrders
 from api.user.user import MyUserInfo
@@ -103,7 +104,7 @@ app.register_blueprint(groupview)
 app.register_blueprint(orderview)
 app.register_blueprint(otherview)
 app.register_blueprint(alipayview)
-
+app.register_blueprint(captchaview, url_prefix='/captcha')
 
 """
 api for groups
