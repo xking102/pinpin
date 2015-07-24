@@ -9,6 +9,12 @@ else:
     os.makedirs('log')
 
 
+if op.exists('static/imgs/captcha'):
+    pass
+else:
+    os.makedirs('static/imgs/captcha')
+
+
 def load_config():
     mode = os.getenv('FLASK_ENV')
     if mode == 'PRODUCTION':
