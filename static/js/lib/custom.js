@@ -595,6 +595,14 @@ jQuery(function($) {
    	var url = window.location.href;
    	var $btn = $(this).button('loading')
    	if(fb.val().length>0&&fb.val().length<=2000){
+   		var csrftoken = $('meta[name=csrf-token]').attr('content');
+    	$.ajaxSetup({
+    	  	beforeSend: function(xhr, settings) {
+    	      	if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+    	      	    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    	      	}
+    		}
+    	});
    		$.ajax({
     	  url      : '/feedback',
     	  dataType : 'json',

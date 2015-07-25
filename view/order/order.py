@@ -102,3 +102,20 @@ def order_confirm(oid):
             return make_response(jsonify({'url': alipayurl}), 200)
         return make_response(jsonify({'messages': 'permission'}), 404)
     return make_response(jsonify({'messages': 'need login'}), 401)
+
+
+@orderview.route('/order_pre_send/<int:oid>', methods=['PUT'])
+def orderPreSend(id):
+    if current_user.is_authenticated():
+        o = OrderModel.query.get(id)
+        g = GroupModel.query.get(o.gid)
+        uid = current_user.id
+        if o and g and g.create_userid == uid:
+            t = TransportModel.query.filter_by(oid=o.id).first()
+            t.transcode = request.json['transcode']
+            t.transorg = request.json['transorg']
+            t.update_dt = pinpin.getCurTimestamp()
+            t.save
+            return make_response(jsonify({'messages': 'ok'}), 201)
+        return make_response(jsonify({'messages': 'not exist', "status": 404}),404)
+    return make_response(jsonify({'messages': 'please login', "status": 401}),401)

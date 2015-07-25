@@ -4,8 +4,6 @@
 from flask import jsonify, make_response, request
 from flask.ext.restful import Resource
 from myapp import db, api
-from control import pinpin
-from control.pinpin import statusRef
 from module.user.user import User as UserModel
 from module.user.userinfo import UserInfo as UserInfoModel
 from flask.ext.login import current_user

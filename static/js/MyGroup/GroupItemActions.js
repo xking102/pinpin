@@ -15,11 +15,19 @@ module.exports = React.createClass({
         }
     },
     _handleCancel:function(){
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         console.log('cancel');
         $.ajax({
           url      : '/u/group/'+this.props.group.id+'/cancel',
           dataType : 'json',
-          type     : 'put',
+          type     : 'PUT',
           contentType: "application/json",
           success: function(resp) {
             console.log('succ');
@@ -60,6 +68,14 @@ module.exports = React.createClass({
         this.refs.viewOrderPay.dismiss();
     },
     deliverGroup:function(){
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         $.ajax({
           url      : '/u/group/'+this.props.group.id+'/delivery',
           dataType : 'json',

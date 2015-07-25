@@ -13,12 +13,26 @@ module.exports = React.createClass({
 		}
 	},
 	handlerPay: function(){
+    if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|ipod|ios|ipad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+      console.log('mobile');
+      alert('抱歉，目前我们不支持在移动端的支付功能，请在桌面端进行支付！');
+      return ''
+    }else {
+    }
 		if(this.state.query_flag){
             console.log('waiting');
     }else{
         this.setState({
             btn_name:'正在付款',
             query_flag: true
+        });
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
         });
         $.ajax({
             type:'put',

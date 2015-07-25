@@ -1,5 +1,5 @@
 var React = require('react');
-var GroupItem = require('./GroupItem'); 
+var GroupItem = require('./GroupItem');
 
 
 
@@ -21,7 +21,7 @@ module.exports = React.createClass({
 		this.setState({
             		query_flag:'yes',
             		button_name:'加载中'
-            	});
+        });
 		$.ajax({
             type:'get',
             url:'/api/v1/groups/'+ gid,
@@ -36,7 +36,7 @@ module.exports = React.createClass({
             error: function(xhr, status, err) {
         		console.error(status, err.toString);
       		}.bind(this)
-                
+
         });
 
 	},
@@ -63,7 +63,7 @@ module.exports = React.createClass({
 		)
 	}
 
-	
+
 })
 
 

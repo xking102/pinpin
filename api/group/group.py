@@ -9,7 +9,6 @@ from control.pinpin import statusRef, Pager
 from module.group.group import Group as GroupModel
 from module.workflow.workflow import Workflow as WorkflowModel
 from view.workflow.workflow import init_group_wf, get_init_group
-import time
 from werkzeug import secure_filename
 from module.image.image import Image
 import os
@@ -72,6 +71,7 @@ class Groups(Resource):
                 ml.info(request.form)
                 title = request.form['title']
                 desc = request.form['desc']
+                url = request.form['url']
                 unit_price = request.form['unit_price']
                 list_price = request.form['list_price']
                 total_qty = request.form['total_qty']
@@ -86,6 +86,7 @@ class Groups(Resource):
                 g = GroupModel()
                 g.title = title
                 g.desc = desc
+                g.url_link = url
                 g.unit_price = unit_price
                 g.list_price = list_price
                 g.total_qty = total_qty
