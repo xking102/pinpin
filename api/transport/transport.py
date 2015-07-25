@@ -45,6 +45,35 @@ class MyTransports(Resource):
             return make_response(jsonify({'messages': 'ok'}), 201)
         return jsonify({'messages': 'please login', "status": 401})
 
+    def put(self):
+        if current_user.is_authenticated():
+            aid = request.json['aid']
+            oid = request.json['oid']
+            uid = current_user.id
+            o = OrderModel.query.get(oid)
+            if o and o.create_userid == uid:
+                a = AddressModel.query.get(aid)
+                status = statusRef.ORDER_PAIED
+                create_dt = pinpin.getCurTimestamp()
+                update_dt = pinpin.getCurTimestamp()
+                address_line1 = a.address_line1
+                address_line2 = a.address_line2
+                tel = a.tel
+                reciver = a.reciver
+                t = TransportModel.query.filter_by(oid=o.id).first()
+                t.status = status
+                t.create_dt = create_dt
+                t.update_dt = update_dt
+                t.address_line1 = address_line1
+                t.address_line2 = address_line2
+                t.tel = tel
+                t.reciver = reciver
+                t.save
+                o.status = statusRef.ORDER_APPORVED
+                o.save
+                return make_response(jsonify({'messages': 'ok'}), 201)
+            return jsonify({'messages': 'not exist', "status": 404})
+        return jsonify({'messages': 'please login', "status": 401})
 
 class MyTransport(Resource):
 
