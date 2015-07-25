@@ -146,7 +146,7 @@ module.exports = React.createClass({
 		return(
 
 			<div style={{marginBottom:'15px'}} onMouseEnter={this.MouseIn} onMouseLeave={this.MouseOut}>
-                <div className="row-fluid">{this.props.order.id}</div>
+                <div className="row-fluid"><h5>{this.props.order.trade_no}</h5></div>
                 <div className="row-fluid">
                     <div className="span2 center"><img src={this.props.order.image+".big.jpg"} /></div>
                     <div className="span2 center">{this.props.order.create_userid}</div>

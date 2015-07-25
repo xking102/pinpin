@@ -10,7 +10,7 @@ module.exports = React.createClass({
 					<h2>
 						<i className="halflings-icon user"></i>
 						<span className="break"></span>
-						订单编号: {this.props.order.id}
+						订单编号: {this.props.order.trade_no}
 						</h2>
 				</div>
 
