@@ -1,4 +1,11 @@
 var webpack = require('webpack');
+var AssetsPlugin         = require('assets-webpack-plugin');
+var assetsPluginInstance = 
+    new AssetsPlugin({path: './build',filename: 'react.json'});
+
+
+var commonsPlugin =
+    new webpack.optimize.CommonsChunkPlugin({name:'common',filename:'common.[hash].js'});
 
 module.exports = {
     entry : {
@@ -10,8 +17,10 @@ module.exports = {
     },
     output : {
         path : "./build",
-        filename : "[name].js"
+        publicPath: "/static/js/build/",
+        filename : "[name].[chunkhash].js"
     },
+    plugins: [commonsPlugin,assetsPluginInstance],
     module : {
         loaders :[
             {test:/\.js$/, loader:'babel-loader?stage=1'}

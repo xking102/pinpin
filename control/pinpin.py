@@ -4,10 +4,16 @@
 import hashlib
 import time
 import urlparse
-
+import shortuuid
 import arrow
+import json
+import os
 
-salt = 'pinpin.com'
+
+JS_JSON = os.path.join(os.getcwd(), 'static/js/build/react.json')
+SALT = 'pinpin.com'
+PREFIX = 'PP'
+DASH_CHAR = '-'
 
 
 class statusRef():
@@ -28,6 +34,25 @@ class statusRef():
     ORDER_CONFIRM = 35
 
 
+class ALIPAY_Trade_Status():
+    WAIT_BUYER_PAY = 'WAIT_BUYER_PAY'
+    WAIT_SELLER_SEND_GOODS = 'WAIT_SELLER_SEND_GOODS'
+    WAIT_BUYER_CONFIRM_GOODS = 'WAIT_BUYER_CONFIRM_GOODS'
+    TRADE_FINISHED = 'TRADE_FINISHED'
+    TRADE_CLOSED = 'TRADE_CLOSED'
+    COD_WAIT_SELLER_SEND_GOODS = 'COD_WAIT_SELLER_SEND_GOODS'
+    COD_WAIT_BUYER_PAY = 'COD_WAIT_BUYER_PAY'
+    COD_WAIT_SYS_PAY_SELLER = 'COD_WAIT_SYS_PAY_SELLER'
+
+
+class ALIPAY_Refund_Status():
+    WAIT_SELLER_AGREE = 'WAIT_SELLER_AGREE'
+    SELLER_REFUSE_BUYER  = 'SELLER_REFUSE_BUYER'
+    WAIT_BUYER_RETURN_GOODS  = 'WAIT_BUYER_RETURN_GOODS'
+    WAIT_SELLER_CONFIRM_GOODS = 'WAIT_SELLER_CONFIRM_GOODS'
+    REFUND_SUCCESS = 'REFUND_SUCCESS'
+    REFUND_CLOSED ='REFUND_CLOSED'
+
 class Pager():
     offset = 0
     limit = 0
@@ -38,7 +63,7 @@ class Pager():
 
 
 def getmd5(str):
-    md5 = hashlib.md5(str + salt).hexdigest()
+    md5 = hashlib.md5(str + SALT).hexdigest()
     return md5
 
 
@@ -59,6 +84,20 @@ def getMoment(timestamp):
 def gethumanzie(date):
     u = arrow.get(date, 'YYYY-MM-DD HHmmss').replace(hours=-8)
     return u.humanize(locale='zh')
+
+
+def generateTradeNo():
+    utc = arrow.utcnow().format('YYYYMMDD')
+    code = shortuuid.ShortUUID().random(length=8)
+    trade_no = PREFIX + DASH_CHAR + utc + DASH_CHAR + code
+    return trade_no
+
+
+def getBuildJSName(jsname):
+    fp = open(JS_JSON, 'r')
+    dict = json.loads(fp.read())
+    fp.close()
+    return dict[jsname]['js']
 
 
 def CurrentActive(**current):

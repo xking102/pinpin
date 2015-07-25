@@ -33,6 +33,7 @@ admin = Admin(app, name='PinPin Admin',
 app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
 login_manager = LoginManager()
+login_manager.login_view = "userview.login"
 login_manager.init_app(app)
 
 
@@ -64,12 +65,15 @@ from module.image.image import Image as ImageModule
 from module.order.order import Order as OrderModule
 from module.transport.transport import Transport as TransportModule
 from module.feedback.feedback import Feedback as FeedbackModule
+from module.payment.alipay_log import Alipay_Log as Alipay_LogModule
 admin.add_view(
     MyModelView(UserModule, db.session, endpoint='info', category='User'))
 admin.add_view(
     MyModelView(UserAddressModule, db.session, endpoint='address', category='User'))
 admin.add_view(
     MyModelView(InviteCodeModule, db.session, endpoint='invitecode', category='User'))
+admin.add_view(
+    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='User'))
 admin.add_view(
     MyModelView(GroupModule, db.session, endpoint='group', category='Group'))
 admin.add_view(
@@ -79,7 +83,7 @@ admin.add_view(
 admin.add_view(
     MyModelView(TransportModule, db.session, endpoint='transport', category='Order'))
 admin.add_view(
-    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='Other'))
+    MyModelView(Alipay_LogModule, db.session, endpoint='alipay', category='Log'))
 
 from view.group.group import groupview
 from view.user.user import userview
@@ -138,9 +142,13 @@ def page_not_found(error):
     return render_template('error.html', error=error)
 
 
-@app.errorhandler(401)
-def no_permission(error):
-    return redirect('/login')
+@app.errorhandler(405)
+def page_not_found(error):
+    return render_template('error.html', error=error)
+
+# @app.errorhandler(401)
+# def no_permission(error):
+#     return redirect('/login')
 
 
 if __name__ == "__main__":

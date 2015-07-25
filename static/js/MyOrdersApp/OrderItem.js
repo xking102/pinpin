@@ -65,7 +65,8 @@ module.exports = React.createClass({
                  this.setState(
                     {query_flag: true}
                 );
-                 this.props.changeOrderStatus(this.props.order.id,35)
+                 // this.props.changeOrderStatus(this.props.order.id,35)
+                 window.location.href = resp.url;
             }.bind(this),
             error:function (resp){
                                  this.setState(

@@ -10,6 +10,7 @@ env.hosts = ['120.26.211.220']
 def build():
     path = 'static/js/'
     with lcd(path):
+        local('rm -rf build/*')
         local('webpack -p')
 
 
@@ -44,3 +45,4 @@ def deploy():
     remote_dist_dir = '/home/www/'
     run('tar -xzvf %s -C %s' % (remote_tmp_tar, remote_dist_dir))
     run('supervisorctl restart pinpin')
+    run('supervisorctl status')
