@@ -45,7 +45,7 @@ class MyTransports(Resource):
             return make_response(jsonify({'messages': 'ok'}), 201)
         return jsonify({'messages': 'please login', "status": 401})
 
-    def post(self):
+    def put(self):
         if current_user.is_authenticated():
             aid = request.json['aid']
             oid = request.json['oid']

@@ -133,7 +133,7 @@ api.add_resource(
 api for transport
 """
 api.add_resource(MyTransport, '/u/transport/<int:id>', methods=['PUT'])
-api.add_resource(MyTransports, '/u/transport', methods=['POST'])
+api.add_resource(MyTransports, '/u/transport', methods=['POST','PUT'])
 
 app.register_blueprint(api_bp, url_prefix='/api/v1')
 

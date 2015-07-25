@@ -44,7 +44,7 @@ module.exports = React.createClass({
 	    $.ajax({
 	      url      : '/api/v1/u/transport',
           contentType: "application/json",
-	      type     : 'POST',
+	      type     : 'PUT',
 	      data:JSON.stringify({
               'oid':this.props.order.id,
               'aid':this.state.CurrentAddressId
@@ -66,6 +66,7 @@ module.exports = React.createClass({
 	render:function(){
 		var order = this.props.order;
 		var address = this.state.address;
+		var transport = order.transport;
 		var CurrentAddressId = this.state.CurrentAddressId;
         var ConfirmContent = this.props.order.status==10 ?
        <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a> :
@@ -74,23 +75,30 @@ module.exports = React.createClass({
 			return <AddressItem key={item.id}
 							addr={item} setCurrentAddress={this.setCurrentAddress} CurrentAddressId = {CurrentAddressId}/>
 		}.bind(this));
-
+		if (transport) {
+			var transdetail =                 
+				<div className="row-fluid">
+                    <div className="span2">{transport.reciver}</div>
+                    <div className="span4">{transport.address_line1}</div>
+                    <div className="span2">{transport.tel}</div>
+                    <div className="span2">收货地址</div>
+                    <div className="span2">
+                        <div>地址已确认，不能修改咯:D</div>
+                    </div>
+                </div>;
+        }
+        var addressDispaly = this.props.order.status==10 ? Myaddress:transdetail
 		return (
 			<div className="row-fluid sortable">
 				<div className="box span12">
 					<OrderItem order={this.props.order}/>
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 				</div>
 				<div className="box span12">
-<<<<<<< HEAD
 					<div className="box-header" data-original-title>
           				<h2>
             				<i className="halflings-icon user"></i>
             				<span className="break"></span>
-            					收货人信息：
+            					收货人信息:
             			</h2> 
        				 </div>
 	          		<div className="row-fluid">
@@ -100,26 +108,7 @@ module.exports = React.createClass({
 	                  <div className="span2"><h3>状态</h3></div>
 	                  <div className="span2"><h3>操作</h3></div>
 	              	</div>
-						{Myaddress}
-=======
-
-				        <div className="box-header" data-original-title>
-          <h2>
-            <i className="halflings-icon user"></i>
-            <span className="break"></span>
-            收货人信息：
-            </h2>
-        </div>
-
-              <div className="row-fluid">
-                  <div className="span2"><h3>收货人</h3></div>
-                  <div className="span4"><h3>地址</h3></div>
-                  <div className="span2"><h3>电话</h3></div>
-                  <div className="span2"><h3>状态</h3></div>
-                  <div className="span2"><h3>操作</h3></div>
-              </div>
-				{Myaddress}
->>>>>>> master
+						{addressDispaly}
 				</div>
 					{ConfirmContent}
 			</div>
