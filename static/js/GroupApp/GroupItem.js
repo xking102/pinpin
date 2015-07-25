@@ -114,6 +114,7 @@ module.exports = React.createClass({
   render:function(){
     var group = this.props.group;
     var clickimage = this.state.clickimage.length?this.state.clickimage:group.image+'.big.jpg';
+    var url_link = group.url_link?<a href={group.url_link} target="_blank">商品原链接</a>:'';
     return(
       <div>
 <Paper zDepth={3}>
@@ -127,6 +128,7 @@ module.exports = React.createClass({
 
 
   <Col sm={12} md={7} lg={7}>
+    {url_link}
     <p>到手价：{group.unit_price}</p>
     <p>剩余数：{group.total_qty-group.req_qty-group.confirm_qty}</p>
     <Col sm={12} md={7} lg={7}>

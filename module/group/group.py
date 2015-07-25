@@ -24,6 +24,7 @@ class Group(db.Model):
     color = db.Column(db.String(100), unique=False)
     size = db.Column(db.String(100), unique=False)
     other = db.Column(db.String(100), unique=False)
+    url_link = db.Column(db.String(400),unique=False)
 
     @property
     def to_json(self):
@@ -87,7 +88,8 @@ class Group(db.Model):
             'isCheckUpload': file,
             'color': color,
             'size':  size,
-            'other': other
+            'other': other,
+            'url_link':self.url_link
         }
 
     @property
