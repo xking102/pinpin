@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}支付成功-订单：{{orderinfo.trade_code}} PinPin.in{% endblock title %}
+{% block content %}
+<div class="container-fluid-full">
+	<div class="row-fluid">
+		<div class="span2">
+			<h3>订单号：</h3>
+		</div>
+		<div class="span4">
+			<h3>{{orderinfo.trade_code}}</h3>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span2">
+			<h3>支付宝流水号：</h3>
+		</div>
+		<div class="span4">
+			<h3>{{orderinfo.out_trade_code}}</h3>
+		</div>
+	</div>
+
+
+	<div class="row-fluid">
+		<div class="span2">
+			<h3>付款成功！</h3>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

@@ -31,6 +31,14 @@ module.exports = React.createClass({
         this.setState({
             query_flag: true
         });
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         $.ajax({
             type:'put',
             url:'/order_cancel/'+this.props.order.id,
@@ -57,6 +65,14 @@ module.exports = React.createClass({
         this.setState({
             query_flag: true
         });
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         $.ajax({
             type:'put',
             url:'/order_confirm/'+this.props.order.id,
@@ -65,7 +81,8 @@ module.exports = React.createClass({
                  this.setState(
                     {query_flag: true}
                 );
-                 this.props.changeOrderStatus(this.props.order.id,35)
+                 // this.props.changeOrderStatus(this.props.order.id,35)
+                 window.location.href = resp.url;
             }.bind(this),
             error:function (resp){
                                  this.setState(
@@ -138,8 +155,8 @@ module.exports = React.createClass({
                     </div>
                     <div className="span2 center">{this.props.order.create_dt}</div>
                     <div className="span2 center">
-                    <p>{statusName}</p> 
-                    <p>{transorg}</p>                  
+                    <p>{statusName}</p>
+                    <p>{transorg}</p>
                     <p>{transcode}</p></div>
                     <div className="span2 center">
                         {displayBtn}

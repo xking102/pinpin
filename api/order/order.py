@@ -10,7 +10,6 @@ from module.group.group import Group as GroupModel
 from module.order.order import Order as OrderModel
 from module.transport.transport import Transport as TransModel
 from module.workflow.workflow import Workflow as WorkflowModel
-from view.group.group import group_processing
 from view.workflow.workflow import init_order_wf, get_init_order
 from flask.ext.login import current_user
 

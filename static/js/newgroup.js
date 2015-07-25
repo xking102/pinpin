@@ -28,8 +28,9 @@ var App = React.createClass({
     var errorPrice = this.state.errorPrice;
     var errorQty = this.state.errorQty;
     var errorTitle = this.state.errorTitle;
+    var errorUrl = this.state.errorUrl;
     var errorDesc = this.state.errorDesc;
-    if(errorTitle.length>0||errorDesc.length>0||errorImages.length>0||errorPrice.length>0||errorQty.length>0){
+    if(errorTitle.length>0||errorUrl.length>0||errorDesc.length>0||errorImages.length>0||errorPrice.length>0||errorQty.length>0){
       this.setState({
         errorSubmit:'请填写完整'
       });
@@ -69,15 +70,24 @@ var App = React.createClass({
     formData.append('images',this.state.images);
     formData.append('title',this.refs.title.getValue());
     formData.append('desc',this.refs.desc.getValue());
+    formData.append('url',this.refs.url.getValue());
     formData.append('unit_price',this.refs.price.getValue());
     formData.append('list_price',0);
     formData.append('total_qty',this.refs.qty.getValue());
     formData.append('color',color);
     formData.append('size',size);
     formData.append('other',other);
+    var csrftoken = $('meta[name=csrf-token]').attr('content');
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+    }
+    });
     $.ajax({
       url      : '/api/v1/groups',
-      type     : 'POST',
+      type     : 'post',
       dataType: 'json',
       cache: false,
       contentType: false,
@@ -111,6 +121,7 @@ var App = React.createClass({
       flag:true,
       errorTitle:'',
       errorDesc:'',
+      errorUrl:'',
       errorImages:'别忘了上传图片',
       errorPrice:'',
       errorQty:'',
@@ -194,6 +205,20 @@ var App = React.createClass({
               floatingLabelText="输入商品详情介绍"
             />
 
+
+            <br/>
+
+            <TextField
+              ref="url"
+              style={{width:'100%'}}
+              hintText="商品原链接"
+              type='text'
+              multiLine={true}
+              onChange={this._handlerUrlChange}
+              errorText={this.state.errorUrl}
+              floatingLabelText="输入商品原链接"
+            />
+
             <br/>
 
             <TextField
@@ -262,7 +287,7 @@ var App = React.createClass({
                 ref="snackbar_succ"
                 message={'发布成功'}
             />
-          
+
             </div>
 
             {showSubmitError}
@@ -376,6 +401,29 @@ var App = React.createClass({
         errorTitle:'标题最多30字'
       })
     }
+  },
+
+  _handlerUrlChange:function(){
+    var url = this.refs.url.getValue();
+    var regexp = new RegExp("(http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?", "gi");
+    var urls = url.match(regexp) || [];
+    url = urls[0];
+    if(urls.length>0){
+      if(url.length>0&&url.length<=300){
+        this.setState({
+          errorUrl:''
+        });
+      }else{
+        this.setState({
+          errorUrl:'输入的链接不正确，链接应该已http://或https://开头'
+        })
+      }
+    }else{
+      this.setState({
+          errorUrl:'输入的链接不正确，链接应该已http://或https://开头'
+        })
+    }
+
   },
 
   _handlerDescChange:function(){

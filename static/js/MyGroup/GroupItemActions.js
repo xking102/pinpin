@@ -15,11 +15,19 @@ module.exports = React.createClass({
         }
     },
     _handleCancel:function(){
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         console.log('cancel');
         $.ajax({
           url      : '/u/group/'+this.props.group.id+'/cancel',
           dataType : 'json',
-          type     : 'put',
+          type     : 'PUT',
           contentType: "application/json",
           success: function(resp) {
             console.log('succ');
@@ -60,6 +68,14 @@ module.exports = React.createClass({
         this.refs.viewOrderPay.dismiss();
     },
     deliverGroup:function(){
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         $.ajax({
           url      : '/u/group/'+this.props.group.id+'/delivery',
           dataType : 'json',
@@ -75,6 +91,8 @@ module.exports = React.createClass({
                 this.refs.sb_checkfile.show();
             }else if(status=='failtrans'){
                 this.refs.sb_trans.show();
+            }else if(status=='failsend'){
+                this.refs.sb_send.show();
             }
           }.bind(this),
           error: function(xhr, status, err) {
@@ -218,6 +236,11 @@ module.exports = React.createClass({
             <Snackbar
                   ref="sb_trans"
                   message={'还没有填写发货运单信息'}
+            />
+
+            <Snackbar
+                  ref="sb_send"
+                  message={'订单发货确认失败，请稍后尝试'}
             />
                 {actionBtn}
             </div>

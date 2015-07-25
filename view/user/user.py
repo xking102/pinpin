@@ -40,8 +40,8 @@ def register():
 
 
 # user logout
-@login_required
 @userview.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('groupview.list_groups'))
@@ -72,26 +72,26 @@ def hasDefaultAddress(uid):
 
 
 @userview.route('/setting')
+@login_required
 def setting():
-    if current_user.is_authenticated():
-        return render_template("./user/user.html")
-    return redirect('/login')
+    common = pinpin.getBuildJSName('common')
+    user = pinpin.getBuildJSName('user')
+    return render_template("./user/user.html", common=common, user=user)
 
 # change user password
 
 
 @userview.route('/password', methods=['PUT'])
+@login_required
 def change_pw():
-    if current_user.is_authenticated():
-        uid = current_user.id
-        u = User.query.get(uid)
-        if u:
-            if pinpin.getmd5(request.json['old_password']) == u.password:
-                u.password = pinpin.getmd5(request.json['new_password'])
-                u.save
-                return make_response(jsonify({'messages': '修改成功'}), 201)
-            return make_response(jsonify({'messages': '密码不一致'}), 201)
-        return redirect('/login')
+    uid = current_user.id
+    u = User.query.get(uid)
+    if u:
+        if pinpin.getmd5(request.json['old_password']) == u.password:
+            u.password = pinpin.getmd5(request.json['new_password'])
+            u.save
+            return make_response(jsonify({'messages': '修改成功'}), 201)
+        return make_response(jsonify({'messages': '密码不一致'}), 201)
     return redirect('/login')
 
 

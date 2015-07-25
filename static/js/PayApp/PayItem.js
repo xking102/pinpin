@@ -13,6 +13,12 @@ module.exports = React.createClass({
 		}
 	},
 	handlerPay: function(){
+    if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|ipod|ios|ipad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+      console.log('mobile');
+      alert('抱歉，目前我们不支持在移动端的支付功能，请在桌面端进行支付！');
+      return ''
+    }else {
+    }
 		if(this.state.query_flag){
             console.log('waiting');
     }else{
@@ -20,23 +26,26 @@ module.exports = React.createClass({
             btn_name:'正在付款',
             query_flag: true
         });
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+        }
+        });
         $.ajax({
             type:'put',
             url:'/order_pay/'+this.props.order.id,
             contentType: "application/json",
             success:function (resp) {
-                this.setState({
-                        btn_name:'付款成功',
-                        query_flag: true,
-                        result:true,
-                        isPay:true
-                });
+                window.location.href = resp.url;
             }.bind(this),
             error:function (resp){
               this.setState({
                         btn_name:'付款失败',
                         query_flag: false
-  
+
               });
             }.bind(this)
         });
@@ -46,21 +55,21 @@ module.exports = React.createClass({
         var styleObj={
             display: 'block',
          };
-        var PayContent = this.state.isPay||this.props.order.status==25 ? 
+        var PayContent = this.state.isPay||this.props.order.status==25 ?
        <div>
  <div className="row-fluid">
             已支付 {this.props.order.total_price}
           </div>
- <a   href="/" className="btn btn-danger">去看看别的</a>   
+ <a   href="/" className="btn btn-danger">去看看别的</a>
        </div> :
          <div>
  <div className="row-fluid">
             共需要支付 {this.props.order.total_price}
           </div>
 
-            
+
           <div className="row-fluid">
-            <a href="#"  onClick={this.handlerPay} className="btn btn-danger">{this.state.btn_name}</a>   
+            <a href="#"  onClick={this.handlerPay} className="btn btn-danger">{this.state.btn_name}</a>
           </div>
        </div> ;
 		return (
@@ -70,12 +79,12 @@ module.exports = React.createClass({
 						<i className="halflings-icon user"></i>
 						<span className="break"></span>
 						支付
-						</h2>	
+						</h2>
 				</div>
 
 				<div className="box-content">
 					{PayContent}
-						
+
 
 				</div>
 			</div>

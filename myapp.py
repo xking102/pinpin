@@ -2,23 +2,19 @@
 # -*- coding: utf-8 -*-
 
 
-from flask import Flask, render_template, Blueprint, session, redirect
+from flask import Flask, render_template, Blueprint
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.admin import Admin
-from flask_admin.contrib.sqla import ModelView
-from flask_admin.contrib.fileadmin import FileAdmin
 from flask_bootstrap import Bootstrap
-from flask.ext.restful import Api, Resource
+from flask.ext.restful import Api
 from werkzeug.contrib.fixers import ProxyFix
 import logging
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
 from config import load_config
 from flask.ext.login import LoginManager
+from flask_wtf.csrf import CsrfProtect
 import myapp
-
-
-
 
 
 from admin.MyModelView import MyAdminIndexView
@@ -28,19 +24,24 @@ app.config.from_object(load_config())
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 db = SQLAlchemy(app)
+csrf = CsrfProtect(app)
 admin = Admin(app, name='PinPin Admin',
               index_view=MyAdminIndexView(), template_mode='bootstrap3')
 app.wsgi_app = ProxyFix(app.wsgi_app)
 Bootstrap(app)
 login_manager = LoginManager()
+login_manager.login_view = "userview.login"
 login_manager.init_app(app)
 
 
-
 from module.user.user import User as UserModule
-# Create user loader function
+
+
 @login_manager.user_loader
 def load_user(user_id):
+    '''
+    # Create user loader function
+    '''
     return UserModule.query.get(user_id)
 
 
@@ -64,12 +65,15 @@ from module.image.image import Image as ImageModule
 from module.order.order import Order as OrderModule
 from module.transport.transport import Transport as TransportModule
 from module.feedback.feedback import Feedback as FeedbackModule
+from module.payment.alipay_log import Alipay_Log as Alipay_LogModule
 admin.add_view(
     MyModelView(UserModule, db.session, endpoint='info', category='User'))
 admin.add_view(
     MyModelView(UserAddressModule, db.session, endpoint='address', category='User'))
 admin.add_view(
     MyModelView(InviteCodeModule, db.session, endpoint='invitecode', category='User'))
+admin.add_view(
+    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='User'))
 admin.add_view(
     MyModelView(GroupModule, db.session, endpoint='group', category='Group'))
 admin.add_view(
@@ -79,7 +83,7 @@ admin.add_view(
 admin.add_view(
     MyModelView(TransportModule, db.session, endpoint='transport', category='Order'))
 admin.add_view(
-    MyModelView(FeedbackModule, db.session, endpoint='feedback', category='Other'))
+    MyModelView(Alipay_LogModule, db.session, endpoint='alipay', category='Log'))
 
 from view.group.group import groupview
 from view.user.user import userview
@@ -92,13 +96,14 @@ from api.user.user import MyUserInfo
 from api.user.useraddress import MyAddresses, MyAddress
 from api.transport.transport import MyTransport, MyTransports
 
+csrf.exempt(alipayview)
+
 
 app.register_blueprint(userview)
 app.register_blueprint(groupview)
 app.register_blueprint(orderview)
 app.register_blueprint(otherview)
 app.register_blueprint(alipayview)
-
 
 """
 api for groups
@@ -138,9 +143,13 @@ def page_not_found(error):
     return render_template('error.html', error=error)
 
 
-@app.errorhandler(401)
-def no_permission(error):
-    return redirect('/login')
+@app.errorhandler(405)
+def page_not_found(error):
+    return render_template('error.html', error=error)
+
+# @app.errorhandler(401)
+# def no_permission(error):
+#     return redirect('/login')
 
 
 if __name__ == "__main__":
