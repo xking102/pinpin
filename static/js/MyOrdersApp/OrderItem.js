@@ -130,11 +130,11 @@ module.exports = React.createClass({
             <a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerCancel}>取消订单</a></div>
             break
             case 25:
-            statusName = '待发货'
+            statusName = '等待团长发货'
             //displayBtn = <a className="btn btn-link" href={"order#/"+this.props.order.id+"/complain"}>投诉</a>
             break
             case 30:
-            statusName = '待收货'
+            statusName = '等待收货'
             transorg= '快递公司:'+this.props.order.transport.transorg
             transcode= '运单号:'+this.props.order.transport.transcode
             displayBtn = <div><a className="btn btn-link" href="javascript:void(0)" onClick={this.handlerConfirm}>确认收货</a><br></br></div>
