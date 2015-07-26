@@ -68,9 +68,12 @@ module.exports = React.createClass({
 		var address = this.state.address;
 		var transport = order.transport;
 		var CurrentAddressId = this.state.CurrentAddressId;
-        var ConfirmContent = this.props.order.status==10 ?
-       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a> :
-       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} >已确认订单，点击进入支付页面</a> ;
+        var ConfirmContent = <a className="btn btn-link" href={"/setting"} >请先去设置页面添加地址，点击跳转</a>;
+        if (address.length>0) {
+        	ConfirmContent = this.props.order.status==10 ?
+	       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} onClick={this.setTransAdress}>确认订单</a> :
+	       <a className="btn btn-link" href={"order#/"+this.props.order.id+"/payConfirm"} >已确认订单，点击进入支付页面</a> ;
+	   	}
         var Myaddress = address.map(function(item){
 			return <AddressItem key={item.id}
 							addr={item} setCurrentAddress={this.setCurrentAddress} CurrentAddressId = {CurrentAddressId}/>
