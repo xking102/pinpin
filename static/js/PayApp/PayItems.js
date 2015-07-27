@@ -2,8 +2,6 @@ var React = require('react');
 var OrderItem = require('../OrderComponents/OrderItem');
 var AddressItem = require('./AddressItem');
 
-
-
 module.exports = React.createClass({
 	getInitialState:function(){
 		return {
@@ -92,14 +90,14 @@ module.exports = React.createClass({
         }
         var addressDispaly = this.props.order.status==10 ? Myaddress:transdetail
 		return (
-			<div className="row-fluid sortable">
+			<div className="row-fluid">
 
-				<div className="box span12">
+				<div className="row-fluid">
 					<OrderItem order={this.props.order}/>
 				</div>
 
-				<div className="box span12">
-					<div className="box-header" data-original-title>
+				<div className="row-fluid">
+					<div>
           				<h2>
             				<i className="halflings-icon user"></i>
             				<span className="break"></span>

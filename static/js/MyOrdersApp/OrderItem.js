@@ -99,16 +99,6 @@ module.exports = React.createClass({
         var displayBtn = '';
         var transorg ='';
         var transcode = '';
-        var mod = this.props.order.id%3;
-        var stylecolor = "greenDark";
-        if(mod == 0){
-            stylecolor = "greenLight";
-        }else if(mod == 1){
-            stylecolor = "green";
-        }else{
-            stylecolor = "greenLight";
-        };
-        stylecolor = "circleStatsItemBox " + stylecolor;
         switch(status)
         {
             case 1:

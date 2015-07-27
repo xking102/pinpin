@@ -3,6 +3,9 @@ var React = require('react');
 var OrderItem = require('./OrderItem');
 var Pager =  require("../Components/Pager");
 
+var mui = require('material-ui');
+var {Paper} = mui;
+
 module.exports = React.createClass({
 	getInitialState:function(){
 		return {
